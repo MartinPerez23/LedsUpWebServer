@@ -1,0 +1,67 @@
+{% extends "ledsup/base_generic.html" %}
+
+{% block content %}
+<div class="container-fluid bg-light">
+    <div class="row">
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+                <div id="id_errores"></div>
+                <input type="hidden" id="id_patch" name="patch">
+            </table>
+                        <!-- Button trigger modal -->
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarPosicionLeds" id="botonEditar">
+              Editar Posicion de Leds
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="editarPosicionLeds" tabindex="-1" aria-labelledby="EdicionPosicionLeds" aria-hidden="true">
+              <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="EdicionPosicionLeds">Editar Posicion de Leds</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                        <div id="editor" class="row"></div>
+                  </div>
+                  <div class="modal-footer">
+                      <div>
+                            <h5>Pacheo rápido</h5>
+                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="pacheoRapido">
+                                <option selected value="0">Filas empezando arriba izquierda</option>
+                                <option value="1">Filas empezando arriba derecha</option>
+                                <option value="2">Filas empezando abajo izquierda</option>
+                                <option value="3">Filas empezando abajo derecha</option>
+
+                                <option value="4">Filas de serpiente empezando arriba izquierda</option>
+                                <option value="5">Filas de serpiente empezando arriba derecha</option>
+                                <option value="6">Filas de serpiente empezando abajo izquierda</option>
+                                <option value="7">Filas de serpiente empezando abajo derecha</option>
+
+
+                                <option value="8">Columnas empezando arriba izquierda</option>
+                                <option value="9">Columnas empezando arriba derecha</option>
+                                <option value="10">Columnas empezando abajo izquierda</option>
+                                <option value="11">Columnas empezando abajo derecha</option>
+
+                                <option value="12">Columnas de serpiente empezando arriba izquierda</option>
+                                <option value="13">Columnas de serpiente empezando arriba derecha</option>
+                                <option value="14">Columnas de serpiente empezando abajo izquierda</option>
+                                <option value="15">Columnas de serpiente empezando abajo derecha</option>
+                            </select>
+                      </div>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="botonGuardar">Guardar</button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <input class="btn btn-primary" type="submit" value="Aceptar" id="botonAceptar"/>
+        </form>
+    </div>
+</div>
+{% endblock %}

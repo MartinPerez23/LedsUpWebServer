@@ -1,0 +1,68 @@
+
+
+<!-- Comienzo navbar-->
+{% load static %}
+      <header class="site-header sticky-top py-1">
+        <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="{% static 'web/imagenes/iconos/logo.png' %}" id="imagenLogo" alt="logo" class="logoRojo d-inline-block align-text-top"/>
+                </a>
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarScroll"
+                        aria-controls="navbarScroll"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+
+                <div class="collapse navbar-collapse" id="navbarScroll">
+
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ledsup:lista_dispositivos' %}">
+                                Listado de Dispositivos
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ledsup:lista_showroom' %}">
+                                Listado de Showrooms
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'ledsup:showroom' %}">
+                                Showroom
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link bg-info btn" href="{% url 'web:index' %}">
+                                Easy-Led
+                            </a>
+                        </li>
+                        {% if user.is_authenticated and user.is_staff %}
+                            <li class="nav-item">
+                                <a class="nav-link btn-secondary btn" href="{% url 'admin:index' %}">
+                                    Admin
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="top-right">
+                    {% if user.is_authenticated %}
+                        <span class="navbar-text">
+                            Usuario: {{ user.get_username }}
+                        </span>
+                        <br>
+                        <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-danger">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login'%}?next={{request.path}}" class="btn btn-primary">Iniciar sesion</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>

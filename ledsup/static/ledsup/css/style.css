@@ -1,0 +1,78 @@
+body    {
+    background: url('/static/web/imagenes/Fondo.jpg');
+    background-position: center center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    background-color: black;
+}
+
+section{
+
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+
+h1{
+    font-family: 'Staatliches', cursive;
+    font-size: 60px;
+    color: white;
+    background-color: black;
+}
+
+form{
+    margin: 10px;
+}
+.tab-pane {
+
+    padding: 50px;
+}
+
+/*
+-----------------------Inicio FOOTER-----------------------
+*/
+
+footer{
+    background-color: rgba(255, 255, 255, 0.8);
+    margin-right: auto;
+    margin-left: auto;
+    padding: 30px;
+}
+.iconosFooter{
+    width:40px;
+    padding: 5px;
+}
+.redesSociales{
+    padding: 20px;
+}
+
+/*
+-----------------------Fin FOOTER-----------------------
+
+-----------------------Inicio LOGO navbar-----------------------
+*/
+.logoRojo{
+    padding: 1px;
+    margin: 1px 30px;
+    height: 80px;
+    background: -webkit-radial-gradient(closest-side,red,#343a40);
+}
+.logoAzul{
+    height: 80px;
+    padding: 1px;
+    margin: 1px 30px;
+    background: -webkit-radial-gradient(closest-side,blue,#343a40);
+}
+.logoVerde{
+    height: 80px;
+    padding: 1px;
+    margin: 1px 30px;
+    background: -webkit-radial-gradient(closest-side,green,#343a40);
+
+}
+
+/*
+-----------------------Fin LOGO navbar-----------------------
+*/

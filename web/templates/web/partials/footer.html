@@ -1,0 +1,30 @@
+{% load static %}
+<footer>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-2 col-md-2 col-4">
+                <img src="{% static 'web/imagenes/iconos/logo.png' %}" class="rounded-circle img-fluid" alt="logo">
+            </div>
+            <div class="col-md-8 col-10">
+
+                <div class="row redesSociales">
+                    <div class="offset-2 col-md-2 col-5">
+                            <a href=""><img src="{% static 'web/imagenes/iconos/facebook.png' %}" alt="facebook" class="iconosFooter img-fluid"></a>
+                            <a href=""><img src="{% static 'web/imagenes/iconos/gorjeo.png' %}" alt="twitter" class="iconosFooter img-fluid"></a>
+                    </div>
+                    <div class="col-md-2 col-5">
+                            <a href=""><img src="{% static 'web/imagenes/iconos/whatsapp.png' %}" alt="whatsapp" class="iconosFooter img-fluid"></a>
+                            <a href=""><img src="{% static 'web/imagenes/iconos/instagram.png' %}" alt="instagram" class="iconosFooter img-fluid"></a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h6 class="text-center">Copyright© {{ current_year }} Easy-Led. Todos los derechos reservados.</h6>
+            </div>
+        </div>
+    </div>
+</footer>

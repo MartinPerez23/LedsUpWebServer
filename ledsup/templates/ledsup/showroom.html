@@ -1,0 +1,165 @@
+{% extends "ledsup/base_generic.html" %}
+{% load static %}
+
+{% block title %}<title>Showroom</title>{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+
+        <div {% if message.tags == 'error' %} class="alert alert-danger"{% else %} class="alert alert-info" {% endif %} role="alert">
+            <a class="close" href="#" data-dismiss="alert">×</a>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container bg-secondary bg-opacity-1">
+    <div class="row">
+        <div class="col-lg-6 col-md-12">
+            <canvas id="display" height="400" width="400">
+                <h4 class="text-danger">Error</h4>
+            </canvas>
+            <p>(Representación gráfica de lo que se vería en los dispositivos)</p>
+        </div>
+        <div class="col-lg-6 col-md-12">
+            <ul class="nav nav-tabs" id="nav-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark {% if not request.session.active or request.session.active == 'color' %}active{% endif %}" id="nav-color-tab" data-bs-toggle="tab" data-bs-target="#nav-color" type="button" role="tab" aria-controls="nav-color" aria-selected="true">Color</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark {% if request.session.active == 'scroll' %}active{% endif %}" id="nav-scroll-tab" data-bs-toggle="tab" data-bs-target="#nav-scroll" type="button" role="tab" aria-controls="nav-scroll" aria-selected="false">Scroll Colores</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark {% if request.session.active == 'estrellas' %}active{% endif %}" id="nav-estrellas-tab" data-bs-toggle="tab" data-bs-target="#nav-estrellas" type="button" role="tab" aria-controls="nav-estrellas" aria-selected="false">Estrellas</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link text-dark {% if request.session.active == 'scan' %}active{% endif %}" id="nav-scan-tab" data-bs-toggle="tab" data-bs-target="#nav-scan" type="button" role="tab" aria-controls="nav-scan" aria-selected="false">Scan</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show shadow-lg p-3 mb-5 bg-success rounded {% if not request.session.active or request.session.active == 'color' %}active{% endif %}" id="nav-color" role="tabpanel" aria-labelledby="nav-color-tab">
+
+                    <form action="{% url 'ledsup:color' %}" method="post" id="formularioParaEnviar">
+                        {% csrf_token %}
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="show" id="show">
+                            <option value="0">Selecciona un Showroom a controlar</option>
+                            {% for show in listadoShowroom %}
+                                {% if show.id == request.session.valorShowroom %}
+                                    <option value={{ show.id }} selected>{{ show }}</option>
+                                {% else %}
+                                    <option value={{ show.id }}>{{ show }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" value="{{ request.session.col }}" name="color" id="color">
+
+                        <canvas id="circulo" height="250" width="250">
+                            <h4 class="text-danger">Error</h4>
+                        </canvas>
+
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="cambioConstanteColor" name="cambioConstanteColor" {{ request.session.cambioConstanteColor }}>
+                            <label class="form-check-label" for="cambioConstanteColor">Cambio Constante de Color</label>
+                        </div>
+
+                        <div class="visually-hidden" id="labelVelocidadColorCambioConstante">
+                            <label for="velocidadColorCambioConstante" class="form-label">Velocidad</label>
+                            <input type="range" class="form-range" min="2" max="6" id="velocidadColorCambioConstante" name="velocidadColorCambioConstante" value="{{ request.session.velocidadColorCambioConstante }}">
+                        </div>
+                        <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade shadow-lg p-3 mb-5 bg-success rounded {% if request.session.active == 'scroll' %}active show{% endif %}" id="nav-scroll" role="tabpanel" aria-labelledby="nav-scroll-tab">
+                    <form action="{% url 'ledsup:scroll' %}" method="post" id="formularioParaEnviarScroll">
+                        {% csrf_token %}
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="show" id="show">
+                            <option value="0">Selecciona un Showroom a controlar</option>
+                            {% for show in listadoShowroom %}
+                                {% if show.id == request.session.valorShowroom %}
+                                    <option value={{ show.id }} selected>{{ show }}</option>
+                                {% else %}
+                                    <option value={{ show.id }}>{{ show }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label for="dirScroll" class="form-label">Direccion</label>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="dirScroll" id="dirScroll" >
+                            <option value="Derecha"{% if request.session.dirScroll == 'Derecha' %} selected {% endif %}>Derecha</option>
+                            <option value="Izquierda"{% if request.session.dirScroll == 'Izquierda' %} selected {% endif %}>Izquierda</option>
+                            <option value="Arriba"{% if request.session.dirScroll == 'Arriba' %} selected {% endif %}>Arriba</option>
+                            <option value="Abajo"{% if request.session.dirScroll == 'Abajo' %} selected {% endif %}>Abajo</option>
+                        </select>
+                        <label for="velocidadScroll" class="form-label">Velocidad</label>
+                        <input type="range" class="form-range" min="2" max="6" id="velocidadScroll" name="velocidadScroll" value="{{ request.session.velocidadScroll }}">
+
+                        <input type="hidden" value="nada" name="matriz" id="matriz">
+                        <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade shadow-lg p-3 mb-5 bg-success rounded {% if request.session.active == 'estrellas' %} active show {% endif %}" id="nav-estrellas" role="tabpanel" aria-labelledby="nav-estrellas-tab">
+                    <form action="{% url 'ledsup:estrellas' %}" method="post" id="formularioParaEnviarEstrellas">
+                        {% csrf_token %}
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="show" id="show">
+                            <option value="0">Selecciona un Showroom a controlar</option>
+                            {% for show in listadoShowroom %}
+                                {% if show.id == request.session.valorShowroom %}
+                                    <option value={{ show.id }} selected>{{ show }}</option>
+                                {% else %}
+                                    <option value={{ show.id }}>{{ show }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" value="{{ request.session.col }}" name="color" id="color">
+                        <label class="form-label">Colores</label>
+                        <input type="color" class="form-control form-control-color" id="color1Estrellas" name="color1Estrellas" value="{% if not request.session.color1Estrellas %}#ffffff{% else %}{{ request.session.color1Estrellas }}{% endif %}" title="Elige un color para las estrellas">
+                        <input type="color" class="form-control form-control-color" id="color2Estrellas" name="color2Estrellas" value="{% if not request.session.color2Estrellas %}#000000{% else %}{{ request.session.color2Estrellas }}{% endif %}" title="Elige un color para el fondo">
+
+                        <label for="velocidadEstrellas" class="form-label">Velocidad</label>
+                        <input type="range" class="form-range" min="2" max="6" id="velocidadEstrellas" name="velocidadEstrellas" value="{{ request.session.velocidadEstrellas }}">
+
+                        <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade shadow-lg p-3 mb-5 bg-success rounded {% if request.session.active == 'scan' %} active show {% endif %}" id="nav-scan" role="tabpanel" aria-labelledby="nav-scan-tab">
+                    <form action="{% url 'ledsup:scan' %}" method="post" id="formularioParaEnviarScan">
+                        {% csrf_token %}
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="show" id="show">
+                            <option value="0">Selecciona un Showroom a controlar</option>
+                            {% for show in listadoShowroom %}
+                                {% if show.id == request.session.valorShowroom %}
+                                    <option value={{ show.id }} selected>{{ show }}</option>
+                                {% else %}
+                                    <option value={{ show.id }}>{{ show }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+
+                        <label for="dirScan" class="form-label">Direccion</label>
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="dirScan" id="dirScan">
+                            <option value="Derecha"{% if request.session.dirScan == 'Derecha' %} selected {% endif %}>Derecha</option>
+                            <option value="Izquierda"{% if request.session.dirScan == 'Izquierda' %} selected {% endif %}>Izquierda</option>
+                            <option value="Arriba"{% if request.session.dirScan == 'Arriba' %} selected {% endif %}>Arriba</option>
+                            <option value="Abajo"{% if request.session.dirScan == 'Abajo' %} selected {% endif %}>Abajo</option>
+                        </select>
+
+                        <label class="form-label">Colores</label>
+                        <input type="color" class="form-control form-control-color" id="color1Scan" name="color1Scan" value="{% if not request.session.color1Scan %}#ffffff{% else %}{{ request.session.color1Scan }}{% endif %}" title="Elige un color para el scan">
+                        <input type="color" class="form-control form-control-color" id="color2Scan" name="color2Scan" value="{% if not request.session.color2Scan %}#000000{% else %}{{ request.session.color2Scan }}{% endif %}" title="Elige un color para el fondo">
+
+                        <label for="velocidadScan" class="form-label">Velocidad</label>
+                        <input type="range" class="form-range" min="2" max="6" id="velocidadScan" name="velocidadScan" value="{{ request.session.velocidadScan }}">
+
+                        <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <input type="hidden" id="active" value="{{ request.session.active }}">
+
+
+{% endblock %}

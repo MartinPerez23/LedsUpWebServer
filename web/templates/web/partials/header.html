@@ -1,0 +1,78 @@
+<!-- Comienzo navbar-->
+{% load static %}
+      <header class="site-header sticky-top py-1">
+        <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
+
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" width="50" height="50" id="imagenLogo" alt="logo" class="logoRojo d-inline-block align-text-top"/>
+            </a>
+
+            <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Galeria
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            Contacto
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Productos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {% for tipoProducto in listado_tipos_productos %}
+                                <h6 class="dropdown-header">{{ tipoProducto.nombre_tipo_producto }}</h6>
+                                {% for producto in listado_productos %}
+                                    {% if producto.tipo_producto == tipoProducto %}
+                                        <a class="dropdown-item" href="#">
+                                            {{ producto.nombre_producto }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link bg-info btn" href="{% url 'ledsup:lista_showroom' %}">
+                            Leds up
+                        </a>
+                    </li>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link btn-secondary btn" href="{% url 'admin:index' %}">
+                                Admin
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+
+                    <div class="top-right">
+                    {% if user.is_authenticated %}
+                        <span class="navbar-text">
+                            Usuario: {{ user.get_username }}
+                        </span>
+                        <br>
+                        <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-danger">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login'%}?next={{request.path}}" class="btn btn-primary">Iniciar sesion</a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </nav>
+    </header>

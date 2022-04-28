@@ -1,0 +1,14 @@
+{% extends "ledsup/base_generic.html" %}
+
+{% block content %}
+<div class="container-fluid bg-light">
+    <h3>Borrar dispositivo</h3>
+
+    <p>¿Estas seguro que desea eliminar: {{ dispositivo }}?</p>
+
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input class="btn btn-danger" type="submit" action="" value="Si, borrar." />
+    </form>
+</div>
+{% endblock %}

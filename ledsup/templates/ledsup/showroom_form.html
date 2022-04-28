@@ -1,0 +1,16 @@
+{% extends "ledsup/base_generic.html" %}
+
+{% block content %}
+<div class="container-fluid bg-light">
+    <div class="row justify-content-center">
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+            {{ form.as_table }}
+            </table>
+            <input class="btn btn-primary" type="submit" value="Aceptar" />
+
+        </form>
+    </div>
+</div>
+{% endblock %}

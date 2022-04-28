@@ -1,0 +1,80 @@
+{% extends "ledsup/base_generic.html" %}
+
+{% block title %}<title>Listado Showroom</title>{% endblock %}
+
+{% block content %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div {% if message.tags == 'error' %} class="alert alert-danger"{% else %} class="alert alert-info" {% endif %} role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid bg-light">
+        {% if user.is_authenticated %}
+            <br>
+            <h3>Listado de Showroom</h3>
+            <div class="justify-content-end">
+                <a class="btn btn-primary" href=" {% url 'ledsup:crear_showroom' %}">Agregar Showroom </a>
+            </div>
+            <br>
+        {% endif %}
+        <div class="table-responsive">
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Dispositivo (Numero IP) (Universo) (Orden)</th>
+                        <th scope="col">Matriz X total</th>
+                        <th scope="col">Matriz Y total</th>
+                        <th scope="col">URL Server</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for show in listadoShowroom %}
+                        <tr>
+                            <td>{{ show.nombre_showroom }}</td>
+                            <td>
+                                <ul>
+                                    {% for disp in show.dispositivos.all %}
+                                        <li>
+                                            <p>
+                                                {{ disp }}
+                                                ({{ disp.numero_ip }})
+                                                ({{ disp.universo }})
+                                                {% for orden in ordenesDispositivosEnShowroom.all %}
+                                                    {% if disp.id == orden.dispositivo.id %}
+                                                        {% if show.id == orden.showroom.id %}
+                                                            {{ orden }}
+                                                            <a class="btn btn-primary btn-sm" href="{% url 'ledsup:editar_orden_dispositivos_en_showroom' orden.id %}">Modificar orden</a>
+                                                        {% endif  %}
+                                                    {% endif  %}
+                                                {% endfor %}
+                                            </p>
+                                        </li>
+                                    {% empty %}
+                                        <li>No hay Showrooms, agrega uno nuevo!</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ show.matriz_x_total }}</td>
+                            <td>{{ show.matriz_y_total }}</td>
+                            <td>{{ show.url_server }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-success btn-sm" href="{% url 'ledsup:editar_showroom' show.id %}">Editar</a>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'ledsup:eliminar_showroom' show.id %}">Borrar</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
