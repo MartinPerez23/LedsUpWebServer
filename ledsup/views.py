@@ -46,7 +46,7 @@ class ListDispositivosPage(LoginRequiredMixin, generic.ListView):
         try:
 
             lista = list()
-            lista.extend([self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0'])
+            lista.extend([self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0', self.POST['tipo_led']])
 
             probar_dispositivo(lista)
             messages.info(self, "Dispositivo " + self.POST['nombre_dispositivo'] + " probado!")

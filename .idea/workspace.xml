@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cbc6ae56-909a-4d55-ad66-cfdc755ef025" name="Changes" comment="" />
+    <list default="true" id="cbc6ae56-909a-4d55-ad66-cfdc755ef025" name="Changes" comment="Primer commit">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4e8e786f-b558-4496-9eca-8353cf1c4762.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/4e8e786f-b558-4496-9eca-8353cf1c4762.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/517d5c78-8b16-4722-a7ed-17a6fb0e0595.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/517d5c78-8b16-4722-a7ed-17a6fb0e0595.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ledsup/artnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/ledsup/artnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ledsup/templates/ledsup/lista_dispositivos.html" beforeDir="false" afterPath="$PROJECT_DIR$/ledsup/templates/ledsup/lista_dispositivos.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ledsup/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/ledsup/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mysite/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/mysite/settings.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,6 +65,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>
       <filtered-out-file-type name="LOCAL_BRANCH" />
@@ -103,6 +116,7 @@
     <option name="height" value="688" />
   </component>
   <component name="ProjectId" id="1yLsjOQtCrRiFbR1NFHndYwyJqk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -284,15 +298,19 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="launchJavascriptDebuger" value="false" />
       <option name="port" value="8080" />
-      <option name="host" value="" />
+      <option name="host" value="localhost" />
       <option name="additionalOptions" value="" />
-      <option name="browserUrl" value="http://127.0.0.1:8080/" />
+      <option name="browserUrl" value="" />
       <option name="runTestServer" value="false" />
       <option name="runNoReload" value="false" />
       <option name="useCustomRunCommand" value="false" />
       <option name="customRunCommand" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Django Server.mysite" />
+      <item itemvalue="Python.artnet" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.artnet" />
@@ -447,6 +465,26 @@
       <workItem from="1650521812484" duration="1745000" />
       <workItem from="1650572906206" duration="5575000" />
       <workItem from="1650582499758" duration="1081000" />
+      <workItem from="1651216530492" duration="10000" />
+      <workItem from="1651217265915" duration="2984000" />
+      <workItem from="1651412248103" duration="4629000" />
+      <workItem from="1651432299340" duration="524000" />
+      <workItem from="1651523347365" duration="594000" />
+      <workItem from="1651534087385" duration="313000" />
+      <workItem from="1651619919496" duration="795000" />
+      <workItem from="1652939101869" duration="786000" />
+      <workItem from="1654639745354" duration="33000" />
+      <workItem from="1654639810096" duration="974000" />
+      <workItem from="1655854177345" duration="493000" />
+      <workItem from="1655930662018" duration="1440000" />
+      <workItem from="1655937256281" duration="1304000" />
+      <workItem from="1656627224167" duration="600000" />
+      <workItem from="1656892062280" duration="288000" />
+      <workItem from="1656897711861" duration="633000" />
+      <workItem from="1657380701805" duration="534000" />
+      <workItem from="1660428465989" duration="419000" />
+      <workItem from="1660428983619" duration="4399000" />
+      <workItem from="1660437991724" duration="928000" />
     </task>
     <servers />
   </component>
@@ -483,6 +521,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/4e8e786f-b558-4496-9eca-8353cf1c4762/console.sql">

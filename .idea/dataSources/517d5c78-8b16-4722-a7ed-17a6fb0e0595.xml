@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="db [2]">
-  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.38">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.43">
     <root id="1"/>
     <collation id="2" parent="1" name="RTRIM"/>
     <collation id="3" parent="1" name="NOCASE"/>
@@ -1373,6 +1373,7 @@
     <key id="514" parent="491">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <key id="515" parent="491">
       <ColNames>name</ColNames>
@@ -1422,6 +1423,7 @@ permission_id</ColNames>
     <key id="524" parent="492">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="525" parent="493" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -1462,6 +1464,7 @@ codename</ColNames>
     <key id="532" parent="493">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="533" parent="494" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -1526,6 +1529,7 @@ codename</ColNames>
     <key id="545" parent="494">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <key id="546" parent="494">
       <ColNames>username</ColNames>
@@ -1575,6 +1579,7 @@ group_id</ColNames>
     <key id="555" parent="495">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="556" parent="496" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -1620,6 +1625,7 @@ permission_id</ColNames>
     <key id="564" parent="496">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <check id="565" parent="497">
       <Predicate>&quot;action_flag&quot; &gt;= 0</Predicate>
@@ -1686,6 +1692,7 @@ permission_id</ColNames>
     <key id="578" parent="497">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="579" parent="498" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -1711,6 +1718,7 @@ model</ColNames>
     <key id="583" parent="498">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="584" parent="499" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -1736,6 +1744,7 @@ model</ColNames>
     <key id="588" parent="499">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="589" parent="500" name="session_key">
       <DataType>varchar(40)|0s</DataType>
@@ -1841,6 +1850,7 @@ model</ColNames>
     <key id="611" parent="501">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="612" parent="502" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -1886,6 +1896,7 @@ model</ColNames>
     <key id="620" parent="502">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <check id="621" parent="503">
       <Predicate>&quot;matriz_x_total&quot; &gt;= 0</Predicate>
@@ -1937,6 +1948,7 @@ model</ColNames>
     <key id="631" parent="503">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="632" parent="504" name="type">
       <DataType>text|0s</DataType>
@@ -1993,6 +2005,7 @@ model</ColNames>
     <key id="644" parent="506">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="645" parent="507" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -2027,6 +2040,7 @@ model</ColNames>
     <key id="651" parent="507">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="652" parent="508" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -2072,6 +2086,7 @@ model</ColNames>
     <key id="660" parent="508">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="661" parent="509" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -2087,6 +2102,7 @@ model</ColNames>
     <key id="663" parent="509">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="664" parent="510" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -2121,6 +2137,7 @@ model</ColNames>
     <key id="670" parent="510">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
   </database-model>
 </dataSource>

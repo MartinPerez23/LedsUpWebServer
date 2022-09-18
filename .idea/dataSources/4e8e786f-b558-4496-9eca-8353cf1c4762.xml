@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="db">
-  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.38">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.43">
     <root id="1"/>
     <collation id="2" parent="1" name="BINARY"/>
     <collation id="3" parent="1" name="NOCASE"/>
@@ -52,6 +52,7 @@
     <key id="30" parent="6">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <key id="31" parent="6">
       <ColNames>name</ColNames>
@@ -101,6 +102,7 @@ permission_id</ColNames>
     <key id="40" parent="7">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="41" parent="8" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -141,6 +143,7 @@ codename</ColNames>
     <key id="48" parent="8">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="49" parent="9" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -205,6 +208,7 @@ codename</ColNames>
     <key id="61" parent="9">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <key id="62" parent="9">
       <ColNames>username</ColNames>
@@ -254,6 +258,7 @@ group_id</ColNames>
     <key id="71" parent="10">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="72" parent="11" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -299,6 +304,7 @@ permission_id</ColNames>
     <key id="80" parent="11">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <check id="81" parent="12">
       <Predicate>&quot;action_flag&quot; &gt;= 0</Predicate>
@@ -365,6 +371,7 @@ permission_id</ColNames>
     <key id="94" parent="12">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="95" parent="13" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -390,6 +397,7 @@ model</ColNames>
     <key id="99" parent="13">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="100" parent="14" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -415,6 +423,7 @@ model</ColNames>
     <key id="104" parent="14">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="105" parent="15" name="session_key">
       <DataType>varchar(40)|0s</DataType>
@@ -520,6 +529,7 @@ model</ColNames>
     <key id="127" parent="16">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <check id="128" parent="17">
       <Predicate>&quot;matriz_x_total&quot; &gt;= 0</Predicate>
@@ -571,6 +581,7 @@ model</ColNames>
     <key id="138" parent="17">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="139" parent="18" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -616,6 +627,7 @@ dispositivo_id</ColNames>
     <key id="147" parent="18">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <check id="148" parent="19">
       <Predicate>&quot;numero_puerto&quot; &gt;= 0</Predicate>
@@ -664,6 +676,7 @@ dispositivo_id</ColNames>
     <key id="157" parent="19">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="158" parent="20" name="type">
       <DataType>text|0s</DataType>
@@ -720,6 +733,7 @@ dispositivo_id</ColNames>
     <key id="170" parent="22">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="171" parent="23" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -754,6 +768,7 @@ dispositivo_id</ColNames>
     <key id="177" parent="23">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="178" parent="24" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -799,6 +814,7 @@ dispositivo_id</ColNames>
     <key id="186" parent="24">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="187" parent="25" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -814,6 +830,7 @@ dispositivo_id</ColNames>
     <key id="189" parent="25">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
     <column id="190" parent="26" name="id">
       <AutoIncrement>1</AutoIncrement>
@@ -848,6 +865,7 @@ dispositivo_id</ColNames>
     <key id="196" parent="26">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
+      <UnderlyingIndexColNames>id</UnderlyingIndexColNames>
     </key>
   </database-model>
 </dataSource>
