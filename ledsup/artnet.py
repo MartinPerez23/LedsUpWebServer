@@ -1,7 +1,7 @@
 import json
 import socket
 
-HOST, PORT = "localhost", 8000
+HOST, PORT = "masterpc.ddns.net", 8000
 
 
 def enviarAlServer(datosAEnviar):

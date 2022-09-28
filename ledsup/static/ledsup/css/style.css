@@ -1,5 +1,6 @@
 body    {
-    background: url('/static/web/imagenes/Fondo.jpg');
+    background: url('/static/ledsup/imagenes/Fondo.jpg');
+  
     background-position: center center;
     background-repeat: repeat;
     background-attachment: fixed;
