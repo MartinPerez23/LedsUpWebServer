@@ -1,20 +1,19 @@
 import sys
 
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.urls import reverse
-from django.views import generic
-from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework.permissions import IsAdminUser
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets
-
-from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom
-from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
+from rest_framework.permissions import IsAdminUser
 
 from ledsup.artnet import probar_dispositivo, color, scroll, estrellas, scan
+from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom, ChatMessage
+from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
 
 
 class OrdenDispositivosEnShowroomUpdate(LoginRequiredMixin, UpdateView):
@@ -126,11 +125,6 @@ class DispositivoDelete(LoginRequiredMixin, DeleteView):
 
 # ---------------------------------- SHOWROOM PAGE ----------------------------------
 
-def room(LoginRequiredMixin, request, room_name):
-    return render(request, 'ledsup/room.html', {
-        'room_name': room_name
-    })
-
 def getDispositivosByIDShowroom(idShow):
     listado_de_dispositivos = list()
     # FILTRO EL SHOWROOM QUE ELIGIO EL USUARIO
@@ -177,7 +171,7 @@ class ListShowroomPage(LoginRequiredMixin, generic.ListView):
         context['ordenes'] = OrdenDispositivosEnShowroom.ORDEN_DISPOSITIVOS
         context[
             'ordenesDispositivosEnShowroom'] = OrdenDispositivosEnShowroom.objects.get_queryset(
-            ).filter(showroom__usuario__email__exact=self.request.user.email)
+        ).filter(showroom__usuario__email__exact=self.request.user.email)
 
         return context
 
@@ -305,7 +299,7 @@ class ShowroomCreate(LoginRequiredMixin, CreateView):
 
         form.fields[
             'dispositivos'].queryset = Dispositivo.objects.get_queryset(
-            ).filter(usuario__email__exact=self.request.user.email)
+        ).filter(usuario__email__exact=self.request.user.email)
 
         form.instance.usuario = self.request.user
 
@@ -331,7 +325,7 @@ class ShowroomUpdate(LoginRequiredMixin, UpdateView):
         form = super(ShowroomUpdate, self).get_form(*args, **kwargs)
         form.fields[
             'dispositivos'].queryset = Dispositivo.objects.get_queryset(
-            ).filter(usuario__email__exact=self.request.user.email)
+        ).filter(usuario__email__exact=self.request.user.email)
 
         return form
 
@@ -372,4 +366,8 @@ class DispositivoViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Dispositivo.objects.get_queryset().filter(
             usuario__email__exact=self.request.user.email)
+
+
+def room(request, room_name):
+    return render(request, "ledsup/room.html", {"room_name": room_name})
 

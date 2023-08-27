@@ -1,7 +1,7 @@
 import json
 import socket
 
-HOST, PORT = "masterpc.ddns.net", 8000
+HOST, PORT = "localhost", 8081
 
 
 def enviarAlServer(datosAEnviar):
@@ -28,7 +28,6 @@ def probar_dispositivo(listaDispositivos):
 
 
 def color(listaDispositivos, colorHex):
-
     datosAEnviar = {
         'accion': 'color',
         'color': colorHex,
@@ -38,7 +37,6 @@ def color(listaDispositivos, colorHex):
 
 
 def scroll(listaDispositivos, direccion, velocidad):
-
     datosAEnviar = {
         'accion': 'scroll',
         'direccion': direccion,

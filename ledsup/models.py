@@ -1,10 +1,10 @@
 import datetime
 
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 
 
 class Dispositivo(models.Model):
@@ -77,3 +77,8 @@ class OrdenDispositivosEnShowroom(models.Model):
 
     def __str__(self):
         return self.orden
+
+
+class ChatMessage(models.Model):
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

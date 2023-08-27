@@ -1,6 +1,21 @@
-# mysite/asgi.py
+# import os
+# from django.core.asgi import get_asgi_application
+# from channels.routing import ProtocolTypeRouter, URLRouter
+# from django.urls import re_path
+# from ledsup import consumers
+#
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+#
+# application = ProtocolTypeRouter({
+#     "http": get_asgi_application(),
+#     "websocket": URLRouter([
+#         re_path(r'ledsup/wsremoteandlocal/$', consumers.ChatConsumer.as_asgi()),
+#
+#     ]),
+# })
+
+
 import os
-import ledsup.routing
 
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
@@ -12,13 +27,13 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 # is populated before importing code that may import ORM models.
 django_asgi_app = get_asgi_application()
 
-application = ProtocolTypeRouter({
-    "https": django_asgi_app,
-    "websocket": AllowedHostsOriginValidator(
-        AuthMiddlewareStack(
-            URLRouter(
-                ledsup.routing.websocket_urlpatterns
-            )
-        )
-    ),
-})
+import ledsup.routing
+
+application = ProtocolTypeRouter(
+    {
+        "http": django_asgi_app,
+        "websocket": AllowedHostsOriginValidator(
+            AuthMiddlewareStack(URLRouter(ledsup.routing.websocket_urlpatterns))
+        ),
+    }
+)

@@ -30,7 +30,7 @@ urlpatterns = [
     path('showroom/<int:pk>/delete/', views.ShowroomDelete.as_view(), name='eliminar_showroom'),
 
     path('ordendispositivosenshowroom/<int:pk>/', views.OrdenDispositivosEnShowroomUpdate.as_view(), name='editar_orden_dispositivos_en_showroom'),
-  
+
     path('wsremoteandlocal/<str:room_name>/', views.room, name='room'),
 
 ]
