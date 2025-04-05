@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from ledsup.models import Showroom, Dispositivo
+
+from ledsup.models import Showroom, Dispositivo, User
 
 
 class ShowroomSerializer(serializers.ModelSerializer):
@@ -19,7 +20,7 @@ class ShowroomSerializer(serializers.ModelSerializer):
             'matriz_x_total',
             'matriz_y_total',
             'url_server',
-            ]
+        ]
 
         extra_kwargs = {'id': {'required': False}}
 
@@ -38,6 +39,12 @@ class DispositivoSerializer(serializers.ModelSerializer):
             'patch',
             'fecha_creacion',
             'tipo_led',
-            ]
+        ]
 
         extra_kwargs = {'id': {'required': False}}
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ["password"]

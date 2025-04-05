@@ -1,22 +1,16 @@
-import json
-import socket
-
-HOST, PORT = "localhost", 8081
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 def enviarAlServer(datosAEnviar):
-    jsonParaEnviar = json.dumps(datosAEnviar)
-    # Create a socket (SOCK_STREAM means a TCP socket)
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        # Connect to server and send data
-        sock.connect((HOST, PORT))
-        sock.sendall(bytes(jsonParaEnviar + "\n", "utf-8"))
-
-        # Receive data from the server and shut down
-        received = str(sock.recv(1024), "utf-8")
-
-    print("Sent:     {}".format(jsonParaEnviar))
-    print("Received: {}".format(received))
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        "pc_apps",
+        {
+            "type": "enviarAlServer",
+            "data": datosAEnviar
+        }
+    )
 
 
 def probar_dispositivo(listaDispositivos):

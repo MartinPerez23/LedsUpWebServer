@@ -3,8 +3,7 @@ import sys
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import reverse
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -12,7 +11,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
 
 from ledsup.artnet import probar_dispositivo, color, scroll, estrellas, scan
-from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom, ChatMessage
+from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom
 from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
 
 
@@ -366,8 +365,3 @@ class DispositivoViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Dispositivo.objects.get_queryset().filter(
             usuario__email__exact=self.request.user.email)
-
-
-def room(request, room_name):
-    return render(request, "ledsup/room.html", {"room_name": room_name})
-

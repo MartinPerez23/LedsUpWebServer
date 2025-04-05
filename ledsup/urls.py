@@ -31,6 +31,4 @@ urlpatterns = [
 
     path('ordendispositivosenshowroom/<int:pk>/', views.OrdenDispositivosEnShowroomUpdate.as_view(), name='editar_orden_dispositivos_en_showroom'),
 
-    path('wsremoteandlocal/<str:room_name>/', views.room, name='room'),
-
 ]
