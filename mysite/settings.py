@@ -20,16 +20,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rpu-4*lne(^r9-nsn%3+b2te)#hl+ioxb8o%)ea8y4ubw0adup'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_HSTS_SECONDS = 31536000 # One year in seconds
 
-ALLOWED_HOSTS = ['*']
+# Another security settings
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+ALLOWED_HOSTS = [os.environ['ALLOWED_HOSTS']]
 
 # Application definition
 
@@ -152,7 +159,7 @@ REST_FRAMEWORK = {
         ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']
 }
 
-CSRF_TRUSTED_ORIGINS = []
+CSRF_TRUSTED_ORIGINS = [ALLOWED_HOSTS]
 
 ASGI_APPLICATION = 'mysite.asgi.application'
 
