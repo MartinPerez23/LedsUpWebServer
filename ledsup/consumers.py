@@ -1,25 +1,29 @@
 import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
-
 from django.conf import settings
 
 
 class RoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # Obtenés el token desde la cabecera
+        # Obtener token de headers
         headers = dict((k.decode(), v.decode()) for k, v in self.scope["headers"])
         token = headers.get("authorization", "").replace("Token ", "")
 
-        # Comparás con un token definido en tus settings
+        # Validar token
         if token != settings.WS_SECRET_TOKEN:
-            await self.close(code=4003)  # 4003 = código de cierre personalizado
+            await self.close(code=4003)
             return
 
+        await self.channel_layer.group_add("pc_apps", self.channel_name)
         await self.accept()
+        print("WebSocket conectado y agregado a grupo pc_apps")
 
     async def disconnect(self, close_code):
         print("Desconectado")
+        await self.channel_layer.group_discard("pc_apps", self.channel_name)
 
-    async def enviarAlServer(self, datosAEnviar):
-        await self.send(text_data=json.dumps(datosAEnviar))
+    async def enviarAlServer(self, event):
+        await self.send(text_data=json.dumps({
+            "data": event["data"]
+        }))
