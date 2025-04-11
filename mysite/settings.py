@@ -173,3 +173,5 @@ CHANNEL_LAYERS = {
 }
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+WS_SECRET_TOKEN = os.environ['WS_SECRET_TOKEN']
