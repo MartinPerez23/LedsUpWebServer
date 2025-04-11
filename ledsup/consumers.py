@@ -2,7 +2,7 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-import settings
+from django.conf import settings
 
 
 class RoomConsumer(AsyncWebsocketConsumer):
