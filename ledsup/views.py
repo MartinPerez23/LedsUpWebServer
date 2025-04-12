@@ -47,19 +47,16 @@ class ListDispositivosPage(LoginRequiredMixin, generic.ListView):
         try:
 
             lista = list()
-            lista.extend([
-                self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0'
-            ])
+            lista.extend([self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'])
 
             probar_dispositivo(lista)
-            messages.info(
-                self,
-                "Dispositivo " + self.POST['nombre_dispositivo'] + " probado!")
+
+            messages.info(self, "Dispositivo " + self.POST['nombre_dispositivo'] + " probado!")
+
             return HttpResponseRedirect(reverse('ledsup:lista_dispositivos'))
 
         except:
-            messages.error(
-                self, "Error! No se pudo establecer conexion con el servidor")
+            messages.error(self, "Error! No se pudo establecer conexion con el servidor")
             return HttpResponseRedirect(reverse('ledsup:lista_dispositivos'))
 
 
