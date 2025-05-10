@@ -58,7 +58,7 @@
                             Usuario: {{ user.get_username }}
                         </span>
                         <br>
-                        <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-danger">Logout</a>
+                        <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-danger">Cerrar sesion</a>
                     {% else %}
                         <a href="{% url 'login'%}?next={{request.path}}" class="btn btn-primary">Iniciar sesion</a>
                     {% endif %}
