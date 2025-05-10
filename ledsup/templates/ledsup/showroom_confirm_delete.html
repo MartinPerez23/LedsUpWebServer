@@ -9,7 +9,7 @@
     <form action="" method="POST">
       {% csrf_token %}
       <input class="btn btn-danger" type="submit" action="" value="Si, borrar." />
-        <a href="{% url 'lista_showroom' %}" class="btn btn-secondary">Cancelar</a>
+        <a href="{% url 'ledsup:lista_showroom' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
 {% endblock %}
