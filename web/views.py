@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 
-from forms import ContactForm
+from .forms import ContactForm
 from .models import Producto, TipoProducto, Galeria
 
 
