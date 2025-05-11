@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto, VideosProducto
+from .models import TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto, VideosProducto, ImagenesGaleria, \
+    Galeria
 
 
 class VideosProductoEnLinea(admin.TabularInline):
@@ -17,8 +18,14 @@ class ImagenesProductoEnLinea(admin.TabularInline):
     extra = 1
 
 
-class CaracteristicasProductoEnLinea(admin.TabularInline):
+class ImagenesGaleriaEnLinea(admin.TabularInline):
+    verbose_name_plural = 'Imagenes de la Galeria'
+    verbose_name = 'Imagen de la Galeria'
+    model = ImagenesGaleria
+    extra = 1
 
+
+class CaracteristicasProductoEnLinea(admin.TabularInline):
     verbose_name_plural = 'Caracteristicas del Producto'
     verbose_name = 'Caracteristica del Producto'
     model = CaracteristicasProducto
@@ -39,5 +46,19 @@ class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre_producto', 'fecha_creacion', 'creado_recientemente')
 
 
+class GaleriaAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['nombre']}),
+        (None, {'fields': ['fecha']}),
+        (None, {'fields': ['detalle']}),
+    ]
+    inlines = [ImagenesGaleriaEnLinea]
+
+    list_filter = ['fecha']
+    search_fields = ['nombre']
+    list_display = ('nombre', 'fecha', 'detalle')
+
+
+admin.site.register(Galeria, GaleriaAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(TipoProducto)

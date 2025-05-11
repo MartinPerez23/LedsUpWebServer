@@ -24,12 +24,12 @@ class DispositivoAdmin(admin.ModelAdmin):
 
 
 class ShowroomAdmin(admin.ModelAdmin):
+    readonly_fields = ('token',)
     fieldsets = [
         (None, {'fields': ['usuario']}),
         (None, {'fields': ['nombre_showroom']}),
-        (None, {'fields': ['matriz_x_total']}),
-        (None, {'fields': ['matriz_y_total']}),
-        (None, {'fields': ['url_server']}),
+        (None, {'fields': ['is_connected']}),
+        (None, {'fields': ['token']}),
     ]
     inlines = (OrdenDispositivosEnShowroomInline,)
 

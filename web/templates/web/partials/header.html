@@ -3,7 +3,7 @@
       <header class="site-header sticky-top py-1">
         <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
 
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'web:index' %}">
                 <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" width="50" height="50" id="imagenLogo" alt="logo" class="logoRojo d-inline-block align-text-top"/>
             </a>
 
@@ -21,12 +21,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{% url 'web:gallery' %}">
                             Galeria
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{% url 'web:contact' %}">
                             Contacto
                         </a>
                     </li>
@@ -39,7 +39,7 @@
                                 <h6 class="dropdown-header">{{ tipoProducto.nombre_tipo_producto }}</h6>
                                 {% for producto in listado_productos %}
                                     {% if producto.tipo_producto == tipoProducto %}
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="{% url 'web:productDetails' producto.id %}">
                                             {{ producto.nombre_producto }}
                                         </a>
                                     {% endif %}

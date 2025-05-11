@@ -1,4 +1,5 @@
 import datetime
+import secrets
 
 from django.contrib import admin
 from django.contrib.auth.models import AbstractUser
@@ -52,7 +53,21 @@ class Showroom(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     nombre_showroom = models.CharField(max_length=100)
-    url_server = models.CharField(max_length=200)
+
+    token = models.CharField(max_length=64, unique=True, editable=False, blank=True)
+
+    is_connected = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.token:
+            self.token = self._generate_token()
+        super().save(*args, **kwargs)
+
+    def _generate_token(self):
+        while True:
+            token = secrets.token_urlsafe(48)
+            if not Showroom.objects.filter(token=token).exists():
+                return token
 
     def __str__(self):
         return self.nombre_showroom + ' creado por: ' + self.usuario.email

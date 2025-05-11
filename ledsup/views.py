@@ -308,7 +308,6 @@ class ShowroomCreate(LoginRequiredMixin, CreateView):
     fields = [
         'nombre_showroom',
         'dispositivos',
-        'url_server',
     ]
 
     def form_valid(self, form):
