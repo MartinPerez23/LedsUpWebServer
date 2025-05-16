@@ -6,9 +6,9 @@
 
     {% if messages %}
         {% for message in messages %}
-            <div {% if message.tags == 'error' %} class="alert alert-danger"{% else %} class="alert alert-info" {% endif %} role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center" role="alert">
                 {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
     {% endif %}
@@ -40,7 +40,7 @@
                                 <ul>
                                     {% for disp in show.dispositivos.all %}
                                         <li>
-                                            <p>
+                                           <div class="d-flex align-items-center gap-2">
                                                 {{ disp }}
                                                 ({{ disp.numero_ip }})
                                                 ({{ disp.universo }})
@@ -49,18 +49,18 @@
                                                         {% if show.id == orden.showroom.id %}
                                                             {{ orden }}
                                                             <a class="btn btn-primary btn-sm" href="{% url 'ledsup:editar_orden_dispositivos_en_showroom' orden.id %}">Modificar orden</a>
+                                                            <form action="{% url 'ledsup:probar' %}" method="post">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" value="{{ disp.numero_ip }}" name="ip" id="ip">
+                                                                <input type="hidden" value="{{ disp.universo }}" name="universo" id="universo">
+                                                                <input type="hidden" value="{{ disp.tipo_led }}" name="tipo_led" id="tipo_led">
+                                                                <input type="hidden" value="{{ disp.nombre_dispositivo }}" name="nombre_dispositivo" id="nombre_dispositivo">
+                                                                <button type="submit" class="btn btn-info btn-sm">Probar</button>
+                                                            </form>
                                                         {% endif  %}
                                                     {% endif  %}
                                                 {% endfor %}
-                                            </p>
-                                             <form action="{% url 'ledsup:probar' %}" method="post">
-                                                    {% csrf_token %}
-                                                    <input type="hidden" value="{{ dispositivo.numero_ip }}" name="ip" id="ip">
-                                                    <input type="hidden" value="{{ dispositivo.universo }}" name="universo" id="universo">
-                                                    <input type="hidden" value="{{ dispositivo.tipo_led }}" name="tipo_led" id="tipo_led">
-                                                    <input type="hidden" value="{{ dispositivo.nombre_dispositivo }}" name="nombre_dispositivo" id="nombre_dispositivo">
-                                                    <button type="submit" class="btn btn-info btn-sm">Probar</button>
-                                             </form>
+                                            </div>
                                         </li>
                                     {% empty %}
                                         <li>No hay Showrooms, agrega uno nuevo!</li>
