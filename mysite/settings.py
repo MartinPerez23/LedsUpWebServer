@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -161,8 +161,8 @@ REST_FRAMEWORK = {
         ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']
 }
 
-CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:8000/']
-CORS_ALLOWED_ORIGINS = ['https://127.0.0.1:8000/']
+CSRF_TRUSTED_ORIGINS = [ALLOWED_HOSTS]
+CORS_ALLOWED_ORIGINS = [ALLOWED_HOSTS]
 
 ASGI_APPLICATION = 'mysite.asgi.application'
 
