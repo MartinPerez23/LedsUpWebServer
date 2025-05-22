@@ -1,28 +1,18 @@
 from rest_framework import serializers
 
-from ledsup.models import Showroom, Dispositivo, User
+from ledsup.models import Showroom, Dispositivo, User, OrdenDispositivosEnShowroom
 
 
 class ShowroomSerializer(serializers.ModelSerializer):
-    dispositivos = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='orden'
-    )
+    dispositivos = serializers.SerializerMethodField()
 
     class Meta:
         model = Showroom
-        fields = [
-            'id',
-            'usuario',
-            'dispositivos',
-            'nombre_showroom',
-            'matriz_x_total',
-            'matriz_y_total',
-            'url_server',
-        ]
+        fields = ['id', 'usuario', 'dispositivos', 'nombre_showroom', 'token']
 
-        extra_kwargs = {'id': {'required': False}}
+    def get_dispositivos(self, obj):
+        ordenes = OrdenDispositivosEnShowroom.objects.filter(showroom=obj)
+        return OrdenDispositivoSerializer(ordenes, many=True).data
 
 
 class DispositivoSerializer(serializers.ModelSerializer):
@@ -48,3 +38,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ["password"]
+
+class OrdenDispositivoSerializer(serializers.ModelSerializer):
+    nombre_dispositivo = serializers.CharField(source='dispositivo.nombre_dispositivo')
+    id_dispositivo = serializers.IntegerField(source='dispositivo.id')
+
+    class Meta:
+        model = OrdenDispositivosEnShowroom
+        fields = ['id_dispositivo', 'nombre_dispositivo', 'orden']

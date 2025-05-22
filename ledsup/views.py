@@ -43,21 +43,6 @@ class ListDispositivosPage(LoginRequiredMixin, generic.ListView):
         return Dispositivo.objects.get_queryset().filter(
             usuario__email__exact=self.request.user.email)
 
-    def probar_dispositivo(self):
-        try:
-
-            lista = list()
-            lista.extend([self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'])
-
-            probar_dispositivo(lista)
-
-            messages.info(self, "Dispositivo " + self.POST['nombre_dispositivo'] + " probado!")
-
-            return HttpResponseRedirect(reverse('ledsup:lista_dispositivos'))
-
-        except:
-            messages.error(self, "Error! No se pudo establecer conexion con el servidor")
-            return HttpResponseRedirect(reverse('ledsup:lista_dispositivos'))
 
 
 class DispositivoCreate(LoginRequiredMixin, CreateView):
@@ -170,6 +155,22 @@ class ListShowroomPage(LoginRequiredMixin, generic.ListView):
         ).filter(showroom__usuario__email__exact=self.request.user.email)
 
         return context
+
+    def probar_dispositivo(self):
+        try:
+
+            lista = list()
+            lista.extend([self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'])
+
+            probar_dispositivo(lista)
+
+            messages.info(self, "Dispositivo " + self.POST['nombre_dispositivo'] + " probado!")
+
+            return HttpResponseRedirect(reverse('ledsup:lista_showroom'))
+
+        except:
+            messages.error(self, "Error! No se pudo establecer conexion con el servidor")
+            return HttpResponseRedirect(reverse('ledsup:lista_showroom'))
 
 
 class ShowroomPage(LoginRequiredMixin, generic.ListView):

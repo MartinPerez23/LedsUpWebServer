@@ -10,7 +10,7 @@ app_name = 'ledsup'
 urlpatterns = [
 
     path('lista_dispositivos/', views.ListDispositivosPage.as_view(), name='lista_dispositivos'),
-    path('lista_dispositivos/probar', views.ListDispositivosPage.probar_dispositivo, name='probar'),
+    path('lista_showroom/probar', views.ListShowroomPage.probar_dispositivo, name='probar'),
     path('lista_showroom/', views.ListShowroomPage.as_view(), name='lista_showroom'),
 
     path('showroom/', views.ShowroomPage.as_view(), name='showroom'),
