@@ -14,10 +14,10 @@ def ruta_imagen_producto(instance, filename):
     return ruta
 
 
-def ruta_imagen_galeria(instance, filename):
+def ruta_imagen_evento(instance, filename):
     extension = filename.split('.')[-1]
     nombre_imagen_con_extension = instance.nombre_imagen + '.' + extension
-    ruta = 'web/static/web/imagenes/galeria/evento_{0}/{1}'.format(instance.galeria.id,
+    ruta = 'web/static/web/imagenes/eventos/evento_{0}/{1}'.format(instance.evento.id,
                                                                    nombre_imagen_con_extension)
 
     return ruta
@@ -82,19 +82,19 @@ class VideosProducto(models.Model):
         return self.nombre_video
 
 
-class Galeria(models.Model):
-    nombre = models.CharField(max_length=100)
+class Evento(models.Model):
+    nombre_evento = models.CharField(max_length=100)
     fecha = models.DateTimeField('Fecha de creacion', default=timezone.now)
     detalle = models.TextField()
 
     def __str__(self):
-        return self.nombre
+        return self.nombre_evento
 
-class ImagenesGaleria(models.Model):
-    galeria = models.ForeignKey(Galeria, on_delete=models.CASCADE)
+class ImagenesEventos(models.Model):
+    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
     nombre_imagen = models.CharField(max_length=100)
 
-    imagen = models.ImageField('img', upload_to=ruta_imagen_galeria, null=True, blank=True)
+    imagen = models.ImageField('img', upload_to=ruta_imagen_evento, null=True, blank=True)
 
     @property
     def url(self):

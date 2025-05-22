@@ -5,17 +5,17 @@
 {% block content %}
     <section>
         {% load static %}
-        <h2 class="text-center shadow-lg p-3 mb-5 rounded bg-dark text-light bruno-ace-sc-regular">Galeria</h2>
+        <h2 class="text-center shadow-lg p-3 mb-5 rounded bg-dark text-light bruno-ace-sc-regular">Eventos</h2>
         <div class="row row-cols-1 row-cols-md-5 g-4">
-            {% for card in gallery_list %}
+            {% for card in events_list %}
                 <div class="col p-5 mb-5">
                     <div class="card shadow-lg p-5 mb-5 bg-dark rounded">
-                        <a class="venobox" href="{% static card.imagenesgaleria_set.first.url %}">
-                            <img src="{% static card.imagenesgaleria_set.first.url %}"
+                        <a class="venobox" href="{% static card.imageneseventos_set.first.url %}">
+                            <img src="{% static card.imageneseventos_set.first.url %}"
                                  class="figure-img img-fluid rounded" alt="img">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title text-white">{{ card.name }}</h5>
+                            <h5 class="card-title text-white">{{ card.nombre_evento }}</h5>
                             <p class="card-text text-success">{{ card.detalle }}</p>
                         </div>
                         <div class="card-footer">

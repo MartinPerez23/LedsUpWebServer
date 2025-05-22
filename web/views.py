@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.views import generic
 
 from .forms import ContactForm
-from .models import Producto, TipoProducto, Galeria
+from .models import Producto, TipoProducto, Evento
 
 
 class IndexVista(generic.ListView):
@@ -44,12 +44,12 @@ class ContactFormView(generic.FormView):
         return context
 
 
-class GalleryPage(generic.ListView):
-    template_name = 'web/galeria.html'
-    context_object_name = 'gallery_list'
+class EventsPage(generic.ListView):
+    template_name = 'web/eventos.html'
+    context_object_name = 'events_list'
 
     def get_queryset(self):
-        return Galeria.objects.get_queryset()
+        return Evento.objects.get_queryset()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

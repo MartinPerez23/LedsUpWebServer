@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto, VideosProducto, ImagenesGaleria, \
-    Galeria
+from .models import TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto, VideosProducto, ImagenesEventos, \
+    Evento
 
 
 class VideosProductoEnLinea(admin.TabularInline):
@@ -18,10 +18,10 @@ class ImagenesProductoEnLinea(admin.TabularInline):
     extra = 1
 
 
-class ImagenesGaleriaEnLinea(admin.TabularInline):
-    verbose_name_plural = 'Imagenes de la Galeria'
-    verbose_name = 'Imagen de la Galeria'
-    model = ImagenesGaleria
+class ImagenesEventosEnLinea(admin.TabularInline):
+    verbose_name_plural = 'Imagenes de Eventos'
+    verbose_name = 'Imagen del Evento'
+    model = ImagenesEventos
     extra = 1
 
 
@@ -46,19 +46,19 @@ class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre_producto', 'fecha_creacion', 'creado_recientemente')
 
 
-class GaleriaAdmin(admin.ModelAdmin):
+class EventoAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['nombre']}),
+        (None, {'fields': ['nombre_evento']}),
         (None, {'fields': ['fecha']}),
         (None, {'fields': ['detalle']}),
     ]
-    inlines = [ImagenesGaleriaEnLinea]
+    inlines = [ImagenesEventosEnLinea]
 
     list_filter = ['fecha']
-    search_fields = ['nombre']
-    list_display = ('nombre', 'fecha', 'detalle')
+    search_fields = ['nombre_evento']
+    list_display = ('nombre_evento', 'fecha', 'detalle')
 
 
-admin.site.register(Galeria, GaleriaAdmin)
+admin.site.register(Evento, EventoAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(TipoProducto)

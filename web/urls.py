@@ -9,7 +9,7 @@ urlpatterns = [
 
                   path('', views.IndexVista.as_view(), name='index'),
                   path("productos/<int:pk>/", views.ProductDetailsPage.as_view(), name="productDetails"),
-                  path("galeria", views.GalleryPage.as_view(), name="gallery"),
+                  path("eventos", views.EventsPage.as_view(), name="events"),
                   path("contacto", views.ContactFormView.as_view(), name="contact"),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
