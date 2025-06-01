@@ -6,7 +6,8 @@
 
     {% if messages %}
         {% for message in messages %}
-            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center" role="alert">
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center"
+                 role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -25,65 +26,75 @@
         <div class="table-responsive">
             <table class="table table-dark table-striped">
                 <thead>
-                    <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Dispositivo (Numero IP) (Universo) (Orden)</th>
-                        <th scope="col">Acciones</th>
-                        <th scope="col">Estado</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Dispositivo (Numero IP) (Universo) (Orden)</th>
+                    <th scope="col">Acciones</th>
+                    <th scope="col">Estado</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for show in listadoShowroom %}
-                        <tr>
-                            <td>{{ show.nombre_showroom }}</td>
-                            <td>
-                                <ul>
-                                    {% for disp in show.dispositivos.all %}
-                                        <li>
-                                           <div class="d-flex align-items-center gap-2">
-                                                {{ disp }}
-                                                ({{ disp.numero_ip }})
-                                                ({{ disp.universo }})
-                                                {% for orden in ordenesDispositivosEnShowroom.all %}
-                                                    {% if disp.id == orden.dispositivo.id %}
-                                                        {% if show.id == orden.showroom.id %}
-                                                            {{ orden }}
-                                                            <a class="btn btn-primary btn-sm" href="{% url 'ledsup:editar_orden_dispositivos_en_showroom' orden.id %}">Modificar orden</a>
-                                                            <form action="{% url 'ledsup:probar' %}" method="post">
-                                                                {% csrf_token %}
-                                                                <input type="hidden" value="{{ disp.numero_ip }}" name="ip" id="ip">
-                                                                <input type="hidden" value="{{ disp.universo }}" name="universo" id="universo">
-                                                                <input type="hidden" value="{{ disp.tipo_led }}" name="tipo_led" id="tipo_led">
-                                                                <input type="hidden" value="{{ disp.nombre_dispositivo }}" name="nombre_dispositivo" id="nombre_dispositivo">
-                                                                <button type="submit" class="btn btn-info btn-sm">Probar</button>
-                                                            </form>
-                                                        {% endif  %}
-                                                    {% endif  %}
-                                                {% endfor %}
-                                            </div>
-                                        </li>
-                                    {% empty %}
-                                        <li>No hay Showrooms, agrega uno nuevo!</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a class="btn btn-success btn-sm" href="{% url 'ledsup:editar_showroom' show.id %}">Editar</a>
-                                    <a class="btn btn-danger btn-sm" href="{% url 'ledsup:eliminar_showroom' show.id %}">Borrar</a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    {% if show.is_connected %}
-                                        <span style="color: green; font-weight: bold;">CONECTADO</span>
-                                    {% else %}
-                                        <span style="color: red; font-weight: bold;">DESCONECTADO</span>
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                {% for show in listadoShowroom %}
+                    <tr>
+                        <td>{{ show.nombre_showroom }}</td>
+                        <td>
+                            <ul>
+                                {% for disp in show.dispositivos.all %}
+                                    <li>
+                                        <div class="d-flex align-items-center gap-2">
+                                            {{ disp }}
+                                            ({{ disp.numero_ip }})
+                                            ({{ disp.universo }})
+                                            {% for orden in ordenesDispositivosEnShowroom.all %}
+                                                {% if disp.id == orden.dispositivo.id %}
+                                                    {% if show.id == orden.showroom.id %}
+                                                        {{ orden }}
+                                                        <a class="btn btn-primary btn-sm"
+                                                           href="{% url 'ledsup:editar_orden_dispositivos_en_showroom' orden.id %}">Modificar
+                                                            orden</a>
+                                                        <form action="{% url 'ledsup:probar_dispositivo' %}"
+                                                              method="post">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" value="{{ disp.numero_ip }}" name="ip"
+                                                                   id="ip">
+                                                            <input type="hidden" value="{{ disp.universo }}"
+                                                                   name="universo" id="universo">
+                                                            <input type="hidden" value="{{ disp.tipo_led }}"
+                                                                   name="tipo_led" id="tipo_led">
+                                                            <input type="hidden" value="{{ disp.nombre_dispositivo }}"
+                                                                   name="nombre_dispositivo" id="nombre_dispositivo">
+                                                            <input type="hidden" value="{{ show.is_connected }}"
+                                                                   name="is_showroom_conectado" id="is_showroom_conectado">
+                                                            <button type="submit" class="btn btn-info btn-sm">Probar
+                                                            </button>
+                                                        </form>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <li>No hay Showrooms, ¡añade uno nuevo!</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-sm" href="{% url 'ledsup:editar_showroom' show.id %}">Editar</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'ledsup:eliminar_showroom' show.id %}">Borrar</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                {% if show.is_connected %}
+                                    <span style="color: green; font-weight: bold;">CONECTADO</span>
+                                {% else %}
+                                    <span style="color: red; font-weight: bold;">DESCONECTADO</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
