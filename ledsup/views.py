@@ -1,11 +1,8 @@
-import sys
-
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
-from django.shortcuts import reverse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
@@ -27,7 +24,7 @@ class OrdenDispositivosEnShowroomUpdate(LoginRequiredMixin, UpdateView):
     fields = ['orden']
 
     def form_valid(self, form):
-        messages.success(self.request, 'Orden modificado exitosamente!')
+        messages.success(self.request, 'Orden modificado exitosamente')
         return super().form_valid(form)
 
 
@@ -39,10 +36,8 @@ class ListDispositivosPage(LoginRequiredMixin, generic.ListView):
     context_object_name = 'listadoDispositivos'
 
     def get_queryset(self):
-
         return Dispositivo.objects.get_queryset().filter(
             usuario__email__exact=self.request.user.email)
-
 
 
 class DispositivoCreate(LoginRequiredMixin, CreateView):
@@ -64,7 +59,7 @@ class DispositivoCreate(LoginRequiredMixin, CreateView):
     ]
 
     def form_valid(self, form):
-        messages.success(self.request, 'Dispositivo creado exitosamente!')
+        messages.success(self.request, 'Dispositivo creado exitosamente')
         form.instance.patch = self.request.POST['patch']
 
         return super().form_valid(form)
@@ -89,7 +84,7 @@ class DispositivoUpdate(LoginRequiredMixin, UpdateView):
     ]
 
     def form_valid(self, form):
-        messages.success(self.request, 'Dispositivo editado exitosamente!')
+        messages.success(self.request, 'Dispositivo editado exitosamente')
         form.instance.patch = self.request.POST['patch']
 
         return super().form_valid(form)
@@ -100,7 +95,7 @@ class DispositivoDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('ledsup:lista_dispositivos')
 
     def form_valid(self, form):
-        messages.success(self.request, 'Dispositivo eliminado exitosamente!')
+        messages.success(self.request, 'Dispositivo eliminado exitosamente')
         return super().form_valid(form)
 
 
@@ -108,19 +103,15 @@ class DispositivoDelete(LoginRequiredMixin, DeleteView):
 
 def getDispositivosByIDShowroom(idShow):
     listado_de_dispositivos = list()
-    # FILTRO EL SHOWROOM QUE ELIGIO EL USUARIO
 
     show = Showroom.objects.get_queryset().filter(id=int(idShow))
-
-    # DE ESE SHOW TOMO IP/IPS DE LOS DISPOSITIVOS
 
     lista_num_ip = show.values('dispositivos__numero_ip')
     lista_universos = show.values('dispositivos__universo')
     lista_matriz_x = show.values('dispositivos__matriz_x')
     lista_matriz_y = show.values('dispositivos__matriz_y')
     lista_patch = show.values('dispositivos__patch')
-    lista_orden = show.values(
-        'dispositivos__ordendispositivosenshowroom__orden')
+    lista_orden = show.values('dispositivos__ordendispositivosenshowroom__orden')
     lista_tipo_led = show.values('dispositivos__tipo_led')
 
     for num in range(len(lista_num_ip)):
@@ -129,12 +120,10 @@ def getDispositivosByIDShowroom(idShow):
         matriz_x = lista_matriz_x[num]['dispositivos__matriz_x']
         matriz_y = lista_matriz_y[num]['dispositivos__matriz_y']
         patch = lista_patch[num]['dispositivos__patch']
-        orden = lista_orden[num][
-            'dispositivos__ordendispositivosenshowroom__orden']
+        orden = lista_orden[num]['dispositivos__ordendispositivosenshowroom__orden']
         tipo_led = lista_tipo_led[num]['dispositivos__tipo_led']
 
-        listado_de_dispositivos.extend(
-            [ip, universo, matriz_x, matriz_y, patch, orden, tipo_led])
+        listado_de_dispositivos.extend([ip, universo, matriz_x, matriz_y, patch, orden, tipo_led])
 
     return listado_de_dispositivos
 
@@ -156,21 +145,20 @@ class ListShowroomPage(LoginRequiredMixin, generic.ListView):
 
         return context
 
-    def probar_dispositivo(self):
-        try:
 
-            lista = list()
-            lista.extend([self.POST['ip'], self.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'])
+class ProbarDispositivoView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        if request.POST['is_showroom_conectado']:
+            messages.error(request, "Error: No se pudo establecer conexión con el servidor")
 
+        else:
+            lista = [
+                request.POST['ip'], request.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'
+            ]
             probar_dispositivo(lista)
+            messages.info(request, f"Dispositivo {request.POST['nombre_dispositivo']} probado")
 
-            messages.info(self, "Dispositivo " + self.POST['nombre_dispositivo'] + " probado!")
-
-            return HttpResponseRedirect(reverse('ledsup:lista_showroom'))
-
-        except:
-            messages.error(self, "Error! No se pudo establecer conexion con el servidor")
-            return HttpResponseRedirect(reverse('ledsup:lista_showroom'))
+        return redirect('ledsup:lista_showroom')
 
 
 class ShowroomPage(LoginRequiredMixin, generic.ListView):
@@ -178,118 +166,112 @@ class ShowroomPage(LoginRequiredMixin, generic.ListView):
     context_object_name = 'listadoShowroom'
 
     def get_queryset(self):
-
         return Showroom.objects.get_queryset().filter(
             usuario__email__exact=self.request.user.email)
 
-    def color(self):
-        try:
 
-            lista = getDispositivosByIDShowroom(self.POST['show'])
+class ShowroomActionBase(LoginRequiredMixin, View):
+    action_name = None
 
-            # ARMA UN JSON Y LO ENVIA AL SERVIDOR DE PC
+    def get_show_and_devices(self, request):
+        show_id = int(request.POST.get('show'))
+        dispositivos = getDispositivosByIDShowroom(show_id)
+        return show_id, dispositivos
 
-            color(lista, self.POST['color'])
-
-            # DATOS PARA VOLVER A PONER LA PAGINA COMO ESTABA ##(HAY OTRA FORMA?)##
-
-            self.session['col'] = self.POST['color']
-            self.session['valorShowroom'] = int(self.POST['show'])
-            self.session['active'] = 'color'
-            self.session['velocidadColorCambioConstante'] = self.POST[
-                'velocidadColorCambioConstante']
-
-            if self.POST.get('cambioConstanteColor', False):
-                self.session['cambioConstanteColor'] = 'checked'
-            else:
-                self.session['cambioConstanteColor'] = ''
-
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except ConnectionRefusedError:
-            messages.error(
-                self, "Error! No se pudo establecer conexion con el servidor")
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except:
-            messages.error(self, "Error inesperado: ", sys.exc_info()[0])
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-    def scroll(self):
-        try:
-            lista = getDispositivosByIDShowroom(self.POST['show'])
-
-            scroll(lista, self.POST['dirScroll'], self.POST['velocidadScroll'])
-
-            self.session['valorShowroom'] = int(self.POST['show'])
-            self.session['active'] = 'scroll'
-            self.session['dirScroll'] = self.POST['dirScroll']
-            self.session['velocidadScroll'] = self.POST['velocidadScroll']
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except ConnectionRefusedError:
-            messages.error(
-                self, "Error! No se pudo establecer conexion con el servidor")
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except:
-            messages.error(self, "Error inesperado: ", sys.exc_info()[0])
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-    def scan(self):
-        try:
-            lista = getDispositivosByIDShowroom(self.POST['show'])
-
-            scan(lista, self.POST['dirScan'], self.POST['velocidadScan'],
-                 self.POST['color1Scan'], self.POST['color2Scan'])
-
-            self.session['valorShowroom'] = int(self.POST['show'])
-            self.session['active'] = 'scan'
-            self.session['dirScan'] = self.POST['dirScan']
-            self.session['velocidadScan'] = self.POST['velocidadScan']
-            self.session['color1Scan'] = self.POST['color1Scan']
-            self.session['color2Scan'] = self.POST['color2Scan']
-
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except ConnectionRefusedError:
-            messages.error(
-                self, "Error! No se pudo establecer conexion con el servidor")
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except:
-            messages.error(self, "Error inesperado: ", sys.exc_info()[0])
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-    def estrellas(self):
-        try:
-
-            lista = getDispositivosByIDShowroom(self.POST['show'])
-
-            estrellas(lista, self.POST['velocidadEstrellas'],
-                      self.POST['color1Estrellas'],
-                      self.POST['color2Estrellas'])
-
-            self.session['valorShowroom'] = int(self.POST['show'])
-            self.session['active'] = 'estrellas'
-
-            self.session['velocidadEstrellas'] = self.POST[
-                'velocidadEstrellas']
-            self.session['color1Estrellas'] = self.POST['color1Estrellas']
-            self.session['color2Estrellas'] = self.POST['color2Estrellas']
-
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except ConnectionRefusedError:
-            messages.error(
-                self, "Error! No se pudo establecer conexion con el servidor")
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
-
-        except:
-            messages.error(self, "Error inesperado: ", sys.exc_info()[0])
-            return HttpResponseRedirect(reverse('ledsup:showroom'))
+    def update_session(self, request, show_id, extra_data):
+        data = {
+            'valorShowroom': show_id,
+            'active': self.action_name,
+        }
+        data.update(extra_data)
+        request.session.update(data)
 
 
+class ColorAction(ShowroomActionBase):
+    action_name = 'color'
+
+    def post(self, request, *args, **kwargs):
+        show_id, dispositivos = self.get_show_and_devices(request)
+
+        color_value = request.POST.get('color')
+        velocidad = request.POST.get('velocidadColorCambioConstante')
+        cambio_constante = 'checked' if request.POST.get('cambioConstanteColor') else ''
+
+        color(dispositivos, color_value)
+
+        self.update_session(request, show_id, {
+            'col': color_value,
+            'velocidadColorCambioConstante': velocidad,
+            'cambioConstanteColor': cambio_constante
+        })
+
+        return redirect('ledsup:showroom')
+
+
+class ScrollAction(ShowroomActionBase):
+    action_name = 'scroll'
+
+    def post(self, request, *args, **kwargs):
+        show_id, dispositivos = self.get_show_and_devices(request)
+
+        dir_scroll = request.POST.get('dirScroll')
+        velocidad_scroll = request.POST.get('velocidadScroll')
+
+        scroll(dispositivos, dir_scroll, velocidad_scroll)
+
+        self.update_session(request, show_id, {
+            'dirScroll': dir_scroll,
+            'velocidadScroll': velocidad_scroll,
+        })
+
+        return redirect('ledsup:showroom')
+
+
+class ScanAction(ShowroomActionBase):
+    action_name = 'scan'
+
+    def post(self, request, *args, **kwargs):
+        show_id, dispositivos = self.get_show_and_devices(request)
+
+        dir_scan = request.POST['dirScan']
+        velocidad = request.POST['velocidadScan']
+        color1 = request.POST['color1Scan']
+        color2 = request.POST['color2Scan']
+
+        scan(dispositivos, dir_scan, velocidad, color1, color2)
+
+        self.update_session(request, show_id, {
+            'dirScan': dir_scan,
+            'velocidadScan': velocidad,
+            'color1Scan': color1,
+            'color2Scan': color2,
+        })
+
+        return redirect('ledsup:showroom')
+
+
+class EstrellasAction(ShowroomActionBase):
+    action_name = 'estrellas'
+
+    def post(self, request, *args, **kwargs):
+        show_id, dispositivos = self.get_show_and_devices(request)
+
+        velocidad = request.POST['velocidadEstrellas']
+        color1 = request.POST['color1Estrellas']
+        color2 = request.POST['color2Estrellas']
+
+        estrellas(dispositivos, velocidad, color1, color2)
+
+        self.update_session(request, show_id, {
+            'velocidadEstrellas': velocidad,
+            'color1Estrellas': color1,
+            'color2Estrellas': color2,
+        })
+
+        return redirect('ledsup:showroom')
+
+
+#############################   Showroom CRUD  ##########################################
 class ShowroomCreate(LoginRequiredMixin, CreateView):
     def get_form(self, *args, **kwargs):
         form = super(ShowroomCreate, self).get_form(*args, **kwargs)
@@ -300,8 +282,6 @@ class ShowroomCreate(LoginRequiredMixin, CreateView):
 
         form.instance.usuario = self.request.user
 
-        # if Dispositivo.objects.get_queryset().filter(wifi__usuario__email__exact=self.request.user.email).count() == 0:
-        # form.fields['dispositivos'] = 'No existen dispositivos, agreguelos primero'
         return form
 
     model = Showroom
@@ -312,7 +292,7 @@ class ShowroomCreate(LoginRequiredMixin, CreateView):
     ]
 
     def form_valid(self, form):
-        messages.success(self.request, 'Showroom creado exitosamente!')
+        messages.success(self.request, 'Showroom creado exitosamente')
         return super().form_valid(form)
 
 
@@ -330,7 +310,7 @@ class ShowroomUpdate(LoginRequiredMixin, UpdateView):
     fields = ['dispositivos', 'nombre_showroom', 'url_server']
 
     def form_valid(self, form):
-        messages.success(self.request, 'Showroom editado exitosamente!')
+        messages.success(self.request, 'Showroom editado exitosamente')
         return super().form_valid(form)
 
 
@@ -339,7 +319,7 @@ class ShowroomDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('ledsup:lista_showroom')
 
     def form_valid(self, form):
-        messages.success(self.request, 'Showroom eliminado exitosamente!')
+        messages.success(self.request, 'Showroom eliminado exitosamente')
         return super().form_valid(form)
 
 

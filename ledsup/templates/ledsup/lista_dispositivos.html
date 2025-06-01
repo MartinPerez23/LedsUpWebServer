@@ -6,7 +6,8 @@
 
     {% if messages %}
         {% for message in messages %}
-            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center" role="alert">
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center"
+                 role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
@@ -28,45 +29,39 @@
         <div class="table-responsive">
             <table class="table table-dark table-striped">
                 <thead>
-                    <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Ip</th>
-                        <th scope="col">Universo</th>
-                        <th scope="col">Tamaño de Paquetes</th>
-                        <th scope="col">Matriz X</th>
-                        <th scope="col">Matriz Y</th>
-                        <th scope="col">Tipo Led</th>
-                        <th scope="col">Fecha de Creacion</th>
-                        <th scope="col">Acciones</th>
-                    </tr>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Ip</th>
+                    <th scope="col">Universo</th>
+                    <th scope="col">Tamaño de Paquetes</th>
+                    <th scope="col">Matriz X</th>
+                    <th scope="col">Matriz Y</th>
+                    <th scope="col">Tipo Led</th>
+                    <th scope="col">Fecha de Creacion</th>
+                    <th scope="col">Acciones</th>
+                </tr>
                 </thead>
                 <tbody>
-                        {% for dispositivo in listadoDispositivos %}
-                            <tr>
-                                <td>{{ dispositivo.nombre_dispositivo }}</td>
-                                <td>{{ dispositivo.numero_ip }}</td>
-                                <td>{{ dispositivo.universo }}</td>
-                                <td>{{ dispositivo.tamano_paquetes }}</td>
-                                <td>{{ dispositivo.matriz_x }}</td>
-                                <td>{{ dispositivo.matriz_y }}</td>
-                                <td>{{ dispositivo.tipo_led }}</td>
-                                <td>{{ dispositivo.fecha_creacion }}</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <form action="{% url 'ledsup:probar' %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="hidden" value="{{ dispositivo.numero_ip }}" name="ip" id="ip">
-                                            <input type="hidden" value="{{ dispositivo.universo }}" name="universo" id="universo">
-                                            <input type="hidden" value="{{ dispositivo.tipo_led }}" name="tipo_led" id="tipo_led">
-                                            <input type="hidden" value="{{ dispositivo.nombre_dispositivo }}" name="nombre_dispositivo" id="nombre_dispositivo">
-                                            <button type="submit" class="btn btn-info btn-sm">Probar</button>
-                                            <a class="btn btn-success btn-sm" href="{% url 'ledsup:editar_dispositivo' dispositivo.id %}">Editar</a>
-                                            <a class="btn btn-danger btn-sm" href="{% url 'ledsup:eliminar_dispositivo' dispositivo.id %}">Borrar</a>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
+                {% for dispositivo in listadoDispositivos %}
+                    <tr>
+                        <td>{{ dispositivo.nombre_dispositivo }}</td>
+                        <td>{{ dispositivo.numero_ip }}</td>
+                        <td>{{ dispositivo.universo }}</td>
+                        <td>{{ dispositivo.tamano_paquetes }}</td>
+                        <td>{{ dispositivo.matriz_x }}</td>
+                        <td>{{ dispositivo.matriz_y }}</td>
+                        <td>{{ dispositivo.tipo_led }}</td>
+                        <td>{{ dispositivo.fecha_creacion }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-success btn-sm"
+                                   href="{% url 'ledsup:editar_dispositivo' dispositivo.id %}">Editar</a>
+                                <a class="btn btn-danger btn-sm"
+                                   href="{% url 'ledsup:eliminar_dispositivo' dispositivo.id %}">Borrar</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
