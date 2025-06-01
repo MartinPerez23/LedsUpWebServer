@@ -162,7 +162,9 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES':
-        ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']
+        ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication']
 }
 
 CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:8000/']
