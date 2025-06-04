@@ -162,9 +162,7 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES':
-        ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication']
+        ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']
 }
 
 CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:8000/']
@@ -176,6 +174,12 @@ CHANNEL_LAYERS = {
     'default': {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
+}
+
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 100,
+    'REFRESH_TOKEN_EXPIRE_SECONDS': 1209600,
+    'ROTATE_REFRESH_TOKEN': True,
 }
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
