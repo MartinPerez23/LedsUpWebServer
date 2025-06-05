@@ -21,10 +21,12 @@ def probar_dispositivo(listaDispositivos):
     enviarAlServer(datosAEnviar)
 
 
-def color(listaDispositivos, colorHex):
+def color(listaDispositivos, colorHex, velocidad, cambio_constante):
     datosAEnviar = {
         'accion': 'color',
         'color': colorHex,
+        'velocidad': velocidad,
+        'cambio_constante': cambio_constante,
         'lista': listaDispositivos
     }
     enviarAlServer(datosAEnviar)

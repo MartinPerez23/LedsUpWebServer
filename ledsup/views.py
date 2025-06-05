@@ -197,7 +197,7 @@ class ColorAction(ShowroomActionBase):
         velocidad = request.POST.get('velocidadColorCambioConstante')
         cambio_constante = 'checked' if request.POST.get('cambioConstanteColor') else ''
 
-        color(dispositivos, color_value)
+        color(dispositivos, color_value, velocidad, cambio_constante)
 
         self.update_session(request, show_id, {
             'col': color_value,
