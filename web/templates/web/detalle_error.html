@@ -1,0 +1,65 @@
+{% extends "web/base_generic.html" %}
+
+{% block title %}<title>Detalle del Error</title>{% endblock %}
+
+{% block content %}
+    <section>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center"
+                     role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h2 class="text-center shadow-lg p-3 mb-4 rounded bg-dark text-light bruno-ace-sc-regular">Detalle del Error
+            #{{ error.id }}</h2>
+
+        <div class="mx-auto bg-light p-4 rounded shadow-sm" style="max-width: 600px;">
+            <div class="mb-3">
+                <strong>Fecha:</strong> {{ error.fecha_creacion|date:"d/m/Y H:i" }}<br>
+                <strong>Usuario:</strong> {{ error.usuario.username|default:"-" }}<br>
+                <strong>Origen:</strong> {{ error.get_origen_display }}<br>
+                <strong>Estado actual:</strong> {{ error.get_estado_display }}<br>
+                <strong>Asignado a:</strong> {{ error.asignado_a.username|default:"-" }}<br>
+            </div>
+
+            <div class="mb-3">
+                <strong>Detalle:</strong>
+                <pre class="bg-white p-3 border rounded">{{ error.detalle }}</pre>
+            </div>
+
+            {% if error.contexto %}
+                <div class="mb-3">
+                    <strong>Contexto:</strong>
+                    <pre class="bg-white p-3 border rounded">{{ error.contexto }}</pre>
+                </div>
+            {% endif %}
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label class="form-label">Asignado a</label>
+                    {{ form.asignado_a }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Estado</label>
+                    {{ form.estado }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Comentarios</label>
+                    {{ form.comentarios }}
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

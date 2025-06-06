@@ -1,7 +1,9 @@
 from django.contrib import admin
 
-from .models import TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto, VideosProducto, ImagenesEventos, \
-    Evento
+from .models import (
+    TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto,
+    VideosProducto, ImagenesEventos, Evento, Errores
+)
 
 
 class VideosProductoEnLinea(admin.TabularInline):
@@ -59,6 +61,18 @@ class EventoAdmin(admin.ModelAdmin):
     list_display = ('nombre_evento', 'fecha', 'detalle')
 
 
+class ErroresAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['usuario', 'origen', 'detalle', 'contexto']}),
+        ('Seguimiento', {'fields': ['estado', 'asignado_a', 'comentarios']}),
+    ]
+
+    list_display = ('id', 'fecha_creacion', 'usuario', 'origen', 'estado', 'asignado_a')
+    list_filter = ['estado', 'origen', 'fecha_creacion']
+    search_fields = ['detalle', 'contexto', 'usuario__username']
+
+
 admin.site.register(Evento, EventoAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(TipoProducto)
+admin.site.register(Errores, ErroresAdmin)

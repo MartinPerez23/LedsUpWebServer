@@ -1,10 +1,14 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
+from rest_framework import viewsets
 
-from .forms import ContactForm
-from .models import Producto, TipoProducto, Evento
+from .forms import ContactForm, ErrorUpdateForm
+from .models import Producto, TipoProducto, Evento, Errores
+from .serializers import ErroresSerializer
 
 
 class IndexVista(generic.ListView):
@@ -22,6 +26,7 @@ class IndexVista(generic.ListView):
         # Get the blog from id and add it to the context
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
+
         return context
 
 
@@ -33,6 +38,7 @@ class ContactFormView(generic.FormView):
     def form_valid(self, form):
         messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
         form.send_email()
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -41,6 +47,7 @@ class ContactFormView(generic.FormView):
         # Get the blog from id and add it to the context
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
+
         return context
 
 
@@ -57,6 +64,7 @@ class EventsPage(generic.ListView):
         # Get the blog from id and add it to the context
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
+
         return context
 
 
@@ -69,4 +77,63 @@ class ProductDetailsPage(generic.DetailView):
         context['now'] = timezone.now()
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
+
         return context
+
+
+class ErroresListView(LoginRequiredMixin, generic.ListView):
+    model = Errores
+    template_name = 'web/lista_errores.html'
+    context_object_name = 'errores'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        estado = self.request.GET.get('estado')
+        if estado:
+            queryset = queryset.filter(estado=estado)
+        return queryset.order_by('-fecha_creacion')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
+        context['listado_productos'] = Producto.objects.get_queryset()
+        context['estado_actual'] = self.request.GET.get('estado', '')
+        context['opciones_estado'] = Errores._meta.get_field('estado').choices
+
+        return context
+
+
+class DetalleErrorView(LoginRequiredMixin, generic.DetailView):
+    model = Errores
+    template_name = 'web/detalle_error.html'
+    context_object_name = 'error'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ErrorUpdateForm(instance=self.object)
+        context['now'] = timezone.now()
+        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
+        context['listado_productos'] = Producto.objects.get_queryset()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = ErrorUpdateForm(request.POST, instance=self.object)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cambios guardados correctamente")
+        else:
+            messages.error(request, "Hay errores en el formulario.")
+        return redirect('web:lista_errores')
+
+
+############################################   API   ############################################
+
+class ErroresViewSet(viewsets.ModelViewSet):
+    queryset = Errores.objects.all().order_by('-fecha_creacion')
+    serializer_class = ErroresSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
