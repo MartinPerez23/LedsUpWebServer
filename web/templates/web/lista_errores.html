@@ -1,0 +1,67 @@
+{% extends "web/base_generic.html" %}
+
+{% block title %}<title>Listado de Errores</title>{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center"
+                 role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid bg-light py-4 px-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="mb-0">Listado de Errores</h3>
+            <form method="get" class="d-flex align-items-center" style="gap: 0.5rem;">
+                <label for="estado" class="form-label mb-0 me-2 text-muted small">Estado:</label>
+                <select name="estado" id="estado" class="form-select form-select-sm" style="width: auto;">
+                    <option value="">Todos</option>
+                    {% for value, display in opciones_estado %}
+                        <option value="{{ value }}"
+                                {% if estado_actual == value %}selected{% endif %}>{{ display }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Filtrar</button>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-striped align-middle">
+                <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Origen</th>
+                    <th>Estado</th>
+                    <th>Asignado a</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for error in errores %}
+                    <tr>
+                        <td>{{ error.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                        <td>{{ error.usuario.username|default:"-" }}</td>
+                        <td>{{ error.get_origen_display }}</td>
+                        <td>{{ error.get_estado_display }}</td>
+                        <td>{{ error.asignado_a.username|default:"-" }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary" href="{% url 'web:detalle_error' error.id %}">
+                                Ver Detalle
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No hay errores registrados.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

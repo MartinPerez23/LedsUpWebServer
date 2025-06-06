@@ -3,3 +3,6 @@ certificados
 ledsup/migrations
 staticfiles
 db.sqlite3
+*.xml
+*.iml
+.idea

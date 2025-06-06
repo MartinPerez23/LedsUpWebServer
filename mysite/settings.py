@@ -25,11 +25,13 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+LOGIN_URL = '/login/'
+
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_HSTS_SECONDS = 31536000 # One year in seconds
+SECURE_HSTS_SECONDS = 31536000  # One year in seconds
 
 # Another security settings
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -48,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'oauth2_provider',
     'rest_framework',
     'web.apps.WebConfig',
     'ledsup.apps.LedsupConfig',
@@ -170,6 +173,12 @@ CHANNEL_LAYERS = {
     'default': {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     },
+}
+
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 100,
+    'REFRESH_TOKEN_EXPIRE_SECONDS': 1209600,
+    'ROTATE_REFRESH_TOKEN': True,
 }
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
