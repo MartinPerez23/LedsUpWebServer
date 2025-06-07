@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'mysite.middleware.PrintHeadersMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -158,10 +159,12 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES':
-        ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
 
 CSRF_TRUSTED_ORIGINS = [ALLOWED_HOSTS]
@@ -179,6 +182,11 @@ OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 25000,
     'REFRESH_TOKEN_EXPIRE_SECONDS': 1209600,
     'ROTATE_REFRESH_TOKEN': True,
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        'errors': 'Manage errores',
+    }
 }
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"

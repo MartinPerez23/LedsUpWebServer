@@ -5,7 +5,9 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 from rest_framework import viewsets
-
+from rest_framework.permissions import IsAuthenticated
+from oauth2_provider.contrib.rest_framework import OAuth2Authentication
+from oauth2_provider.contrib.rest_framework import TokenHasScope
 from .forms import ContactForm, ErrorUpdateForm
 from .models import Producto, TipoProducto, Evento, Errores
 from .serializers import ErroresSerializer
@@ -132,8 +134,18 @@ class DetalleErrorView(LoginRequiredMixin, generic.DetailView):
 ############################################   API   ############################################
 
 class ErroresViewSet(viewsets.ModelViewSet):
+    authentication_classes = [OAuth2Authentication]
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['errors']
+
     queryset = Errores.objects.all().order_by('-fecha_creacion')
     serializer_class = ErroresSerializer
+
+    def create(self, request, *args, **kwargs):
+        print("HEADERS:", dict(request.headers))
+        print("USER:", request.user)
+        print("AUTH:", request.auth)
+        return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
