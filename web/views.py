@@ -141,11 +141,5 @@ class ErroresViewSet(viewsets.ModelViewSet):
     queryset = Errores.objects.all().order_by('-fecha_creacion')
     serializer_class = ErroresSerializer
 
-    def create(self, request, *args, **kwargs):
-        print("HEADERS:", dict(request.headers))
-        print("USER:", request.user)
-        print("AUTH:", request.auth)
-        return super().create(request, *args, **kwargs)
-
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
