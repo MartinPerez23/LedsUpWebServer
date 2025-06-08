@@ -155,7 +155,7 @@ class ProbarDispositivoView(LoginRequiredMixin, View):
             lista = [
                 request.POST['ip'], request.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'
             ]
-            probar_dispositivo(lista)
+            probar_dispositivo(request.POST['user'], lista)
             messages.info(request, f"Dispositivo {request.POST['nombre_dispositivo']} probado")
 
         return redirect('ledsup:lista_showroom')
@@ -197,7 +197,7 @@ class ColorAction(ShowroomActionBase):
         velocidad = request.POST.get('velocidadColorCambioConstante')
         cambio_constante = 'checked' if request.POST.get('cambioConstanteColor') else ''
 
-        color(dispositivos, color_value, velocidad, cambio_constante)
+        color(self.request.user.id, dispositivos, color_value, velocidad, cambio_constante)
 
         self.update_session(request, show_id, {
             'col': color_value,
@@ -217,7 +217,7 @@ class ScrollAction(ShowroomActionBase):
         dir_scroll = request.POST.get('dirScroll')
         velocidad_scroll = request.POST.get('velocidadScroll')
 
-        scroll(dispositivos, dir_scroll, velocidad_scroll)
+        scroll(self.request.user.id, dispositivos, dir_scroll, velocidad_scroll)
 
         self.update_session(request, show_id, {
             'dirScroll': dir_scroll,
@@ -238,7 +238,7 @@ class ScanAction(ShowroomActionBase):
         color1 = request.POST['color1Scan']
         color2 = request.POST['color2Scan']
 
-        scan(dispositivos, dir_scan, velocidad, color1, color2)
+        scan(self.request.user.id, dispositivos, dir_scan, velocidad, color1, color2)
 
         self.update_session(request, show_id, {
             'dirScan': dir_scan,
@@ -260,7 +260,7 @@ class EstrellasAction(ShowroomActionBase):
         color1 = request.POST['color1Estrellas']
         color2 = request.POST['color2Estrellas']
 
-        estrellas(dispositivos, velocidad, color1, color2)
+        estrellas(self.request.user.id, dispositivos, velocidad, color1, color2)
 
         self.update_session(request, show_id, {
             'velocidadEstrellas': velocidad,

@@ -2,10 +2,10 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
 
-def enviarAlServer(datosAEnviar):
+def enviarAlServer(user, datosAEnviar):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
-        "pc_apps",
+        "user_" + str(user),
         {
             "type": "enviarAlServer",
             "data": datosAEnviar
@@ -13,15 +13,15 @@ def enviarAlServer(datosAEnviar):
     )
 
 
-def probar_dispositivo(listaDispositivos):
+def probar_dispositivo(user, listaDispositivos):
     datosAEnviar = {
         'lista': listaDispositivos,
         'accion': 'probar'
     }
-    enviarAlServer(datosAEnviar)
+    enviarAlServer(user, datosAEnviar)
 
 
-def color(listaDispositivos, colorHex, velocidad, cambio_constante):
+def color(user, listaDispositivos, colorHex, velocidad, cambio_constante):
     datosAEnviar = {
         'accion': 'color',
         'color': colorHex,
@@ -29,10 +29,10 @@ def color(listaDispositivos, colorHex, velocidad, cambio_constante):
         'cambio_constante': cambio_constante,
         'lista': listaDispositivos
     }
-    enviarAlServer(datosAEnviar)
+    enviarAlServer(user, datosAEnviar)
 
 
-def scroll(listaDispositivos, direccion, velocidad):
+def scroll(user, listaDispositivos, direccion, velocidad):
     datosAEnviar = {
         'accion': 'scroll',
         'direccion': direccion,
@@ -40,10 +40,10 @@ def scroll(listaDispositivos, direccion, velocidad):
         'lista': listaDispositivos
     }
 
-    enviarAlServer(datosAEnviar)
+    enviarAlServer(user, datosAEnviar)
 
 
-def scan(listaDispositivos, direccion, velocidad, colorScan, colorFondo):
+def scan(user, listaDispositivos, direccion, velocidad, colorScan, colorFondo):
     datosAEnviar = {
         'accion': 'scan',
         'direccion': direccion,
@@ -53,10 +53,10 @@ def scan(listaDispositivos, direccion, velocidad, colorScan, colorFondo):
         'lista': listaDispositivos
     }
 
-    enviarAlServer(datosAEnviar)
+    enviarAlServer(user, datosAEnviar)
 
 
-def estrellas(listaDispositivos, velocidad, colorEstrellas, colorFondo):
+def estrellas(user, listaDispositivos, velocidad, colorEstrellas, colorFondo):
     datosAEnviar = {
         'accion': 'estrellas',
         'colorEstrellas': colorEstrellas,
@@ -65,4 +65,4 @@ def estrellas(listaDispositivos, velocidad, colorEstrellas, colorFondo):
         'lista': listaDispositivos
     }
 
-    enviarAlServer(datosAEnviar)
+    enviarAlServer(user, datosAEnviar)

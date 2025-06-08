@@ -5,4 +5,4 @@ channels==3.0.5
 asgiref==3.5.2
 whitenoise
 uvicorn[standard]
-django-oauth-toolkit
+django-oauth-toolkit==2.2.0
