@@ -1,68 +1,74 @@
-
-
 <!-- Comienzo navbar-->
 {% load static %}
-      <header class="site-header sticky-top py-1">
-        <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" id="imagenLogo" alt="logo" class="logoRojo d-inline-block align-text-top"/>
-                </a>
+<header class="site-header sticky-top py-1">
+    <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" id="imagenLogo" alt="logo"
+                     class="logoRojo d-inline-block align-text-top"/>
+            </a>
 
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarScroll"
-                        aria-controls="navbarScroll"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarScroll"
+                    aria-controls="navbarScroll"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
 
-                <div class="collapse navbar-collapse" id="navbarScroll">
+            <div class="collapse navbar-collapse" id="navbarScroll">
 
-                    <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ledsup:lista_dispositivos' %}">
+                            Listado de Dispositivos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ledsup:lista_showroom' %}">
+                            Listado de Showrooms
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'ledsup:showroom' %}">
+                            Showroom
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link bg-info btn" href="{% url 'web:index' %}">
+                            Easy-Led
+                        </a>
+                    </li>
+                    {% if user.is_authenticated and user.is_staff %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'ledsup:lista_dispositivos' %}">
-                                Listado de Dispositivos
+                            <a class="nav-link btn-secondary btn" href="{% url 'admin:index' %}">
+                                Admin
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'ledsup:lista_showroom' %}">
-                                Listado de Showrooms
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'ledsup:showroom' %}">
-                                Showroom
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link bg-info btn" href="{% url 'web:index' %}">
-                                Easy-Led
-                            </a>
-                        </li>
-                        {% if user.is_authenticated and user.is_staff %}
-                            <li class="nav-item">
-                                <a class="nav-link btn-secondary btn" href="{% url 'admin:index' %}">
-                                    Admin
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="top-right">
+                    {% endif %}
                     {% if user.is_authenticated %}
-                        <span class="navbar-text">
+                        <li class="nav-item align-self-center">
+                            <span class="navbar-text mx-4 font-weight-bold {% if estado_conectado %}text-success{% else %}text-danger{% endif %} border border-light rounded bg-transparent px-3 py-1 fs-4" style="font-size: 1.5rem;">
+                                Status: {% if estado_conectado %}Conectado{% else %}Desconectado{% endif %}
+                            </span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="top-right">
+                {% if user.is_authenticated %}
+                    <span class="navbar-text">
                             Usuario: {{ user.get_username }}
                         </span>
-                        <br>
-                        <a href="{% url 'logout'%}?next={{request.path}}" class="btn btn-danger">Cerrar sesion</a>
-                    {% else %}
-                        <a href="{% url 'login'%}?next={{request.path}}" class="btn btn-primary">Iniciar sesion</a>
-                    {% endif %}
-                </div>
+                    <br>
+                    <a href="{% url 'logout' %}?next={{ request.path }}" class="btn btn-danger">Cerrar sesion</a>
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Iniciar sesion</a>
+                {% endif %}
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>

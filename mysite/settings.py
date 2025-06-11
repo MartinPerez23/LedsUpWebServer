@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 LOGIN_URL = '/login/'
 
@@ -81,6 +81,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'web.context_processors.get_current_year_to_context',
+                'ledsup.context_processors.estado_conectado',
             ],
         },
     },
@@ -166,7 +167,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-CSRF_TRUSTED_ORIGINS = [ALLOWED_HOSTS]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000","https://127.0.0.1:8000"]
 CORS_ALLOWED_ORIGINS = [ALLOWED_HOSTS]
 
 ASGI_APPLICATION = 'mysite.asgi.application'

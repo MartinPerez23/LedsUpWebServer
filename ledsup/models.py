@@ -54,20 +54,8 @@ class Showroom(models.Model):
 
     nombre_showroom = models.CharField(max_length=100)
 
-    token = models.CharField(max_length=64, unique=True, editable=False, blank=True)
-
-    is_connected = models.BooleanField(default=False)
-
     def save(self, *args, **kwargs):
-        if not self.token:
-            self.token = self._generate_token()
         super().save(*args, **kwargs)
-
-    def _generate_token(self):
-        while True:
-            token = secrets.token_urlsafe(48)
-            if not Showroom.objects.filter(token=token).exists():
-                return token
 
     def __str__(self):
         return self.nombre_showroom + ' creado por: ' + self.usuario.email
@@ -93,3 +81,10 @@ class OrdenDispositivosEnShowroom(models.Model):
 
     def __str__(self):
         return self.orden
+
+class UserConnectionStatus(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    connected = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username}: {'Conectado' if self.connected else 'Desconectado'}"

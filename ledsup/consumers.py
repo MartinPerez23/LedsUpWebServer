@@ -5,6 +5,30 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 
 
+
+@sync_to_async
+def marcar_conectado(user_id):
+    from .models import UserConnectionStatus
+    from django.contrib.auth.models import User
+    user = User.objects.get(id=user_id)
+    status, _ = UserConnectionStatus.objects.get_or_create(user=user)
+    status.connected = True
+    status.save()
+
+
+@sync_to_async
+def marcar_desconectado(user_id):
+    from .models import UserConnectionStatus
+    from django.contrib.auth.models import User
+    try:
+        user = User.objects.get(id=user_id)
+        status = UserConnectionStatus.objects.get(user=user)
+        status.connected = False
+        status.save()
+    except UserConnectionStatus.DoesNotExist:
+        pass
+
+
 class RoomConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -12,7 +36,6 @@ class RoomConsumer(AsyncWebsocketConsumer):
         self.scope_user = None
 
     async def connect(self):
-        # Importar aquí para evitar el error de AppRegistryNotReady
         from oauth2_provider.models import AccessToken
 
         headers = dict((k.decode(), v.decode()) for k, v in self.scope["headers"])
@@ -29,6 +52,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
             self.group_name = f"user_{self.scope_user}"
 
             await self.channel_layer.group_add(self.group_name, self.channel_name)
+            await marcar_conectado(self.scope_user)
             await self.accept()
             print(f"WebSocket conectado: usuario {self.scope_user} agregado al grupo {self.group_name}")
 
@@ -41,6 +65,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         if self.group_name:
+            await marcar_desconectado(self.scope_user)
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
             print(f"Desconectado del grupo {self.group_name}")
 
@@ -48,3 +73,4 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             "data": event["data"]
         }))
+

@@ -30,7 +30,6 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Dispositivo (Numero IP) (Universo) (Orden)</th>
                     <th scope="col">Acciones</th>
-                    <th scope="col">Estado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -82,15 +81,6 @@
                             <div class="btn-group">
                                 <a class="btn btn-success btn-sm" href="{% url 'ledsup:editar_showroom' show.id %}">Editar</a>
                                 <a class="btn btn-danger btn-sm" href="{% url 'ledsup:eliminar_showroom' show.id %}">Borrar</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                {% if show.is_connected %}
-                                    <span style="color: green; font-weight: bold;">CONECTADO</span>
-                                {% else %}
-                                    <span style="color: red; font-weight: bold;">DESCONECTADO</span>
-                                {% endif %}
                             </div>
                         </td>
                     </tr>

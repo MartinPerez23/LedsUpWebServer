@@ -3,6 +3,7 @@ from rest_framework import routers
 
 from . import views
 
+
 router = routers.DefaultRouter()
 router.register(r'showroom', views.ShowroomViewSet, basename='showroom')
 router.register(r'dispositivo', views.DispositivoViewSet, basename='dispositivo')

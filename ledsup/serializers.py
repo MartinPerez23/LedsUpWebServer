@@ -8,7 +8,7 @@ class ShowroomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Showroom
-        fields = ['id', 'usuario', 'dispositivos', 'nombre_showroom', 'token']
+        fields = ['id', 'usuario', 'dispositivos', 'nombre_showroom']
 
     def get_dispositivos(self, obj):
         ordenes = OrdenDispositivosEnShowroom.objects.filter(showroom=obj)

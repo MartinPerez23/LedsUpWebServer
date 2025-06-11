@@ -10,7 +10,8 @@ from rest_framework.permissions import IsAdminUser
 from ledsup.artnet import probar_dispositivo, color, scroll, estrellas, scan
 from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom
 from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
-
+from django.shortcuts import render
+from .models import UserConnectionStatus
 
 class OrdenDispositivosEnShowroomUpdate(LoginRequiredMixin, UpdateView):
     def get_form(self, *args, **kwargs):
@@ -307,7 +308,7 @@ class ShowroomUpdate(LoginRequiredMixin, UpdateView):
 
     model = Showroom
     success_url = reverse_lazy('ledsup:lista_showroom')
-    fields = ['dispositivos', 'nombre_showroom', 'url_server']
+    fields = ['dispositivos', 'nombre_showroom']
 
     def form_valid(self, form):
         messages.success(self.request, 'Showroom editado exitosamente')
@@ -321,7 +322,6 @@ class ShowroomDelete(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Showroom eliminado exitosamente')
         return super().form_valid(form)
-
 
 # ---------------------------------- API PAGE ----------------------------------
 
