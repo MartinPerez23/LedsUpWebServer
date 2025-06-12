@@ -7,7 +7,6 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'errores', views.ErroresViewSet, basename='errores')
-router.register("oauth2/userinfo/", views.UserInfoGet, basename="user_info")
 
 app_name = 'web'
 urlpatterns = [
@@ -19,5 +18,6 @@ urlpatterns = [
                   path('errores/', views.ErroresListView.as_view(), name='lista_errores'),
                   path('errores/<int:pk>/', views.DetalleErrorView.as_view(), name='detalle_error'),
                   path('api/', include(router.urls), name='api'),
+                  path('oauth2/userinfo/', views.UserInfoGet.as_view(), name='user_info'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
