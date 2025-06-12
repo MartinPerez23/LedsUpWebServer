@@ -4,10 +4,13 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from oauth2_provider.contrib.rest_framework import TokenHasScope
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .forms import ContactForm, ErrorUpdateForm
 from .models import Producto, TipoProducto, Evento, Errores
 from .serializers import ErroresSerializer
@@ -143,3 +146,15 @@ class ErroresViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+
+
+class UserInfoGet(APIView):
+    authentication_classes = [OAuth2Authentication]
+    permission_classes = [IsAuthenticated, TokenHasScope]
+    required_scopes = ['user_info']
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        return Response({
+            'user_name': user.username,
+        })

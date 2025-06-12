@@ -186,6 +186,7 @@ OAUTH2_PROVIDER = {
         'read': 'Read scope',
         'write': 'Write scope',
         'errors': 'Manage errores',
+        'user_info': 'Access user info',
     }
 }
 

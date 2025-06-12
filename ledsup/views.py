@@ -10,8 +10,7 @@ from rest_framework.permissions import IsAdminUser
 from ledsup.artnet import probar_dispositivo, color, scroll, estrellas, scan
 from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom
 from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
-from django.shortcuts import render
-from .models import UserConnectionStatus
+
 
 class OrdenDispositivosEnShowroomUpdate(LoginRequiredMixin, UpdateView):
     def get_form(self, *args, **kwargs):
@@ -114,6 +113,7 @@ def getDispositivosByIDShowroom(idShow):
     lista_patch = show.values('dispositivos__patch')
     lista_orden = show.values('dispositivos__ordendispositivosenshowroom__orden')
     lista_tipo_led = show.values('dispositivos__tipo_led')
+    lista_nombre_dispositivo = show.values('dispositivos__nombre_dispositivo')
 
     for num in range(len(lista_num_ip)):
         ip = lista_num_ip[num]['dispositivos__numero_ip']
@@ -123,8 +123,9 @@ def getDispositivosByIDShowroom(idShow):
         patch = lista_patch[num]['dispositivos__patch']
         orden = lista_orden[num]['dispositivos__ordendispositivosenshowroom__orden']
         tipo_led = lista_tipo_led[num]['dispositivos__tipo_led']
+        nombre_dispositivo = lista_nombre_dispositivo[num]['dispositivos__nombre_dispositivo']
 
-        listado_de_dispositivos.extend([ip, universo, matriz_x, matriz_y, patch, orden, tipo_led])
+        listado_de_dispositivos.extend([ip, universo, matriz_x, matriz_y, patch, orden, tipo_led, nombre_dispositivo])
 
     return listado_de_dispositivos
 
@@ -322,6 +323,7 @@ class ShowroomDelete(LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Showroom eliminado exitosamente')
         return super().form_valid(form)
+
 
 # ---------------------------------- API PAGE ----------------------------------
 

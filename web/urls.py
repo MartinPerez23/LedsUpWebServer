@@ -7,6 +7,7 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'errores', views.ErroresViewSet, basename='errores')
+router.register("oauth2/userinfo/", views.UserInfoGet, basename="user_info")
 
 app_name = 'web'
 urlpatterns = [
