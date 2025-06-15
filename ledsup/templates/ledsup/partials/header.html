@@ -52,7 +52,6 @@
                     {% if user.is_authenticated %}
                         <li class="nav-item align-self-center mx-4">
                             <span class="fw-bold">
-                                Estado:
                                 <span id="estado-badge" class="badge {% if estado_conectado %}bg-success{% else %}bg-danger{% endif %}">
                                     Status: {% if estado_conectado %}Conectado{% else %}Desconectado{% endif %}
                                 </span>
