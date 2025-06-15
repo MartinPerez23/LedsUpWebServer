@@ -25,8 +25,19 @@
                                 {% if estado_actual == value %}selected{% endif %}>{{ display }}</option>
                     {% endfor %}
                 </select>
-                <button type="submit" class="btn btn-outline-secondary btn-sm">Filtrar</button>
+
+                <label for="asignado" class="form-label mb-0 ms-3 me-2 text-muted small">Asignado a:</label>
+                <select name="asignado" id="asignado" class="form-select form-select-sm" style="width: auto;">
+                    <option value="">Todos</option>
+                    {% for id_usuario, nombre_usuario in opciones_asignado_a %}
+                        <option value="{{ id_usuario }}"
+                                {% if asignado_actual == id_usuario|stringformat:"s" %}selected{% endif %}>{{ nombre_usuario }}</option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit" class="btn btn-outline-secondary btn-sm ms-3">Filtrar</button>
             </form>
+
         </div>
 
         <div class="table-responsive">

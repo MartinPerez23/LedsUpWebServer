@@ -94,8 +94,14 @@ class ErroresListView(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         estado = self.request.GET.get('estado')
+        asignado = self.request.GET.get('asignado')
+
         if estado:
             queryset = queryset.filter(estado=estado)
+
+        if asignado:
+            queryset = queryset.filter(asignado_a_id=asignado)
+
         return queryset.order_by('-fecha_creacion')
 
     def get_context_data(self, **kwargs):
@@ -103,8 +109,16 @@ class ErroresListView(LoginRequiredMixin, generic.ListView):
         context['now'] = timezone.now()
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
+
+        # Estados
         context['estado_actual'] = self.request.GET.get('estado', '')
         context['opciones_estado'] = Errores._meta.get_field('estado').choices
+
+        # Solo usuarios staff
+        from django.contrib.auth.models import User
+        opciones_asignado_a = [(user.id, user.username) for user in User.objects.filter(is_staff=True)]
+        context['asignado_actual'] = self.request.GET.get('asignado', '')
+        context['opciones_asignado_a'] = opciones_asignado_a
 
         return context
 

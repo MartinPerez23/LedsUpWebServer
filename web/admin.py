@@ -51,14 +51,14 @@ class ProductoAdmin(admin.ModelAdmin):
 class EventoAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['nombre_evento']}),
-        (None, {'fields': ['fecha']}),
-        (None, {'fields': ['detalle']}),
+        (None, {'fields': ['fecha_de_evento']}),
+        (None, {'fields': ['pie_de_imagen']}),
     ]
     inlines = [ImagenesEventosEnLinea]
 
-    list_filter = ['fecha']
+    list_filter = ['fecha_de_evento']
     search_fields = ['nombre_evento']
-    list_display = ('nombre_evento', 'fecha', 'detalle')
+    list_display = ('nombre_evento', 'fecha_de_evento', 'pie_de_imagen')
 
 
 class ErroresAdmin(admin.ModelAdmin):

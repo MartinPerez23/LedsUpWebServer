@@ -85,8 +85,8 @@ class VideosProducto(models.Model):
 
 class Evento(models.Model):
     nombre_evento = models.CharField(max_length=100)
-    fecha = models.DateTimeField('Fecha de creacion', default=timezone.now)
-    detalle = models.TextField()
+    fecha_de_evento = models.DateTimeField('Fecha de Evento', default=timezone.now)
+    pie_de_imagen = models.TextField()
 
     def __str__(self):
         return self.nombre_evento
