@@ -50,11 +50,49 @@
                         </li>
                     {% endif %}
                     {% if user.is_authenticated %}
-                        <li class="nav-item align-self-center">
-                            <span class="navbar-text mx-4 font-weight-bold {% if estado_conectado %}text-success{% else %}text-danger{% endif %} border border-light rounded bg-transparent px-3 py-1 fs-4" style="font-size: 1.5rem;">
-                                Status: {% if estado_conectado %}Conectado{% else %}Desconectado{% endif %}
+                        <li class="nav-item align-self-center mx-4">
+                            <span class="fw-bold">
+                                Estado:
+                                <span id="estado-badge" class="badge {% if estado_conectado %}bg-success{% else %}bg-danger{% endif %}">
+                                    Status: {% if estado_conectado %}Conectado{% else %}Desconectado{% endif %}
+                                </span>
                             </span>
                         </li>
+                        <script>
+                            (function () {
+                                const badge = document.getElementById('estado-badge');
+                                const socket = new WebSocket('wss://' + window.location.host + '/ws/estado/');
+                                socket.onopen = function () {
+                                    console.log('WebSocket conectado');
+                                };
+
+                                socket.onmessage = function (event) {
+                                    const data = JSON.parse(event.data);
+                                    const usuarioActual = "{{ request.user.id }}";
+                                    console.log('Mensaje recibido:', data);
+
+                                    if (data.estado) {
+                                        badge.textContent = 'Status: ' + (data.estado === 'conectado' ? 'Conectado' : 'Desconectado');
+
+                                        if (data.estado === 'conectado') {
+                                            badge.classList.remove('bg-danger');
+                                            badge.classList.add('bg-success');
+                                        } else {
+                                            badge.classList.remove('bg-success');
+                                            badge.classList.add('bg-danger');
+                                        }
+                                    }
+                                };
+
+                                socket.onclose = function () {
+                                    console.log('WebSocket cerrado');
+                                };
+
+                                socket.onerror = function (error) {
+                                    console.error('Error WebSocket:', error);
+                                };
+                            })();
+                        </script>
                     {% endif %}
                 </ul>
             </div>
@@ -72,3 +110,28 @@
         </div>
     </nav>
 </header>
+
+<script>
+    const socket = new WebSocket(
+        'ws://' + window.location.host + '/ws/estado/'
+    );
+
+    socket.onopen = function (e) {
+        console.log("WebSocket conectado");
+    };
+
+    socket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        console.log("Mensaje recibido del servidor:", data);
+        // Acá actualizás la UI con el estado recibido
+        document.getElementById('estado').textContent = data.estado;
+    };
+
+    socket.onclose = function (e) {
+        console.log("WebSocket cerrado");
+    };
+
+    socket.onerror = function (e) {
+        console.error("Error en WebSocket", e);
+    };
+</script>

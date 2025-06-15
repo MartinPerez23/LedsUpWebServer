@@ -3,8 +3,8 @@ import uuid
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
-
-
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 @sync_to_async
 def marcar_conectado(user_id):
@@ -55,6 +55,15 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await marcar_conectado(self.scope_user)
             await self.accept()
             print(f"WebSocket conectado: usuario {self.scope_user} agregado al grupo {self.group_name}")
+            print(f"user_{self.scope_user}")
+            channel_layer = get_channel_layer()
+            await channel_layer.group_send(
+                f"user_estado{self.scope_user}",
+                {
+                    "type": "estado_actualizado",
+                    "data": {"estado": "conectado", "usuario": self.scope_user},
+                }
+            )
 
         except AccessToken.DoesNotExist:
             print("Token inválido o no encontrado")
@@ -69,8 +78,35 @@ class RoomConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_discard(self.group_name, self.channel_name)
             print(f"Desconectado del grupo {self.group_name}")
 
+            await self.channel_layer.group_send(
+                f"user_estado{self.scope_user}",
+                {
+                    "type": "estado_actualizado",
+                    "data": {"estado": "desconectado", "usuario": self.scope_user},
+                }
+            )
+
+
     async def enviarAlServer(self, event):
         await self.send(text_data=json.dumps({
             "data": event["data"]
         }))
+
+class EstadoConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        user = self.scope["user"]
+        if user.is_anonymous:
+            await self.close()
+            return
+
+        self.user_group_name = f"user_estado{user.id}"
+        print(f"user_estado{user.id}")
+        await self.channel_layer.group_add(self.user_group_name, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
+
+    async def estado_actualizado(self, event):
+        await self.send(text_data=json.dumps(event["data"]))
 
