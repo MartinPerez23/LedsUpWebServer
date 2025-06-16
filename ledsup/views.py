@@ -157,7 +157,7 @@ class ProbarDispositivoView(LoginRequiredMixin, View):
             lista = [
                 request.POST['ip'], request.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'
             ]
-            probar_dispositivo(request.POST['user'], lista)
+            probar_dispositivo(self.request.user.id, lista)
             messages.info(request, f"Dispositivo {request.POST['nombre_dispositivo']} probado")
 
         return redirect('ledsup:lista_showroom')

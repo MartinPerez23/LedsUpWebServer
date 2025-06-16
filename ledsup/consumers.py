@@ -1,10 +1,9 @@
 import json
-import uuid
 
-from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
+
 
 @sync_to_async
 def marcar_conectado(user_id):
@@ -86,11 +85,11 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 }
             )
 
-
     async def enviarAlServer(self, event):
         await self.send(text_data=json.dumps({
             "data": event["data"]
         }))
+
 
 class EstadoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -100,7 +99,6 @@ class EstadoConsumer(AsyncWebsocketConsumer):
             return
 
         self.user_group_name = f"user_estado{user.id}"
-        print(f"user_estado{user.id}")
         await self.channel_layer.group_add(self.user_group_name, self.channel_name)
         await self.accept()
 
@@ -109,4 +107,3 @@ class EstadoConsumer(AsyncWebsocketConsumer):
 
     async def estado_actualizado(self, event):
         await self.send(text_data=json.dumps(event["data"]))
-
