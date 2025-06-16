@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import (
     TipoProducto, Producto, ImagenesProducto, CaracteristicasProducto,
-    VideosProducto, ImagenesEventos, Evento, Errores
+    VideosProducto, Evento, Errores
 )
 
 
@@ -17,13 +17,6 @@ class ImagenesProductoEnLinea(admin.TabularInline):
     verbose_name_plural = 'Imagenes del Producto'
     verbose_name = 'Imagen del Producto'
     model = ImagenesProducto
-    extra = 1
-
-
-class ImagenesEventosEnLinea(admin.TabularInline):
-    verbose_name_plural = 'Imagenes de Eventos'
-    verbose_name = 'Imagen del Evento'
-    model = ImagenesEventos
     extra = 1
 
 
@@ -53,12 +46,13 @@ class EventoAdmin(admin.ModelAdmin):
         (None, {'fields': ['nombre_evento']}),
         (None, {'fields': ['fecha_de_evento']}),
         (None, {'fields': ['pie_de_imagen']}),
+        (None, {'fields': ['imagen']}),
+
     ]
-    inlines = [ImagenesEventosEnLinea]
 
     list_filter = ['fecha_de_evento']
     search_fields = ['nombre_evento']
-    list_display = ('nombre_evento', 'fecha_de_evento', 'pie_de_imagen')
+    list_display = ('nombre_evento', 'fecha_de_evento', 'pie_de_imagen', 'imagen')
 
 
 class ErroresAdmin(admin.ModelAdmin):

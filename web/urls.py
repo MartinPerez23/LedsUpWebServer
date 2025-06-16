@@ -20,4 +20,4 @@ urlpatterns = [
                   path('api/', include(router.urls), name='api'),
                   path('oauth2/userinfo/', views.UserInfoGet.as_view(), name='user_info'),
 
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

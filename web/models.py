@@ -9,17 +9,15 @@ from django.utils import timezone
 def ruta_imagen_producto(instance, filename):
     extension = filename.split('.')[-1]
     nombre_imagen_con_extension = instance.nombre_imagen + '.' + extension
-    ruta = 'web/static/web/imagenes/productos/producto_{0}/{1}'.format(instance.producto.id,
-                                                                       nombre_imagen_con_extension)
+    ruta = 'imagenes/productos/producto_{0}/{1}'.format(instance.producto.id, nombre_imagen_con_extension)
 
     return ruta
 
 
 def ruta_imagen_evento(instance, filename):
     extension = filename.split('.')[-1]
-    nombre_imagen_con_extension = instance.nombre_imagen + '.' + extension
-    ruta = 'web/static/web/imagenes/eventos/evento_{0}/{1}'.format(instance.evento.id,
-                                                                   nombre_imagen_con_extension)
+    nombre_imagen_con_extension = instance.nombre_evento + '.' + extension
+    ruta = 'imagenes/eventos/{0}'.format(nombre_imagen_con_extension)
 
     return ruta
 
@@ -88,23 +86,10 @@ class Evento(models.Model):
     fecha_de_evento = models.DateTimeField('Fecha de Evento', default=timezone.now)
     pie_de_imagen = models.TextField()
 
+    imagen = models.ImageField(upload_to=ruta_imagen_evento, null=False, blank=False)
+
     def __str__(self):
         return self.nombre_evento
-
-
-class ImagenesEventos(models.Model):
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE)
-    nombre_imagen = models.CharField(max_length=100)
-
-    imagen = models.ImageField('img', upload_to=ruta_imagen_evento, null=True, blank=True)
-
-    @property
-    def url(self):
-        url_modificada = self.imagen.url.replace('web/static', '')
-        return url_modificada
-
-    def __str__(self):
-        return self.nombre_imagen
 
 
 class Errores(models.Model):

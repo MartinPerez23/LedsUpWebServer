@@ -191,4 +191,5 @@ OAUTH2_PROVIDER = {
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
-WS_SECRET_TOKEN = os.environ['WS_SECRET_TOKEN']
+MEDIA_URL = '/web/media/'
+MEDIA_ROOT = BASE_DIR / 'web/media'
