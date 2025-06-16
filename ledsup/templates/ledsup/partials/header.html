@@ -109,28 +109,3 @@
         </div>
     </nav>
 </header>
-
-<script>
-    const socket = new WebSocket(
-        'ws://' + window.location.host + '/ws/estado/'
-    );
-
-    socket.onopen = function (e) {
-        console.log("WebSocket conectado");
-    };
-
-    socket.onmessage = function (e) {
-        const data = JSON.parse(e.data);
-        console.log("Mensaje recibido del servidor:", data);
-        // Acá actualizás la UI con el estado recibido
-        document.getElementById('estado').textContent = data.estado;
-    };
-
-    socket.onclose = function (e) {
-        console.log("WebSocket cerrado");
-    };
-
-    socket.onerror = function (e) {
-        console.error("Error en WebSocket", e);
-    };
-</script>

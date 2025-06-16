@@ -81,7 +81,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'web.context_processors.get_current_year_to_context',
-                'ledsup.context_processors.estado_conectado',
             ],
         },
     },
