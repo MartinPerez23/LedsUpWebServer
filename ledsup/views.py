@@ -155,7 +155,8 @@ class ProbarDispositivoView(LoginRequiredMixin, View):
 
         else:
             lista = [
-                request.POST['ip'], request.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB'
+                request.POST['ip'], request.POST['universo'], 0, 0, 'Sin patch', '0', 'RGB',
+                request.POST['nombre_dispositivo']
             ]
             probar_dispositivo(self.request.user.id, lista)
             messages.info(request, f"Dispositivo {request.POST['nombre_dispositivo']} probado")
