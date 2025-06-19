@@ -8,3 +8,5 @@ uvicorn[standard]
 django-oauth-toolkit==2.2.0
 
 python-dotenv~=1.1.0
+
+psycopg2-binary==2.9.10
