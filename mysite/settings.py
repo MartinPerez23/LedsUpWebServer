@@ -175,7 +175,7 @@ OAUTH2_PROVIDER = {
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 MEDIA_URL = '/web/media/'
-MEDIA_ROOT = BASE_DIR / 'web/media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'web/media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
