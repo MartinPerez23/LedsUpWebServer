@@ -1,8 +1,10 @@
 import json
 
-from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
+from asgiref.sync import sync_to_async
+from django.utils.timezone import now
+from datetime import timedelta
 
 
 @sync_to_async
@@ -12,6 +14,7 @@ def marcar_conectado(user_id):
     user = User.objects.get(id=user_id)
     status, _ = UserConnectionStatus.objects.get_or_create(user=user)
     status.connected = True
+    status.last_seen = now()
     status.save()
 
 
@@ -93,6 +96,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
 class EstadoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        from .models import UserConnectionStatus
         user = self.scope["user"]
         if user.is_anonymous:
             await self.close()
@@ -102,8 +106,18 @@ class EstadoConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.user_group_name, self.channel_name)
         await self.accept()
 
-    async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
+        # Enviar el estado actual usando `last_seen`
+        status = await sync_to_async(UserConnectionStatus.objects.filter(user=user).first)()
+        estado_actual = "desconectado"
 
-    async def estado_actualizado(self, event):
-        await self.send(text_data=json.dumps(event["data"]))
+        if status:
+            hace_cuanto = now() - status.last_seen
+            if hace_cuanto < timedelta(seconds=10):
+                estado_actual = "conectado"
+            else:
+                estado_actual = "desconectado"
+
+        await self.send(text_data=json.dumps({
+            "estado": estado_actual,
+            "usuario": user.id
+        }))
