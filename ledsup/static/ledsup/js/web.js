@@ -1,19 +1,23 @@
-$(document).ready(function (){
-    setInterval(function(){
-        if($("#imagenLogo").attr("class") === "logoRojo d-inline-block align-text-top")
-        {
-            $("#imagenLogo").attr("class","logoVerde d-inline-block align-text-top")
+$(document).ready(function () {
+    function generarColorHex() {
+        let letras = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letras[Math.floor(Math.random() * 16)];
         }
-        else if($("#imagenLogo").attr("class") === "logoVerde d-inline-block align-text-top")
-        {
-            $("#imagenLogo").attr("class","logoAzul d-inline-block align-text-top")
-        }else
-        {
-            $("#imagenLogo").attr("class","logoRojo d-inline-block align-text-top")
-        }
+        return color;
+    }
 
-    },1500)
+    setInterval(function () {
+        const colorRandom = generarColorHex();
+        // Aplicar el gradiente radial con el color random y transparencia al final
+        const gradiente = `radial-gradient(closest-side, ${colorRandom}, transparent)`;
 
+        $("#imagenLogo").css({
+            "background": gradiente,
+            "-webkit-background": gradiente
+        });
+    }, 1500);
 });
 
 $(document).ready(function(){
