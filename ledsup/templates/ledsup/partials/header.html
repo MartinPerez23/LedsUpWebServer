@@ -50,55 +50,49 @@
                         </li>
                     {% endif %}
                     {% if user.is_authenticated %}
-                    <li class="nav-item align-self-center mx-4">
-                    <span class="fw-bold">
-                        <span id="estado-badge" class="badge bg-secondary">
-                            Status: Cargando...
-                        </span>
-                    </span>
-                    </li>
-                    <script>
-                        (function () {
-                            const badge = document.getElementById('estado-badge');
+                        <li class="nav-item align-self-center mx-4">
+                            <span class="fw-bold">
+                                <span id="estado-badge" class="badge {% if estado_conectado %}bg-success{% else %}bg-danger{% endif %}">
+                                    Status: {% if estado_conectado %}Conectado{% else %}Desconectado{% endif %}
+                                </span>
+                            </span>
+                        </li>
+                        <script>
+                            (function () {
+                                const badge = document.getElementById('estado-badge');
+                                const socket = new WebSocket('wss://' + window.location.host + '/ws/estado/');
+                                socket.onopen = function () {
+                                    console.log('WebSocket conectado');
+                                };
 
-                            // Inicialmente mostrar "Cargando..." con color gris
-                            badge.textContent = 'Status: Cargando...';
-                            badge.classList.remove('bg-success', 'bg-danger');
-                            badge.classList.add('bg-secondary');
+                                socket.onmessage = function (event) {
+                                    const data = JSON.parse(event.data);
+                                    const usuarioActual = "{{ request.user.id }}";
+                                    console.log('Mensaje recibido:', data);
 
-                            const socket = new WebSocket('wss://' + window.location.host + '/ws/estado/');
+                                    if (data.estado) {
+                                        badge.textContent = 'Status: ' + (data.estado === 'conectado' ? 'Conectado' : 'Desconectado');
 
-                            socket.onopen = function () {
-                                console.log('WebSocket conectado');
-                            };
-
-                            socket.onmessage = function (event) {
-                                const data = JSON.parse(event.data);
-                                const usuarioActual = "{{ request.user.id }}";
-                                console.log('Mensaje recibido:', data);
-
-                                if (data.estado) {
-                                    badge.textContent = 'Status: ' + (data.estado === 'conectado' ? 'Conectado' : 'Desconectado');
-
-                                    badge.classList.remove('bg-secondary', 'bg-success', 'bg-danger');
-                                    if (data.estado === 'conectado') {
-                                        badge.classList.add('bg-success');
-                                    } else {
-                                        badge.classList.add('bg-danger');
+                                        if (data.estado === 'conectado') {
+                                            badge.classList.remove('bg-danger');
+                                            badge.classList.add('bg-success');
+                                        } else {
+                                            badge.classList.remove('bg-success');
+                                            badge.classList.add('bg-danger');
+                                        }
                                     }
-                                }
-                            };
+                                };
 
-                            socket.onclose = function () {
-                                console.log('WebSocket cerrado');
-                            };
+                                socket.onclose = function () {
+                                    console.log('WebSocket cerrado');
+                                };
 
-                            socket.onerror = function (error) {
-                                console.error('Error WebSocket:', error);
-                            };
-                        })();
-                    </script>
-                {% endif %}
+                                socket.onerror = function (error) {
+                                    console.error('Error WebSocket:', error);
+                                };
+                            })();
+                        </script>
+                    {% endif %}
                 </ul>
             </div>
             <div class="top-right">
