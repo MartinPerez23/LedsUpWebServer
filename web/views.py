@@ -10,7 +10,9 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_GET
 from .forms import ContactForm, ErrorUpdateForm
 from .models import Producto, TipoProducto, Evento, Errores
 from .serializers import ErroresSerializer
@@ -172,3 +174,8 @@ class UserInfoGet(APIView):
         return Response({
             'user_name': user.username,
         })
+
+@require_GET
+@ensure_csrf_cookie
+def csrf_token_view(request):
+    return JsonResponse({'detail': 'CSRF cookie set'})
