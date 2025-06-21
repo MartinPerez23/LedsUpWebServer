@@ -66,7 +66,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
         except AccessToken.DoesNotExist:
             print("Token inválido o no encontrado")
-            await self.close(code=4003)
+            await self.close(code=4001)
         except Exception as e:
             print(f"Error en autenticación WebSocket: {e}")
             await self.close(code=4003)
