@@ -2,18 +2,16 @@
 <header class="bg-[#0A192F] sticky top-0 z-50">
     <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 text-gray-300 font-semibold text-sm">
         <!-- Logo -->
-        <a href="{% url 'ledsup:lista_dispositivos' %}"
+        <a href="{% url 'ledsup:showroom' %}"
            class="flex items-center space-x-2 text-cyan-400 font-bold text-xl hover:text-[#00FFA3] transition">
-            <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" alt="logo" class="w-10 h-10 rounded-full"/>
             <span>Leds-Up</span>
         </a>
 
         <!-- Menú desktop -->
         <ul id="menu" class="hidden md:flex items-center space-x-8">
-            <li><a href="{% url 'ledsup:lista_dispositivos' %}" class="hover:text-cyan-400 transition">Listado de
-                Dispositivos</a></li>
-            <li><a href="{% url 'ledsup:lista_showroom' %}" class="hover:text-cyan-400 transition">Listado de
-                Showrooms</a></li>
+            <li><a href="{% url 'ledsup:lista_dispositivos' %}" class="hover:text-cyan-400 transition">Dispositivos</a>
+            </li>
+            <li><a href="{% url 'ledsup:lista_showroom' %}" class="hover:text-cyan-400 transition">Showrooms</a></li>
             <li><a href="{% url 'ledsup:showroom' %}" class="hover:text-cyan-400 transition">Showroom</a></li>
             <li>
                 <a href="{% url 'web:index' %}"

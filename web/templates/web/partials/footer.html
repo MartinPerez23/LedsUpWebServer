@@ -1,10 +1,11 @@
 {% load static %}
 
-<footer class="bg-[#0F172A] py-10 px-6 mt-12">
+<footer class="bg-[#0F172A] py-12 px-6 mt-20 shadow-inner">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
         <div class="flex items-center space-x-4 mb-6 md:mb-0">
-            <img src="{% static 'web/imagenes/iconos/logo.png' %}" alt="logo" class="rounded-full w-16 h-16">
-            <span class="text-cyan-400 font-semibold text-xl">Easy-Led</span>
+            <div class="w-24 h-24 rounded-xl border-2 border-[#9E00FF] shadow-inner bg-[#0F172A] flex items-center justify-center">
+                <img src="{% static 'web/imagenes/iconos/logo.png' %}" alt="logo" class="w-50 h-50 object-contain">
+            </div>
         </div>
         <div class="flex space-x-4">
             <a href="#" aria-label="Facebook">
