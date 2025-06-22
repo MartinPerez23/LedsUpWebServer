@@ -44,8 +44,8 @@
                 <div class="products flex mt-6 space-x-6 overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400/50 scrollbar-track-transparent px-2 pb-4">
                     {% for producto in lista_ultimos_productos %}
                         <div class="product min-w-[280px] max-w-[280px] bg-[#0F172A] rounded-lg shadow-md p-4 flex-shrink-0">
-                            <img src="{{ producto.imagenesproducto_set.first.url }}"
-                                 alt="{{ producto.imagenesproducto_set.first.nombre_imagen }}"
+                            <img src="{{ producto.imagenesproducto_set.first.imagen.url }}"
+                                 alt="{{ producto.imagenesproducto_set.first.imagen.nombre_imagen }}"
                                  class="rounded-lg mb-3 w-full h-40 object-cover">
                             <h4 class="text-lg font-semibold text-[#00FFA3]">{{ producto.nombre_producto }}</h4>
                             <p class="text-gray-300 text-sm mt-1">{{ producto.detalles }}</p>
