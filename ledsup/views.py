@@ -10,18 +10,20 @@ from rest_framework.permissions import IsAdminUser
 from ledsup.artnet import probar_dispositivo, color, scroll, estrellas, scan
 from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom
 from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
+from .forms import DispositivoForm, OrdenDispositivoForm, ShowroomForm
 
 
 class OrdenDispositivosEnShowroomUpdate(LoginRequiredMixin, UpdateView):
+    model = OrdenDispositivosEnShowroom
+    template_name = 'ledsup/ordendispositivosenshowroom_form.html'
+    form_class = OrdenDispositivoForm
+    success_url = reverse_lazy('ledsup:lista_showroom')
+
     def get_form(self, *args, **kwargs):
         form = super(OrdenDispositivosEnShowroomUpdate,
                      self).get_form(*args, **kwargs)
 
         return form
-
-    model = OrdenDispositivosEnShowroom
-    success_url = reverse_lazy('ledsup:lista_showroom')
-    fields = ['orden']
 
     def form_valid(self, form):
         messages.success(self.request, 'Orden modificado exitosamente')
@@ -41,22 +43,16 @@ class ListDispositivosPage(LoginRequiredMixin, generic.ListView):
 
 
 class DispositivoCreate(LoginRequiredMixin, CreateView):
+    model = Dispositivo
+    template_name = 'ledsup/dispositivo_form.html'
+    form_class = DispositivoForm
+    success_url = reverse_lazy('ledsup:lista_dispositivos')
+
     def get_form(self, *args, **kwargs):
         form = super(DispositivoCreate, self).get_form(*args, **kwargs)
         form.instance.usuario = self.request.user
 
         return form
-
-    model = Dispositivo
-    success_url = reverse_lazy('ledsup:lista_dispositivos')
-    fields = [
-        'nombre_dispositivo',
-        'numero_ip',
-        'universo',
-        'matriz_x',
-        'matriz_y',
-        'tipo_led',
-    ]
 
     def form_valid(self, form):
         messages.success(self.request, 'Dispositivo creado exitosamente')
@@ -66,22 +62,16 @@ class DispositivoCreate(LoginRequiredMixin, CreateView):
 
 
 class DispositivoUpdate(LoginRequiredMixin, UpdateView):
+    model = Dispositivo
+    template_name = 'ledsup/dispositivo_form.html'
+    form_class = DispositivoForm
+    success_url = reverse_lazy('ledsup:lista_dispositivos')
+
     def get_form(self, *args, **kwargs):
         form = super(DispositivoUpdate, self).get_form(*args, **kwargs)
         form.instance.usuario = self.request.user
 
         return form
-
-    model = Dispositivo
-    success_url = reverse_lazy('ledsup:lista_dispositivos')
-    fields = [
-        'nombre_dispositivo',
-        'numero_ip',
-        'universo',
-        'matriz_x',
-        'matriz_y',
-        'tipo_led',
-    ]
 
     def form_valid(self, form):
         messages.success(self.request, 'Dispositivo editado exitosamente')
@@ -276,30 +266,34 @@ class EstrellasAction(ShowroomActionBase):
 
 #############################   Showroom CRUD  ##########################################
 class ShowroomCreate(LoginRequiredMixin, CreateView):
-    def get_form(self, *args, **kwargs):
-        form = super(ShowroomCreate, self).get_form(*args, **kwargs)
-
-        form.fields[
-            'dispositivos'].queryset = Dispositivo.objects.get_queryset(
-        ).filter(usuario__email__exact=self.request.user.email)
-
-        form.instance.usuario = self.request.user
-
-        return form
-
     model = Showroom
+    template_name = 'ledsup/showroom_form.html'
+    form_class = ShowroomForm
     success_url = reverse_lazy('ledsup:lista_showroom')
-    fields = [
-        'nombre_showroom',
-        'dispositivos',
-    ]
 
     def form_valid(self, form):
         messages.success(self.request, 'Showroom creado exitosamente')
         return super().form_valid(form)
 
+    def get_form(self, *args, **kwargs):
+        form = super(ShowroomCreate, self).get_form(*args, **kwargs)
+        form.fields[
+            'dispositivos'].queryset = Dispositivo.objects.get_queryset(
+        ).filter(usuario__email__exact=self.request.user.email)
+
+        return form
+
 
 class ShowroomUpdate(LoginRequiredMixin, UpdateView):
+    model = Showroom
+    template_name = 'ledsup/showroom_form.html'
+    form_class = ShowroomForm
+    success_url = reverse_lazy('ledsup:lista_showroom')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Showroom editado exitosamente')
+        return super().form_valid(form)
+
     def get_form(self, *args, **kwargs):
         form = super(ShowroomUpdate, self).get_form(*args, **kwargs)
         form.fields[
@@ -307,14 +301,6 @@ class ShowroomUpdate(LoginRequiredMixin, UpdateView):
         ).filter(usuario__email__exact=self.request.user.email)
 
         return form
-
-    model = Showroom
-    success_url = reverse_lazy('ledsup:lista_showroom')
-    fields = ['dispositivos', 'nombre_showroom']
-
-    def form_valid(self, form):
-        messages.success(self.request, 'Showroom editado exitosamente')
-        return super().form_valid(form)
 
 
 class ShowroomDelete(LoginRequiredMixin, DeleteView):

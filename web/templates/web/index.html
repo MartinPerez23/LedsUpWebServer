@@ -1,179 +1,61 @@
 {% extends "web/base_generic.html" %}
 
-
-
 {% block content %}
-<section>
-{% load static %}
+    <section class="px-6 py-12 space-y-16 bg-[#0F172A] text-white">
+        {% load static %}
 
-{% if lista_ultimos_productos %}
-
-<div class="container bg-success">
-
-    <br>
-        <h2 class="text-light">QUIENES SOMOS</h2>
-    <br>
-    <p>
-        SARASA SARASA
-    </p>
-</div>
-
-<div class="container bg-danger">
-    <br>
-        <h2 class="text-light">ALGUNOS CLIENTES</h2>
-    <br>
-  <div class="row">
-    <div class="card col-12 col-lg-4 justify-content-center align-items-center shadow-lg">
-        <div class="face face1 justify-content-center align-items-center">
-            <div class="content">
-                <img src="https://github.com/Jhonierpc/WebDevelopment/blob/master/CSS%20Card%20Hover%20Effects/img/design_128.png?raw=true">
-                <h3>CLIENTE 1</h3>
-            </div>
-        </div>
-        <div class="face face2">
-            <div class="content">
-                <p>EL CLIENTE NOS ENVIO FOTOS MOSTRANDO LOS PRODUCTOS QUE VENDEMOS</p>
-                    <a href="#">¡MIRÁ LAS IMAGENES AQUI!</a>
-            </div>
-        </div>
-    </div>
-    <div class="card col-12 col-lg-4 align-items-center">
-        <div class="face face1">
-            <div class="content">
-                <img src="https://github.com/Jhonierpc/WebDevelopment/blob/master/CSS%20Card%20Hover%20Effects/img/code_128.png?raw=true">
-                <h3>CLIENTE 2</h3>
-            </div>
-        </div>
-        <div class="face face2">
-            <div class="content">
-                <p>EL CLIENTE NOS ENVIO FOTOS MOSTRANDO LOS PRODUCTOS QUE VENDEMOS</p>
-                    <a href="#">¡MIRÁ LAS IMAGENES AQUI!</a>
-            </div>
-        </div>
-    </div>
-    <div class="card col-12 col-lg-4 align-items-center">
-        <div class="face face1">
-            <div class="content">
-                <img src="https://github.com/Jhonierpc/WebDevelopment/blob/master/CSS%20Card%20Hover%20Effects/img/launch_128.png?raw=true">
-                <h3>CLIENTE 3</h3>
-            </div>
-        </div>
-        <div class="face face2">
-            <div class="content">
-                <p>EL CLIENTE NOS ENVIO FOTOS MOSTRANDO LOS PRODUCTOS QUE VENDEMOS</p>
-                    <a href="#">¡MIRÁ LAS IMAGENES AQUI!</a>
-            </div>
-        </div>
-    </div>
-  </div>
-</div>
-
-<br>
-
-
-<div class="container bg-info">
-<br>
-    <h2 class="text-light">
-
-        ÚLTIMOS PRODUCTOS
-
-    </h2>
-<br>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-            {% for producto in lista_ultimos_productos %}
-                {% if forloop.first %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
-                {% else %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}"></li>
-                {% endif %}
-            {% endfor %}
-        </ol>
-        <div class="carousel-inner">
-            {% for producto in lista_ultimos_productos %}
-                {% if forloop.first %}
-                    <div class="carousel-item active">
-                        <img src="{% static producto.imagenesproducto_set.first.url %}" class="d-block w-100" alt="{{ producto.imagenesproducto_set.first.nombre_imagen }}">
-
-                        <div class="carousel-caption d-none d-md-block bg-dark">
-                            <h4>{{ producto.nombre_producto }}</h4>
-                            <p>{{ producto.detalles }}</p>
-                        </div>
+        {% if lista_ultimos_productos %}
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <section class="mb-16">
+                    <h2 class="hero text-4xl md:text-5xl font-extrabold text-cyan-400 mb-4">Iluminá el Futuro</h2>
+                    <p class="text-lg text-gray-300">Explorá nuestros productos LED con tecnología de última
+                        generación</p>
+                </section>
+                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Tira LED RGB</h3>
+                        <p class="text-gray-300">16 millones de colores, control vía Wi-Fi.</p>
                     </div>
-                {% else %}
-                    <div class="carousel-item">
-                        <img src="{% static producto.imagenesproducto_set.first.url %}" class="d-block w-100" alt="{{ producto.imagenesproducto_set.first.nombre_imagen }}">
-
-                        <div class="carousel-caption d-none d-md-block bg-dark">
-                            <h4>{{ producto.nombre_producto }}</h4>
-                            <p>{{ producto.detalles }}</p>
-                        </div>
+                    <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Controlador DMX</h3>
+                        <p class="text-gray-300">Ideal para instalaciones profesionales y shows en vivo.</p>
                     </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <a class="carousel-control-prev bg-dark" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only bg-warning">Previous</span>
-        </a>
-        <a class="carousel-control-next bg-dark" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-    </div>
-    <br>
-</div>
+                    <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Fuente 12V 10A</h3>
+                        <p class="text-gray-300">Alta eficiencia, protección contra sobrecarga.</p>
+                    </div>
+                </section>
 
-{% endif %}
-
-
-
-
-
-
-
-<!--
-    {% if lista_ultimos_productos %}
-
-
-        {% for producto in lista_ultimos_productos %}
-
-            {{ producto.imagenesproducto_set.first.url }}
-
-        {% endfor %}
-    <ul>
-        {% for producto in lista_ultimos_productos %}
-            {{ producto.imagenesproducto_set.first }}
-            <li>{{ producto.nombre_producto }}</li>
-            <li>{{ producto.tipo_producto }}</li>
-            <li>{{ producto.detalles }}</li>
-            <li>{{ producto.precio }}</li>
-            <li>{{ producto.fecha_creacion }}</li>
-            {% for imagenesproducto in producto.imagenesproducto_set.all %}
-                {% load static %}
-
-                <a class="venobox" href="{% static imagenesproducto.url %}">
-                    <img class="img-fluid" src="{% static imagenesproducto.url %}" alt="{{ imagenesproducto.nombre_imagen }}">
-                </a>
-            {% endfor %}
-            {% for videosproducto in producto.videosproducto_set.all %}
-            <div class="img-fluid">
-                <iframe
-                    width="300"
-                    height="200"
-                    src="{{ videosproducto.url_video }}"
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
             </div>
-            {% endfor %}
-        {% endfor %}
-    </ul>
-    {% else %}
-        <p>No hay productos</p>
-    {% endif %}
--->
-</section>
 
+            <!-- QUIÉNES SOMOS -->
+            <div class="max-w-7xl mx-auto bg-[#1E293B] rounded-xl p-8 shadow-lg">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-6">Quiénes Somos</h2>
+                <p class="text-gray-300 leading-relaxed">
+                    Somos una empresa dedicada a brindar soluciones LED de vanguardia. Nuestro compromiso es iluminar
+                    espacios con tecnología eficiente, moderna y con diseño. Cada proyecto es una oportunidad de
+                    transformar ambientes con luz.
+                </p>
+            </div>
+
+            <!-- ÚLTIMOS PRODUCTOS -->
+            <div class=" max-w-7xl mx-auto bg-[#1E293B] rounded-xl p-8 shadow-lg">
+                <h2 class="text-3xl font-bold text-cyan-400 mb-10 text-center">Últimos Productos</h2>
+                <div class="products flex mt-6 space-x-6 overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400/50 scrollbar-track-transparent px-2 pb-4">
+                    {% for producto in lista_ultimos_productos %}
+                        <div class="product min-w-[280px] max-w-[280px] bg-[#0F172A] rounded-lg shadow-md p-4 flex-shrink-0">
+                            <img src="{{ producto.imagenesproducto_set.first.url }}"
+                                 alt="{{ producto.imagenesproducto_set.first.nombre_imagen }}"
+                                 class="rounded-lg mb-3 w-full h-40 object-cover">
+                            <h4 class="text-lg font-semibold text-[#00FFA3]">{{ producto.nombre_producto }}</h4>
+                            <p class="text-gray-300 text-sm mt-1">{{ producto.detalles }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        {% else %}
+            <p class="text-center text-gray-400 text-lg">No hay productos para mostrar.</p>
+        {% endif %}
+    </section>
 {% endblock %}

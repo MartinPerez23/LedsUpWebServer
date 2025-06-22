@@ -1,223 +1,294 @@
 {% extends "ledsup/base_generic.html" %}
 {% load static %}
 
-{% block title %}<title>Showroom</title>{% endblock %}
+{% block title %}
+    <title>Showroom</title>
+{% endblock %}
 
 {% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8 bg-[#0D1117] text-white font-sans">
 
-    {% if messages %}
-        {% for message in messages %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 px-4 py-2 rounded bg-[#9E00FF] text-white flex justify-between items-center">
+                    <span>{{ message }}</span>
+                    <button type="button" class="ml-4 text-white hover:text-gray-300" aria-label="Cerrar mensaje"
+                            onclick="this.parentElement.style.display='none'">&times;
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
 
-            <div {% if message.tags == 'error' %} class="alert alert-danger"{% else %}
-                                                  class="alert alert-info" {% endif %} role="alert">
-                <a class="close" href="#" data-dismiss="alert">×</a>
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <div class="container bg-secondary bg-opacity-1">
-        <div class="row">
-            <div class="col-lg-6 col-md-12">
-                <canvas id="display" height="400" width="400">
-                    <h4 class="text-danger">Error</h4>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Canvas -->
+            <div class="bg-[#1E293B] rounded-lg shadow-lg p-4 flex flex-col items-center justify-center">
+                <canvas id="display" height="400" width="400" class="rounded-md border border-gray-700 block mx-auto">
                 </canvas>
-                <p>(Representación gráfica de lo que se vería en los dispositivos)</p>
+                <p class="mt-2 text-gray-400 text-sm italic text-center">(Representación gráfica de lo que se vería en
+                    los dispositivos)</p>
             </div>
-            <div class="col-lg-6 col-md-12">
-                <ul class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-dark {% if not request.session.active or request.session.active == 'color' %}active{% endif %}"
-                                id="nav-color-tab" data-bs-toggle="tab" data-bs-target="#nav-color" type="button"
-                                role="tab" aria-controls="nav-color" aria-selected="true">Color
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-dark {% if request.session.active == 'scroll' %}active{% endif %}"
-                                id="nav-scroll-tab" data-bs-toggle="tab" data-bs-target="#nav-scroll" type="button"
-                                role="tab" aria-controls="nav-scroll" aria-selected="false">Scroll Colores
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-dark {% if request.session.active == 'estrellas' %}active{% endif %}"
-                                id="nav-estrellas-tab" data-bs-toggle="tab" data-bs-target="#nav-estrellas"
-                                type="button" role="tab" aria-controls="nav-estrellas" aria-selected="false">Estrellas
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link text-dark {% if request.session.active == 'scan' %}active{% endif %}"
-                                id="nav-scan-tab" data-bs-toggle="tab" data-bs-target="#nav-scan" type="button"
-                                role="tab" aria-controls="nav-scan" aria-selected="false">Scan
-                        </button>
-                    </li>
-                </ul>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show shadow-lg p-3 mb-5 bg-success rounded {% if not request.session.active or request.session.active == 'color' %}active{% endif %}"
-                         id="nav-color" role="tabpanel" aria-labelledby="nav-color-tab">
 
-                        <form action="{% url 'ledsup:color' %}" method="post" id="formularioParaEnviar">
+            <!-- Tabs -->
+            <div>
+                <nav class="flex space-x-2 border-b border-gray-700 mb-4" role="tablist" aria-label="Efectos">
+                    <button id="tab-color" data-tab-target="#panel-color"
+                            class="py-2 px-4 text-sm font-semibold rounded-t-lg focus:outline-none
+                        {% if not request.session.active or request.session.active == 'color' %}
+                            bg-cyan-500 text-white
+                        {% else %}
+                            bg-[#2c2c2c] text-cyan-300 hover:bg-cyan-600
+                        {% endif %}"
+                            role="tab"
+                            aria-selected="{% if not request.session.active or request.session.active == 'color' %}active{% endif %}">
+                        Color
+                    </button>
+                    <button id="tab-scroll" data-tab-target="#panel-scroll"
+                            class="py-2 px-4 text-sm font-semibold rounded-t-lg focus:outline-none
+                        {% if request.session.active == 'scroll' %}
+                            bg-cyan-500 text-white
+                        {% else %}
+                            bg-[#2c2c2c] text-cyan-300 hover:bg-cyan-600
+                        {% endif %}"
+                            role="tab" aria-selected="{% if request.session.active == 'scroll' %}active{% endif %}">
+                        Scroll Colores
+                    </button>
+                    <button id="tab-estrellas" data-tab-target="#panel-estrellas"
+                            class="py-2 px-4 text-sm font-semibold rounded-t-lg focus:outline-none
+                        {% if request.session.active == 'estrellas' %}
+                            bg-cyan-500 text-white
+                        {% else %}
+                            bg-[#2c2c2c] text-cyan-300 hover:bg-cyan-600
+                        {% endif %}"
+                            role="tab" aria-selected="{% if request.session.active == 'estrellas' %}active{% endif %}">
+                        Estrellas
+                    </button>
+                    <button id="tab-scan" data-tab-target="#panel-scan"
+                            class="py-2 px-4 text-sm font-semibold rounded-t-lg focus:outline-none
+                        {% if request.session.active == 'scan' %}
+                            bg-cyan-500 text-white
+                        {% else %}
+                            bg-[#2c2c2c] text-cyan-300 hover:bg-cyan-600
+                        {% endif %}"
+                            role="tab" aria-selected="{% if request.session.active == 'scan' %}active{% endif %}">
+                        Scan
+                    </button>
+                </nav>
+
+                <div>
+                    <!-- Panel Color -->
+                    <section id="panel-color" role="tabpanel" aria-labelledby="tab-color"
+                             class="bg-[#1E293B] rounded-b-lg p-6 shadow-lg
+{% if not request.session.active or request.session.active == 'color' %}block{% else %}hidden{% endif %}">
+
+                        <form action="{% url 'ledsup:color' %}" method="post" id="formularioParaEnviar"
+                              class="space-y-4">
                             {% csrf_token %}
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                                    name="show" id="show">
+
+                            <!-- Select de showroom -->
+                            <select name="show" id="show"
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
-                                    {% if show.id == request.session.valorShowroom %}
-                                        <option value={{ show.id }} selected>{{ show }}</option>
-                                    {% else %}
-                                        <option value={{ show.id }}>{{ show }}</option>
-                                    {% endif %}
+                                    <option value="{{ show.id }}"
+                                            {% if show.id == request.session.valorShowroom %}selected{% endif %}>
+                                        {{ show }}
+                                    </option>
                                 {% endfor %}
                             </select>
+
+                            <!-- Input oculto para color base -->
                             <input type="hidden" value="{{ request.session.col }}" name="color" id="color">
 
-                            <canvas id="circulo" height="250" width="250">
-                                <h4 class="text-danger">Error</h4>
-                            </canvas>
+                            <!-- Rueda y selector de color -->
+                            <div class="flex flex-col items-center space-y-4">
+                                <canvas id="circulo" height="250" width="250"
+                                        class="rounded-md border border-gray-700 mx-auto"></canvas>
 
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" id="cambioConstanteColor"
-                                       name="cambioConstanteColor" {{ request.session.cambioConstanteColor }}>
-                                <label class="form-check-label" for="cambioConstanteColor">Cambio Constante de
-                                    Color</label>
+                                <label for="colorPersonalizado" class="text-sm text-gray-300">Color
+                                    Personalizado:</label>
+                                <input type="color" id="colorPersonalizado" name="customColor"
+                                       value="{{ request.session.col|default:'#000000' }}"
+                                       class="w-8 h-8 rounded border border-gray-700 cursor-pointer">
                             </div>
 
-                            <div class="visually-hidden" id="labelVelocidadColorCambioConstante">
-                                <label for="velocidadColorCambioConstante" class="form-label">Velocidad</label>
-                                <input type="range" class="form-range" min="2" max="6"
-                                       id="velocidadColorCambioConstante" name="velocidadColorCambioConstante"
-                                       value="{{ request.session.velocidadColorCambioConstante }}">
+                            <!-- Checkbox de cambio constante -->
+                            <label class="inline-flex items-center space-x-2 mt-4">
+                                <input type="checkbox" id="cambioConstanteColor" name="cambioConstanteColor"
+                                       class="form-checkbox h-5 w-5 text-cyan-400"
+                                       {% if request.session.cambioConstanteColor %}checked{% endif %}>
+                                <span>Cambio Constante de Color</span>
+                            </label>
+
+                            <!-- Velocidad (solo si está activado) -->
+                            <div id="labelVelocidadColorCambioConstante"
+                                 class="mt-2 {% if not request.session.cambioConstanteColor %}hidden{% endif %}">
+                                <label for="velocidadColorCambioConstante" class="block mb-1">Velocidad</label>
+                                <input type="range" min="2" max="6" id="velocidadColorCambioConstante"
+                                       name="velocidadColorCambioConstante"
+                                       value="{{ request.session.velocidadColorCambioConstante|default:4 }}"
+                                       class="w-full accent-cyan-400">
                             </div>
-                            <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+
+                            <!-- Botón enviar -->
+                            <button type="submit"
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                Enviar a dispositivos
+                            </button>
                         </form>
-                    </div>
-                    <div class="tab-pane fade shadow-lg p-3 mb-5 bg-success rounded {% if request.session.active == 'scroll' %}active show{% endif %}"
-                         id="nav-scroll" role="tabpanel" aria-labelledby="nav-scroll-tab">
-                        <form action="{% url 'ledsup:scroll' %}" method="post" id="formularioParaEnviarScroll">
+                    </section>
+
+                    <!-- Panel Scroll -->
+                    <section id="panel-scroll" role="tabpanel" aria-labelledby="tab-scroll"
+                             class="bg-[#1E293B] rounded-b-lg p-6 shadow-lg
+                    {% if request.session.active == 'scroll' %}block{% else %}hidden{% endif %}">
+                        <form action="{% url 'ledsup:scroll' %}" method="post" id="formularioParaEnviarScroll"
+                              class="space-y-4">
                             {% csrf_token %}
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                                    name="show" id="show">
+                            <select name="show" id="show"
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
-                                    {% if show.id == request.session.valorShowroom %}
-                                        <option value={{ show.id }} selected>{{ show }}</option>
-                                    {% else %}
-                                        <option value={{ show.id }}>{{ show }}</option>
-                                    {% endif %}
+                                    <option value="{{ show.id }}"
+                                            {% if show.id == request.session.valorShowroom %}selected{% endif %}>{{ show }}</option>
                                 {% endfor %}
                             </select>
-                            <label for="dirScroll" class="form-label">Direccion</label>
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                                    name="dirScroll" id="dirScroll">
-                                <option value="Derecha"{% if request.session.dirScroll == 'Derecha' %}
-                                        selected {% endif %}>Derecha
+
+                            <label for="dirScroll" class="block mb-1">Dirección</label>
+                            <select name="dirScroll" id="dirScroll"
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
+                                <option value="Derecha"
+                                        {% if request.session.dirScroll == 'Derecha' %}selected{% endif %}>Derecha
                                 </option>
-                                <option value="Izquierda"{% if request.session.dirScroll == 'Izquierda' %}
-                                        selected {% endif %}>Izquierda
+                                <option value="Izquierda"
+                                        {% if request.session.dirScroll == 'Izquierda' %}selected{% endif %}>Izquierda
                                 </option>
-                                <option value="Arriba"{% if request.session.dirScroll == 'Arriba' %}
-                                        selected {% endif %}>Arriba
+                                <option value="Arriba"
+                                        {% if request.session.dirScroll == 'Arriba' %}selected{% endif %}>Arriba
                                 </option>
-                                <option value="Abajo"{% if request.session.dirScroll == 'Abajo' %} selected {% endif %}>
+                                <option value="Abajo" {% if request.session.dirScroll == 'Abajo' %}selected{% endif %}>
                                     Abajo
                                 </option>
                             </select>
-                            <label for="velocidadScroll" class="form-label">Velocidad</label>
-                            <input type="range" class="form-range" min="2" max="6" id="velocidadScroll"
-                                   name="velocidadScroll" value="{{ request.session.velocidadScroll }}">
 
-                            <input type="hidden" value="nada" name="matriz" id="matriz">
-                            <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                            <label for="velocidadScroll" class="block mb-1">Velocidad</label>
+                            <input type="range" min="2" max="6" id="velocidadScroll" name="velocidadScroll"
+                                   value="{{ request.session.velocidadScroll }}"
+                                   class="w-full accent-cyan-400">
+
+                            <input type="hidden" name="matriz" id="matriz" value="nada">
+
+                            <button type="submit"
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                Enviar a dispositivos
+                            </button>
                         </form>
-                    </div>
-                    <div class="tab-pane fade shadow-lg p-3 mb-5 bg-success rounded {% if request.session.active == 'estrellas' %} active show {% endif %}"
-                         id="nav-estrellas" role="tabpanel" aria-labelledby="nav-estrellas-tab">
-                        <form action="{% url 'ledsup:estrellas' %}" method="post" id="formularioParaEnviarEstrellas">
+                    </section>
+
+                    <!-- Panel Estrellas -->
+                    <section id="panel-estrellas" role="tabpanel" aria-labelledby="tab-estrellas"
+                             class="bg-[#1E293B] rounded-b-lg p-6 shadow-lg
+                    {% if request.session.active == 'estrellas' %}block{% else %}hidden{% endif %}">
+                        <form action="{% url 'ledsup:estrellas' %}" method="post" id="formularioParaEnviarEstrellas"
+                              class="space-y-4">
                             {% csrf_token %}
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                                    name="show" id="show">
+                            <select name="show" id="show"
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
-                                    {% if show.id == request.session.valorShowroom %}
-                                        <option value={{ show.id }} selected>{{ show }}</option>
-                                    {% else %}
-                                        <option value={{ show.id }}>{{ show }}</option>
-                                    {% endif %}
+                                    <option value="{{ show.id }}"
+                                            {% if show.id == request.session.valorShowroom %}selected{% endif %}>{{ show }}</option>
                                 {% endfor %}
                             </select>
+
                             <input type="hidden" value="{{ request.session.col }}" name="color" id="color">
-                            <label class="form-label">Colores</label>
-                            <input type="color" class="form-control form-control-color" id="color1Estrellas"
-                                   name="color1Estrellas"
+
+                            <label class="block">Colores</label>
+                            <input type="color" id="color1Estrellas" name="color1Estrellas"
                                    value="{% if not request.session.color1Estrellas %}#ffffff{% else %}{{ request.session.color1Estrellas }}{% endif %}"
-                                   title="Elige un color para las estrellas">
-                            <input type="color" class="form-control form-control-color" id="color2Estrellas"
-                                   name="color2Estrellas"
+                                   title="Elige un color para las estrellas"
+                                   class="w-8 h-8 rounded border border-gray-700 cursor-pointer">
+
+
+                            <input type="color" id="color2Estrellas" name="color2Estrellas"
                                    value="{% if not request.session.color2Estrellas %}#000000{% else %}{{ request.session.color2Estrellas }}{% endif %}"
-                                   title="Elige un color para el fondo">
+                                   title="Elige un color para el fondo"
+                                   class="w-8 h-8 rounded border border-gray-700 cursor-pointer">
 
-                            <label for="velocidadEstrellas" class="form-label">Velocidad</label>
-                            <input type="range" class="form-range" min="2" max="6" id="velocidadEstrellas"
-                                   name="velocidadEstrellas" value="{{ request.session.velocidadEstrellas }}">
+                            <label for="velocidadEstrellas" class="block mb-1">Velocidad</label>
+                            <input type="range" min="2" max="6" id="velocidadEstrellas" name="velocidadEstrellas"
+                                   value="{{ request.session.velocidadEstrellas }}"
+                                   class="w-full accent-cyan-400">
 
-                            <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                            <button type="submit"
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                Enviar a dispositivos
+                            </button>
                         </form>
-                    </div>
-                    <div class="tab-pane fade shadow-lg p-3 mb-5 bg-success rounded {% if request.session.active == 'scan' %} active show {% endif %}"
-                         id="nav-scan" role="tabpanel" aria-labelledby="nav-scan-tab">
-                        <form action="{% url 'ledsup:scan' %}" method="post" id="formularioParaEnviarScan">
+                    </section>
+
+                    <!-- Panel Scan -->
+                    <section id="panel-scan" role="tabpanel" aria-labelledby="tab-scan"
+                             class="bg-[#1E293B] rounded-b-lg p-6 shadow-lg
+                    {% if request.session.active == 'scan' %}block{% else %}hidden{% endif %}">
+                        <form action="{% url 'ledsup:scan' %}" method="post" id="formularioParaEnviarScan"
+                              class="space-y-4">
                             {% csrf_token %}
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                                    name="show" id="show">
+                            <select name="show" id="show"
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
-                                    {% if show.id == request.session.valorShowroom %}
-                                        <option value={{ show.id }} selected>{{ show }}</option>
-                                    {% else %}
-                                        <option value={{ show.id }}>{{ show }}</option>
-                                    {% endif %}
+                                    <option value="{{ show.id }}"
+                                            {% if show.id == request.session.valorShowroom %}selected{% endif %}>{{ show }}</option>
                                 {% endfor %}
                             </select>
 
-                            <label for="dirScan" class="form-label">Direccion</label>
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
-                                    name="dirScan" id="dirScan">
-                                <option value="Derecha"{% if request.session.dirScan == 'Derecha' %}
-                                        selected {% endif %}>Derecha
+                            <label for="dirScan" class="block mb-1">Dirección</label>
+                            <select name="dirScan" id="dirScan"
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
+                                <option value="Derecha"
+                                        {% if request.session.dirScan == 'Derecha' %}selected{% endif %}>Derecha
                                 </option>
-                                <option value="Izquierda"{% if request.session.dirScan == 'Izquierda' %}
-                                        selected {% endif %}>Izquierda
+                                <option value="Izquierda"
+                                        {% if request.session.dirScan == 'Izquierda' %}selected{% endif %}>Izquierda
                                 </option>
-                                <option value="Arriba"{% if request.session.dirScan == 'Arriba' %} selected {% endif %}>
+                                <option value="Arriba" {% if request.session.dirScan == 'Arriba' %}selected{% endif %}>
                                     Arriba
                                 </option>
-                                <option value="Abajo"{% if request.session.dirScan == 'Abajo' %} selected {% endif %}>
+                                <option value="Abajo" {% if request.session.dirScan == 'Abajo' %}selected{% endif %}>
                                     Abajo
                                 </option>
                             </select>
 
-                            <label class="form-label">Colores</label>
-                            <input type="color" class="form-control form-control-color" id="color1Scan"
-                                   name="color1Scan"
+                            <label class="block">Colores</label>
+                            <input type="color" id="color1Scan" name="color1Scan"
                                    value="{% if not request.session.color1Scan %}#ffffff{% else %}{{ request.session.color1Scan }}{% endif %}"
-                                   title="Elige un color para el scan">
-                            <input type="color" class="form-control form-control-color" id="color2Scan"
-                                   name="color2Scan"
+                                   title="Elige un color para el scan"
+                                   class="w-8 h-8 rounded border border-gray-700 cursor-pointer">
+
+                            <input type="color" id="color2Scan" name="color2Scan"
                                    value="{% if not request.session.color2Scan %}#000000{% else %}{{ request.session.color2Scan }}{% endif %}"
-                                   title="Elige un color para el fondo">
+                                   title="Elige un color para el fondo"
+                                   class="w-8 h-8 rounded border border-gray-700 cursor-pointer">
 
-                            <label for="velocidadScan" class="form-label">Velocidad</label>
-                            <input type="range" class="form-range" min="2" max="6" id="velocidadScan"
-                                   name="velocidadScan" value="{{ request.session.velocidadScan }}">
+                            <label for="velocidadScan" class="block mb-1">Velocidad</label>
+                            <input type="range" min="2" max="6" id="velocidadScan" name="velocidadScan"
+                                   value="{{ request.session.velocidadScan }}"
+                                   class="w-full accent-cyan-400">
 
-                            <button type="submit" class="btn btn-outline-warning">Enviar a dispositivos</button>
+                            <button type="submit"
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                Enviar a dispositivos
+                            </button>
                         </form>
-                    </div>
+                    </section>
                 </div>
             </div>
         </div>
+
+        <input type="hidden" id="active" value="{{ request.session.active }}">
     </div>
 
-    <input type="hidden" id="active" value="{{ request.session.active }}">
 
+    <script src="{% static 'ledsup/js/showroom.js' %}"></script>
 
 {% endblock %}

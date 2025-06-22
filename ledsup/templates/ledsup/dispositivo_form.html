@@ -1,67 +1,95 @@
 {% extends "ledsup/base_generic.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container-fluid bg-light">
-    <div class="row">
-        <form action="" method="post">
+    <div class="max-w-4xl mx-auto py-10 px-6 text-white">
+        <form action="" method="post" class="space-y-6">
             {% csrf_token %}
-            <table>
-                {{ form.as_table }}
-                <div id="id_errores"></div>
-                <input type="hidden" id="id_patch" name="patch">
-            </table>
-                        <!-- Button trigger modal -->
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#editarPosicionLeds" id="botonEditar">
-              Editar Posicion de Leds
-            </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="editarPosicionLeds" tabindex="-1" aria-labelledby="EdicionPosicionLeds" aria-hidden="true">
-              <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="EdicionPosicionLeds">Editar Posicion de Leds</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                        <div id="editor" class="row"></div>
-                  </div>
-                  <div class="modal-footer">
-                      <div>
-                            <h5>Pacheo rápido</h5>
-                            <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="pacheoRapido">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block mb-1 font-semibold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ field.errors }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <input type="hidden" id="id_patch" name="patch" value={{ dispositivo.patch }}>
+            <div id="id_errores"></div>
+
+            <!-- Botón abrir popup -->
+            <div class="pt-4">
+                <button type="button" id="botonEditar"
+                        class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded">
+                    Editar Posición de LEDs
+                </button>
+            </div>
+
+            <!-- Popup overlay -->
+            <div id="popupOverlay"
+                 class="fixed inset-0 bg-black bg-opacity-60 hidden z-50 flex items-center justify-center px-4">
+                <div class="bg-gray-900 rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+                    <div class="flex justify-between items-center px-6 py-4 border-b border-gray-700">
+                        <h2 class="text-xl font-semibold">Editar Posición de LEDs</h2>
+                        <button type="button" id="cerrarPopup" class="text-white hover:text-red-400 text-2xl">&times;
+                        </button>
+                    </div>
+
+                    <div class="p-4 overflow-auto flex-1">
+                        <div id="editor" class="grid gap-1 justify-center">
+                            <!-- JS inyecta aquí la grilla -->
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 px-6 py-4 border-t border-gray-700">
+                        <div class="w-full md:w-auto">
+                            <label for="pacheoRapido" class="text-lg font-bold block mb-2">Pacheo rápido</label>
+                            <select id="pacheoRapido" class="w-full bg-gray-800 text-white rounded px-4 py-2">
                                 <option selected value="0">Filas empezando arriba izquierda</option>
                                 <option value="1">Filas empezando arriba derecha</option>
                                 <option value="2">Filas empezando abajo izquierda</option>
                                 <option value="3">Filas empezando abajo derecha</option>
-
                                 <option value="4">Filas de serpiente empezando arriba izquierda</option>
                                 <option value="5">Filas de serpiente empezando arriba derecha</option>
                                 <option value="6">Filas de serpiente empezando abajo derecha</option>
                                 <option value="7">Filas de serpiente empezando abajo izquierda</option>
-
-
                                 <option value="8">Columnas empezando arriba izquierda</option>
                                 <option value="9">Columnas empezando arriba derecha</option>
                                 <option value="10">Columnas empezando abajo izquierda</option>
                                 <option value="11">Columnas empezando abajo derecha</option>
-
                                 <option value="12">Columnas de serpiente empezando arriba izquierda</option>
                                 <option value="13">Columnas de serpiente empezando arriba derecha</option>
                                 <option value="14">Columnas de serpiente empezando abajo izquierda</option>
                                 <option value="15">Columnas de serpiente empezando abajo derecha</option>
-                            </select>
-                      </div>
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                      <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="botonGuardar">Guardar</button>
 
-                  </div>
+                            </select>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button type="button" id="cancelarPopup"
+                                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                Cancelar
+                            </button>
+                            <button type="button" id="botonGuardar"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <br>
-            <input class="btn btn-primary" type="submit" value="Guardar" id="botonAceptar"/>
+
+            <!-- Botón final -->
+            <div class="pt-6">
+                <input type="submit" value="Guardar" id="botonAceptar"
+                       class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded">
+            </div>
         </form>
     </div>
-</div>
+
+    <script src="{% static 'ledsup/js/editorDispositivos.js' %}"></script>
 {% endblock %}

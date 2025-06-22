@@ -1,87 +1,180 @@
-<!-- Comienzo navbar-->
 {% load static %}
-<header class="site-header sticky-top py-1">
-    <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
-
-        <a class="navbar-brand" href="{% url 'web:index' %}">
-            <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" width="50" height="50" id="imagenLogo" alt="logo"
-                 class="logoRojo d-inline-block align-text-top"/>
+<header class="bg-[#0A192F] sticky top-0 z-50">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 text-gray-300 font-semibold text-sm">
+        <!-- Logo -->
+        <a href="{% url 'web:index' %}"
+           class="flex items-center space-x-2 text-cyan-400 font-bold text-xl hover:text-[#00FFA3] transition">
+            <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" alt="logo" class="w-10 h-10 rounded-full"/>
+            <span>Easy-Led</span>
         </a>
 
-        <button class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <!-- Botón hamburguesa (solo en móvil) -->
+        <button id="menu-btn" class="md:hidden block text-cyan-400 focus:outline-none" aria-label="Toggle menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
         </button>
 
+        <!-- Menú (oculto en móvil, flex en md+) -->
+        <ul id="menu" class="hidden md:flex items-center space-x-8">
+            <li><a href="{% url 'web:events' %}" class="hover:text-cyan-400 transition">Eventos</a></li>
+            <li><a href="{% url 'web:contact' %}" class="hover:text-cyan-400 transition">Contacto</a></li>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'web:events' %}">
-                        Eventos
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'web:contact' %}">
-                        Contacto
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Productos
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        {% for tipoProducto in listado_tipos_productos %}
-                            <h6 class="dropdown-header">{{ tipoProducto.nombre_tipo_producto }}</h6>
-                            {% for producto in listado_productos %}
-                                {% if producto.tipo_producto == tipoProducto %}
-                                    <a class="dropdown-item" href="{% url 'web:productDetails' producto.id %}">
+            <li class="relative group">
+                <a href="#" class="hover:text-cyan-400 transition flex items-center space-x-1">
+                    <span>Productos</span>
+                    <svg class="w-3 h-3 fill-current text-cyan-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z"
+                              clip-rule="evenodd"></path>
+                    </svg>
+                </a>
+
+                <!-- Submenú fijo -->
+                <ul class="absolute top-full left-0 hidden group-hover:flex flex-col bg-[#112240] rounded-md py-2 w-48 shadow-lg border border-cyan-600 z-50">
+                    {% for tipoProducto in listado_tipos_productos %}
+                        <li class="px-4 py-2 text-cyan-400 font-semibold border-b border-cyan-700">{{ tipoProducto.nombre_tipo_producto }}</li>
+                        {% for producto in listado_productos %}
+                            {% if producto.tipo_producto == tipoProducto %}
+                                <li>
+                                    <a href="{% url 'web:productDetails' producto.id %}"
+                                       class="block px-6 py-2 text-gray-300 hover:bg-cyan-700 hover:text-white transition">
                                         {{ producto.nombre_producto }}
                                     </a>
-                                {% endif %}
-                            {% endfor %}
+                                </li>
+                            {% endif %}
                         {% endfor %}
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link bg-info btn" href="{% url 'ledsup:lista_showroom' %}">
+                    {% endfor %}
+                </ul>
+            </li>
+
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'ledsup:lista_showroom' %}"
+                       class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition">
                         Leds up
                     </a>
                 </li>
-                {% if user.is_authenticated and user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link btn-secondary btn" href="{% url 'admin:index' %}">
+
+                {% if user.is_staff %}
+                    <li>
+                        <a class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition"
+                           href="{% url 'admin:index' %}">
                             Admin
                         </a>
                     </li>
                 {% endif %}
-                {% if user.is_authenticated and user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link btn-warning btn" href="{% url 'web:lista_errores' %}">
+                {% if user.is_staff %}
+                    <li>
+                        <a class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition"
+                           href="{% url 'web:lista_errores' %}">
                             Errores
                         </a>
                     </li>
                 {% endif %}
-            </ul>
+            {% endif %}
+        </ul>
 
-            <div class="top-right">
-                {% if user.is_authenticated %}
-                    <span class="navbar-text">
-                            Usuario: {{ user.get_username }}
-                        </span>
-                    <br>
-                    <a href="{% url 'logout' %}?next={{ request.path }}" class="btn btn-danger">Logout</a>
-                {% else %}
-                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Iniciar sesion</a>
-                {% endif %}
-            </div>
-
+        <!-- Login / Logout -->
+        <div class="hidden md:block">
+            {% if user.is_authenticated %}
+                <span class="mr-4 text-gray-400">Usuario: {{ user.get_username }}</span>
+                <a href="{% url 'logout' %}?next={{ request.path }}"
+                   class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}"
+                   class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition">
+                    Iniciar sesión
+                </a>
+            {% endif %}
         </div>
     </nav>
+
+    <!-- Menú móvil (visible solo cuando se abre el botón) -->
+    <div id="mobile-menu" class="md:hidden hidden bg-[#0A192F] px-6 py-4">
+        <ul class="flex flex-col space-y-3 text-gray-300 font-semibold text-sm">
+            <li><a href="{% url 'web:events' %}" class="hover:text-cyan-400 transition block">Eventos</a></li>
+            <li><a href="{% url 'web:contact' %}" class="hover:text-cyan-400 transition block">Contacto</a></li>
+
+            <!-- Productos con dropdown simple para móvil -->
+            <li>
+                <details class="group">
+                    <summary class="cursor-pointer flex justify-between items-center hover:text-cyan-400 transition">
+                        Productos
+                        <svg class="w-3 h-3 fill-current text-cyan-400 group-open:rotate-180 transition-transform"
+                             viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.293l3.71-4.06a.75.75 0 111.08 1.04l-4.25 4.65a.75.75 0 01-1.08 0l-4.25-4.65a.75.75 0 01.02-1.06z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                    </summary>
+                    <ul class="mt-2 pl-4 border-l border-cyan-600">
+                        {% for tipoProducto in listado_tipos_productos %}
+                            <li class="py-1 text-cyan-400 font-semibold border-b border-cyan-700">{{ tipoProducto.nombre_tipo_producto }}</li>
+                            {% for producto in listado_productos %}
+                                {% if producto.tipo_producto == tipoProducto %}
+                                    <li>
+                                        <a href="{% url 'web:productDetails' producto.id %}"
+                                           class="block py-1 text-gray-300 hover:bg-cyan-700 hover:text-white transition rounded px-2">
+                                            {{ producto.nombre_producto }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </details>
+            </li>
+
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'ledsup:lista_showroom' %}"
+                       class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition inline-block w-max">
+                        Leds up
+                    </a>
+                </li>
+
+                {% if user.is_staff %}
+                    <li>
+                        <a class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition inline-block w-max"
+                           href="{% url 'admin:index' %}">
+                            Admin
+                        </a>
+                    </li>
+                {% endif %}
+                {% if user.is_staff %}
+                    <li>
+                        <a class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition inline-block w-max"
+                           href="{% url 'web:lista_errores' %}">
+                            Errores
+                        </a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+
+
+
+
+            <li>
+                {% if user.is_authenticated %}
+                    <span class="block mb-2 text-gray-400">Usuario: {{ user.get_username }}</span>
+                    <a href="{% url 'logout' %}?next={{ request.path }}"
+                       class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold block w-max text-center">
+                        Logout
+                    </a>
+
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}"
+                       class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition block w-max text-center">
+                        Iniciar sesión
+                    </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
 </header>

@@ -1,26 +1,61 @@
-$(document).ready(function () {
-    function generarColorHex() {
-        let letras = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letras[Math.floor(Math.random() * 16)];
+const btn = document.getElementById('menu-btn');
+const menu = document.getElementById('mobile-menu');
+
+btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+});
+
+const estadoBadge = document.getElementById('estado-badge');
+const estadoBadgeMobile = document.getElementById('estado-badge-mobile');
+
+function setEstadoConectado() {
+    [estadoBadge, estadoBadgeMobile].forEach(el => {
+        if (el) {
+            el.textContent = 'PC: Conectada';
+            el.style.backgroundColor = '#00FFA3';
+            el.style.color = '#0D1117';
         }
-        return color;
-    }
+    });
+}
 
-    setInterval(function () {
-        const colorRandom = generarColorHex();
-        // Aplicar el gradiente radial con el color random y transparencia al final
-        const gradiente = `radial-gradient(closest-side, ${colorRandom}, transparent)`;
+function setEstadoDesconectado() {
+    [estadoBadge, estadoBadgeMobile].forEach(el => {
+        if (el) {
+            el.textContent = 'PC: Desconectada';
+            el.style.backgroundColor = '#9E00FF';
+            el.style.color = '#FFFFFF';
+        }
+    });
+}
 
-        $("#imagenLogo").css({
-            "background": gradiente,
-            "-webkit-background": gradiente
-        });
-    }, 1500);
-});
+(function () {
+    const socketProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const socket = new WebSocket(socketProtocol + '//' + window.location.host + '/ws/estado/');
 
-$(document).ready(function(){
-    $('.venobox').venobox();
-});
+    socket.onopen = function () {
+        console.log('WebSocket conectado');
+    };
 
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        console.log('Mensaje recibido:', data);
+
+        if (data.estado === 'conectado') {
+            setEstadoConectado();
+        } else if (data.estado === 'desconectado') {
+            setEstadoDesconectado();
+        } else {
+            setEstadoDesconectado();
+        }
+    };
+
+    socket.onclose = function () {
+        console.log('WebSocket cerrado');
+        setEstadoDesconectado();
+    };
+
+    socket.onerror = function (error) {
+        console.error('Error WebSocket:', error);
+        setEstadoDesconectado();
+    };
+})();

@@ -1,16 +1,32 @@
 {% extends "ledsup/base_generic.html" %}
 
 {% block content %}
-<div class="container-fluid bg-light">
-    <div class="row justify-content-center">
-        <form action="" method="post">
+    <div class="flex justify-center mt-10">
+        <form action="" method="post"
+              class="bg-[#1E1E2F] p-6 rounded-xl shadow-md w-full max-w-md border border-gray-700">
             {% csrf_token %}
-            <table>
-            {{ form.as_table }}
-            </table>
-            <input class="btn btn-primary" type="submit" value="Guardar" />
 
+            <div class="space-y-4">
+                {% for field in form %}
+                    <div>
+                        <label class="block text-sm text-white font-semibold mb-1" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt-6">
+                <input
+                        type="submit"
+                        value="Guardar"
+                        class="w-full bg-[#0FF6FF] hover:bg-[#00cfd1] text-black font-bold py-2 px-4 rounded-md transition duration-200"
+                />
+            </div>
         </form>
     </div>
-</div>
 {% endblock %}

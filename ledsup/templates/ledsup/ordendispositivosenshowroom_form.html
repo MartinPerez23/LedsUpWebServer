@@ -1,16 +1,20 @@
 {% extends "ledsup/base_generic.html" %}
 
 {% block content %}
-<div class="container-fluid bg-light">
-    <div class="row justify-content-center">
-        <form action="" method="post">
-            {% csrf_token %}
-            <table>
-            {{ form.as_table }}
-            </table>
-            <input class="btn btn-primary " type="submit" value="Guardar" />
+    <div class="min-h-screen px-4 py-10 bg-[color:var(--bg-dark)] text-[color:var(--text)]">
+        <div class="max-w-2xl mx-auto bg-[color:var(--panel)] p-6 rounded-xl shadow-md border border-[color:var(--primary)]">
+            <form action="" method="post" class="space-y-6">
+                {% csrf_token %}
 
-        </form>
+                <div class="space-y-4">
+                    {{ form.as_p }}
+                </div>
+
+                <div class="pt-4">
+                    <input type="submit" value="Guardar"
+                           class="bg-[color:var(--primary)] hover:bg-[color:var(--highlight)] text-black font-semibold py-2 px-4 rounded transition duration-200 cursor-pointer"/>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

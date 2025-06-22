@@ -1,37 +1,53 @@
 {% extends "web/base_generic.html" %}
 
 {% block content %}
-<div class="container bg-warning">
+    <div class="max-w-md mx-auto mt-20 bg-[#1E1E2F] text-white p-8 rounded-lg shadow-lg border border-[#0FF6FF]">
 
-    {% if form.errors %}
-    <p>Tu usuario o contraseña no es válido. Intente nuevamente.</p>
-    {% endif %}
+        {% if form.errors %}
+            <div class="mb-4 p-3 bg-red-600 text-white rounded">
+                <p>Tu usuario o contraseña no es válido. Intente nuevamente.</p>
+            </div>
+        {% endif %}
 
-    {% if next %}
-    {% if user.is_authenticated %}
-    <p>Tu cuenta no tiene permisos para acceder a esta página, intente con otra cuenta.</p>
-    {% else %}
-    <p>Por favor, inicie sesión.</p>
-    {% endif %}
-    {% endif %}
+        {% if next %}
+            {% if user.is_authenticated %}
+                <div class="mb-4 p-3 bg-red-600 text-white rounded">
+                    <p>Tu cuenta no tiene permisos para acceder a esta página, intente con otra cuenta.</p>
+                </div>
+            {% endif %}
+        {% endif %}
 
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-        <input type="submit" value="Ingresar"/>
-        <input type="hidden" name="next" value="{{ next }}"/>
-    </form>
-    <p><a href="{% url 'password_reset' %}">Me olvidé la contraseña</a></p>
+        <form method="post" action="{% url 'login' %}" class="space-y-4">
+            {% csrf_token %}
 
-</div>
+            <div>
+                <label for="{{ form.username.id_for_label }}" class="block mb-1 text-sm font-semibold text-[#0FF6FF]">
+                    {{ form.username.label }}
+                </label>
+                <input type="text" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}"
+                       value="{{ form.username.value|default:'' }}"
+                       class="w-full px-3 py-2 rounded-md bg-[#0D1117] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#0FF6FF]"/>
+            </div>
 
+            <div>
+                <label for="{{ form.password.id_for_label }}" class="block mb-1 text-sm font-semibold text-[#0FF6FF]">
+                    {{ form.password.label }}
+                </label>
+                <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}"
+                       class="w-full px-3 py-2 rounded-md bg-[#0D1117] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#0FF6FF]"/>
+            </div>
+
+            <input type="hidden" name="next" value="{{ next }}"/>
+
+            <div class="flex justify-between items-center mt-6">
+                <button type="submit"
+                        class="px-4 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc] transition">
+                    Ingresar
+                </button>
+                <a href="{% url 'password_reset' %}" class="text-sm text-[#0FF6FF] hover:underline">
+                    Me olvidé la contraseña
+                </a>
+            </div>
+        </form>
+    </div>
 {% endblock %}

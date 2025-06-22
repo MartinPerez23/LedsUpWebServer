@@ -1,31 +1,30 @@
 {% load static %}
 
-<footer>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="offset-2 col-md-2 col-4">
-                <img src="{% static 'web/imagenes/iconos/logo.png' %}" class="rounded-circle img-fluid" alt="logo">
-            </div>
-            <div class="col-md-8 col-10">
-
-                <div class="row redesSociales">
-                    <div class="offset-2 col-md-2 col-5">
-                            <a href=""><img src="{% static 'web/imagenes/iconos/facebook.png' %}" alt="facebook" class="iconosFooter img-fluid"></a>
-                            <a href=""><img src="{% static 'web/imagenes/iconos/gorjeo.png' %}" alt="twitter" class="iconosFooter img-fluid"></a>
-                    </div>
-                    <div class="col-md-2 col-5">
-                            <a href=""><img src="{% static 'web/imagenes/iconos/whatsapp.png' %}" alt="whatsapp" class="iconosFooter img-fluid"></a>
-                            <a href=""><img src="{% static 'web/imagenes/iconos/instagram.png' %}" alt="instagram" class="iconosFooter img-fluid"></a>
-                    </div>
-                </div>
-
-            </div>
-
+<footer class="bg-[#0F172A] py-10 px-6 mt-12">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
+        <div class="flex items-center space-x-4 mb-6 md:mb-0">
+            <img src="{% static 'web/imagenes/iconos/logo.png' %}" alt="logo" class="rounded-full w-16 h-16">
+            <span class="text-cyan-400 font-semibold text-xl">Easy-Led</span>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <h6 class="text-center">Copyright© {{ current_year }} Easy-Led. Todos los derechos reservados.</h6>
-            </div>
+        <div class="flex space-x-4">
+            <a href="#" aria-label="Facebook">
+                <img src="{% static 'web/imagenes/iconos/facebook.png' %}" alt="facebook"
+                     class="w-8 h-8 hover:opacity-80">
+            </a>
+            <a href="#" aria-label="Twitter">
+                <img src="{% static 'web/imagenes/iconos/gorjeo.png' %}" alt="twitter" class="w-8 h-8 hover:opacity-80">
+            </a>
+            <a href="#" aria-label="WhatsApp">
+                <img src="{% static 'web/imagenes/iconos/whatsapp.png' %}" alt="whatsapp"
+                     class="w-8 h-8 hover:opacity-80">
+            </a>
+            <a href="#" aria-label="Instagram">
+                <img src="{% static 'web/imagenes/iconos/instagram.png' %}" alt="instagram"
+                     class="w-8 h-8 hover:opacity-80">
+            </a>
         </div>
+    </div>
+    <div class="mt-6 text-center text-sm text-gray-500">
+        &copy; {{ current_year }} Easy-Led. Todos los derechos reservados.
     </div>
 </footer>

@@ -3,51 +3,54 @@
 
 
 {% block content %}
-    <section>
-        {% load static %}
+    <section class="px-6 py-12 bg-[#0F172A] text-white">
+        <h2 class="text-center text-4xl font-extrabold text-cyan-400 mb-6">Contacto</h2>
 
-        <h2 class="text-center shadow-lg p-3 mb-5 rounded bg-dark text-light bruno-ace-sc-regular">Contacto</h2>
         {% if messages %}
             {% for message in messages %}
-                <div {% if message.tags == 'error' %} class="alert alert-danger"{% else %}
-                                                      class="alert alert-info" {% endif %} role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <div class="max-w-4xl mx-auto mb-4 p-4 rounded-md shadow-lg {% if message.tags == 'error' %} bg-red-700 text-red-200 {% else %} bg-cyan-800 text-cyan-300 {% endif %}">
                     {{ message }}
                 </div>
             {% endfor %}
         {% endif %}
-        <form method="post">{% csrf_token %}
-            <div class="mx-auto p-1" style="width: 400px;">
-                <div class="row mb-3">
-                    <label for="inputName" class="col-sm-2 col-form-label">{{ form.nombre.label_tag }}</label>
-                    <div class="col-sm-10">
-                        {{ form.nombre }}
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="inputSubname" class="col-sm-2 col-form-label">{{ form.apellido.label_tag }}</label>
-                    <div class="col-sm-10">
-                        {{ form.apellido }}
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="inputEmail" class="col-sm-2 col-form-label">{{ form.email.label_tag }}</label>
-                    <div class="col-sm-10">
-                        {{ form.email }}
-                    </div>
-                </div>
 
-                <div class="row mb-3">
-                    <label for="inputMessage" class="col-sm-2 col-form-label">{{ form.mensaje.label_tag }}</label>
-                    <div class="col-sm-10">
-                        {{ form.mensaje }}
-                    </div>
-                </div>
+        <form method="post" class="max-w-xl mx-auto bg-[#1E293B] p-6 rounded-xl shadow-md space-y-6">
+            {% csrf_token %}
 
-                <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+            <!-- Input Nombre -->
+            <div>
+                <label for="inputName"
+                       class="block text-[#00FFA3] font-semibold mb-2">{{ form.nombre.label_tag }}</label>
+                {{ form.nombre }}
+            </div>
+
+            <!-- Input Apellido -->
+            <div>
+                <label for="inputSubname"
+                       class="block text-[#00FFA3] font-semibold mb-2">{{ form.apellido.label_tag }}</label>
+                {{ form.apellido }}
+            </div>
+
+            <!-- Input Email -->
+            <div>
+                <label for="inputEmail"
+                       class="block text-[#00FFA3] font-semibold mb-2">{{ form.email.label_tag }}</label>
+                {{ form.email }}
+            </div>
+
+            <!-- Input Mensaje -->
+            <div>
+                <label for="inputMessage"
+                       class="block text-[#00FFA3] font-semibold mb-2">{{ form.mensaje.label_tag }}</label>
+                {{ form.mensaje }}
+            </div>
+
+            <div class="text-center">
+                <button type="submit"
+                        class="bg-[var(--secondary)] text-white px-4 py-2 rounded-md font-semibold hover:bg-purple-700 transition">
+                    Enviar mensaje
+                </button>
             </div>
         </form>
-
     </section>
-
 {% endblock %}

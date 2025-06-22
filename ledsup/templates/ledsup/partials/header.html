@@ -1,111 +1,112 @@
-<!-- Comienzo navbar-->
 {% load static %}
-<header class="site-header sticky-top">
-    <nav class="navbar justify-content-between navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" id="imagenLogo" alt="logo"
-                     class="logo d-inline-block align-text-top"/>
-            </a>
+<header class="bg-[#0A192F] sticky top-0 z-50">
+    <nav class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 text-gray-300 font-semibold text-sm">
+        <!-- Logo -->
+        <a href="{% url 'ledsup:lista_dispositivos' %}"
+           class="flex items-center space-x-2 text-cyan-400 font-bold text-xl hover:text-[#00FFA3] transition">
+            <img src="{% static 'ledsup/imagenes/iconos/logo.png' %}" alt="logo" class="w-10 h-10 rounded-full"/>
+            <span>Leds-Up</span>
+        </a>
 
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarScroll"
-                    aria-controls="navbarScroll"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <!-- Menú desktop -->
+        <ul id="menu" class="hidden md:flex items-center space-x-8">
+            <li><a href="{% url 'ledsup:lista_dispositivos' %}" class="hover:text-cyan-400 transition">Listado de
+                Dispositivos</a></li>
+            <li><a href="{% url 'ledsup:lista_showroom' %}" class="hover:text-cyan-400 transition">Listado de
+                Showrooms</a></li>
+            <li><a href="{% url 'ledsup:showroom' %}" class="hover:text-cyan-400 transition">Showroom</a></li>
+            <li>
+                <a href="{% url 'web:index' %}"
+                   class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition">
+                    Easy-Led
+                </a>
+            </li>
+            {% if user.is_authenticated and user.is_staff %}
+                <li>
+                    <a class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition"
+                       href="{% url 'admin:index' %}">
+                        Admin
+                    </a>
+                </li>
+            {% endif %}
+            <!-- Aquí va el badge estado -->
+            <li>
+                <span id="estado-badge" class="inline-block px-3 py-1 rounded-full text-sm font-semibold select-none"
+                      style="background-color: #9E00FF; color: white;">
+                    PC: Desconectada
+                </span>
+            </li>
+        </ul>
 
+        <!-- Botón hamburguesa (solo en móvil) -->
+        <button id="menu-btn" class="md:hidden block text-cyan-400 focus:outline-none" aria-label="Toggle menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
 
-            <div class="collapse navbar-collapse" id="navbarScroll">
-
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'ledsup:lista_dispositivos' %}">
-                            Listado de Dispositivos
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'ledsup:lista_showroom' %}">
-                            Listado de Showrooms
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'ledsup:showroom' %}">
-                            Showroom
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link bg-info btn" href="{% url 'web:index' %}">
-                            Easy-Led
-                        </a>
-                    </li>
-                    {% if user.is_authenticated and user.is_staff %}
-                        <li class="nav-item">
-                            <a class="nav-link btn-secondary btn" href="{% url 'admin:index' %}">
-                                Admin
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                        <li class="nav-item align-self-center mx-4">
-                            <span class="fw-bold">
-                                <span id="estado-badge" class="badge {% if estado_conectado %}bg-success{% else %}bg-danger{% endif %}">
-                                    Status: {% if estado_conectado %}Conectado{% else %}Desconectado{% endif %}
-                                </span>
-                            </span>
-                        </li>
-                        <script>
-                            (function () {
-                                const badge = document.getElementById('estado-badge');
-                                const socket = new WebSocket('wss://' + window.location.host + '/ws/estado/');
-                                socket.onopen = function () {
-                                    console.log('WebSocket conectado');
-                                };
-
-                                socket.onmessage = function (event) {
-                                    const data = JSON.parse(event.data);
-                                    const usuarioActual = "{{ request.user.id }}";
-                                    console.log('Mensaje recibido:', data);
-
-                                    if (data.estado) {
-                                        badge.textContent = 'Status: ' + (data.estado === 'conectado' ? 'Conectado' : 'Desconectado');
-
-                                        if (data.estado === 'conectado') {
-                                            badge.classList.remove('bg-danger');
-                                            badge.classList.add('bg-success');
-                                        } else {
-                                            badge.classList.remove('bg-success');
-                                            badge.classList.add('bg-danger');
-                                        }
-                                    }
-                                };
-
-                                socket.onclose = function () {
-                                    console.log('WebSocket cerrado');
-                                };
-
-                                socket.onerror = function (error) {
-                                    console.error('Error WebSocket:', error);
-                                };
-                            })();
-                        </script>
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="top-right">
-                {% if user.is_authenticated %}
-                    <span class="navbar-text">
-                            Usuario: {{ user.get_username }}
-                        </span>
-                    <br>
-                    <a href="{% url 'logout' %}?next={{ request.path }}" class="btn btn-danger">Cerrar sesion</a>
-                {% else %}
-                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">Iniciar sesion</a>
-                {% endif %}
-            </div>
+        <!-- Login / Logout -->
+        <div class="hidden md:block">
+            {% if user.is_authenticated %}
+                <span class="mr-4 text-gray-400">Usuario: {{ user.get_username }}</span>
+                <a href="{% url 'logout' %}?next={{ request.path }}"
+                   class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold">
+                    Logout
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}"
+                   class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition">
+                    Iniciar sesión
+                </a>
+            {% endif %}
         </div>
     </nav>
+
+    <!-- Menú móvil -->
+    <div id="mobile-menu" class="md:hidden hidden bg-[#0A192F] px-6 py-4">
+        <ul class="flex flex-col space-y-3 text-gray-300 font-semibold text-sm">
+            <li><a href="{% url 'ledsup:lista_dispositivos' %}" class="hover:text-cyan-400 transition">Listado de
+                Dispositivos</a></li>
+            <li><a href="{% url 'ledsup:lista_showroom' %}" class="hover:text-cyan-400 transition">Listado de
+                Showrooms</a></li>
+            <li><a href="{% url 'ledsup:showroom' %}" class="hover:text-cyan-400 transition">Showroom</a></li>
+            <li>
+                <a href="{% url 'web:index' %}"
+                   class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition">
+                    Leds-Up
+                </a>
+            </li>
+            {% if user.is_authenticated and user.is_staff %}
+                <li>
+                    <a class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition"
+                       href="{% url 'admin:index' %}">
+                        Admin
+                    </a>
+                </li>
+            {% endif %}
+            <li>
+                <span id="estado-badge-mobile"
+                      class="inline-block px-3 py-1 rounded-full text-sm font-semibold select-none"
+                      style="background-color: #9E00FF; color: white;">
+                    PC: Desconectada
+                </span>
+            </li>
+            <li>
+                {% if user.is_authenticated %}
+                    <span class="block mb-2 text-gray-400">Usuario: {{ user.get_username }}</span>
+                    <a href="{% url 'logout' %}?next={{ request.path }}"
+                       class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold block w-max text-center">
+                        Logout
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}?next={{ request.path }}"
+                       class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition block w-max text-center">
+                        Iniciar sesión
+                    </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
 </header>

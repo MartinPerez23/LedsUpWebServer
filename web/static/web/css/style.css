@@ -1,87 +1,86 @@
-body    {
-
-    background-image: url('/static/web/imagenes/Fondo.jpg');
-    background-position: center center;
-    background-repeat: repeat;
-    background-attachment: fixed;
-    background-color: black;
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    line-height: 1.6;
 }
 
-section{
+:root {
+    --bg-dark: #0D1117;
+    --primary: #0FF6FF;
+    --secondary: #9E00FF;
+    --highlight: #00FFA3;
+    --text: #EDEDED;
+    --text-muted: #A1A1AA;
+}
 
-    padding: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    background-color: rgba(255, 255, 255, 0.5);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 
-h1{
-    font-family: 'Staatliches', cursive;
-    font-size: 60px;
-    color: white;
-    background-color: black;
+header {
+    box-shadow: 0 0 10px var(--primary);
+    padding: 1rem 2rem;
+
 }
 
-form{
-    margin: 10px;
-}
-.tab-pane {
 
-    padding: 50px;
-}
-
-/*
------------------------Inicio FOOTER-----------------------
-*/
-
-footer{
-    background-color: rgba(255, 255, 255, 0.8);
-    margin-right: auto;
-    margin-left: auto;
-    padding: 30px;
-}
-.iconosFooter{
-    width:40px;
-    padding: 5px;
-}
-.redesSociales{
-    padding: 20px;
+header h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    color: var(--primary);
 }
 
-/*
------------------------Fin FOOTER-----------------------
-
------------------------Inicio LOGO navbar-----------------------
-*/
-.logoRojo{
-    padding: 3px;
-    margin: 0px 30px;
-    width: 50px;
-    border-radius: 600px;
-    background: -webkit-radial-gradient(red,#343a40);
-}
-.logoAzul{
-    padding: 3px;
-    margin: 0px 30px;
-    width: 50px;
-    border-radius: 600px;
-    background: -webkit-radial-gradient(blue,#343a40);
-}
-.logoVerde{
-    padding: 3px;
-    margin: 0px 30px;
-    width: 50px;
-    border-radius: 600px;
-    background: -webkit-radial-gradient(green,#343a40);
+.hero h2 {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
 }
 
-/*
------------------------Fin LOGO navbar-----------------------
-*/
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
 
-.bruno-ace-sc-regular {
-  font-family: "Bruno Ace SC", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px var(--secondary);
+}
+
+.card {
+    background: #1E293B;
+    border-radius: 1rem;
+    padding: 1rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px var(--secondary);
+}
+
+.card h3 {
+    color: var(--highlight);
+    margin-bottom: 0.5rem;
+}
+
+.card p {
+    color: var(--text-muted);
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }

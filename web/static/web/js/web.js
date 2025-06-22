@@ -1,22 +1,30 @@
-$(document).ready(function (){
-    setInterval(function(){
-        if($("#imagenLogo").attr("class") === "logoRojo d-inline-block align-text-top")
-        {
-            $("#imagenLogo").attr("class","logoVerde d-inline-block align-text-top")
-        }
-        else if($("#imagenLogo").attr("class") === "logoVerde d-inline-block align-text-top")
-        {
-            $("#imagenLogo").attr("class","logoAzul d-inline-block align-text-top")
-        }else
-        {
-            $("#imagenLogo").attr("class","logoRojo d-inline-block align-text-top")
-        }
+const btn = document.getElementById('menu-btn');
+const menu = document.getElementById('mobile-menu');
 
-    },1500)
-
+btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
 });
 
-$(document).ready(function(){
-    $('.venobox').venobox();
-});
+let currIndex = 0;
+
+function showSlide(index) {
+    const items = document.querySelectorAll('.carousel-item');
+    items.forEach((item, i) => {
+        item.classList.toggle('hidden', i !== index);
+    });
+}
+
+function nextSlide() {
+    const items = document.querySelectorAll('.carousel-item');
+    currIndex = (currIndex + 1) % items.length;
+    showSlide(currIndex);
+}
+
+function prevSlide() {
+    const items = document.querySelectorAll('.carousel-item');
+    currIndex = (currIndex - 1 + items.length) % items.length;
+    showSlide(currIndex);
+}
+
+document.addEventListener('DOMContentLoaded', () => showSlide(currIndex));
 

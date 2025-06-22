@@ -1,86 +1,100 @@
 {% extends "ledsup/base_generic.html" %}
+{% load static %}
 
-{% block title %}<title>Listado Showroom</title>{% endblock %}
+{% block title %}
+    <title>Listado Showrooms</title>
+{% endblock %}
 
 {% block content %}
+    <div class="max-w-7xl mx-auto px-4 py-8 bg-[#0D1117] text-white font-sans">
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-info{% endif %} d-flex align-items-center"
-                 role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
-
-    <div class="container-fluid bg-light">
-        {% if user.is_authenticated %}
-            <br>
-            <h3>Listado de Showroom</h3>
-            <div class="justify-content-end">
-                <a class="btn btn-primary" href=" {% url 'ledsup:crear_showroom' %}">Agregar Showroom </a>
-            </div>
-            <br>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 px-4 py-2 rounded bg-[#9E00FF] text-white flex justify-between items-center">
+                    <span>{{ message }}</span>
+                    <button type="button" class="ml-4 text-white hover:text-gray-300" aria-label="Cerrar mensaje"
+                            onclick="this.parentElement.style.display='none'">&times;
+                    </button>
+                </div>
+            {% endfor %}
         {% endif %}
-        <div class="table-responsive">
-            <table class="table table-dark table-striped">
-                <thead>
+
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold text-cyan-400">Listado de Showrooms</h2>
+            <a href="{% url 'ledsup:crear_showroom' %}"
+               class="bg-[#00FFA3] hover:bg-cyan-400 text-black font-semibold px-4 py-2 rounded transition"
+               title="Agregar Showroom">
+                <img src="{% static 'ledsup/imagenes/iconos/agregar.png' %}" alt="add icon" class="h-5 w-5">
+            </a>
+        </div>
+
+        <div class="overflow-x-auto rounded-lg bg-[#1E293B] shadow-md">
+            <table class="min-w-full divide-y divide-gray-600 text-sm">
+                <thead class="bg-[#1E293B] text-cyan-400 uppercase text-xs tracking-wider">
                 <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Dispositivo (Numero IP) (Universo) (Orden)</th>
-                    <th scope="col">Acciones</th>
+                    <th class="px-4 py-2 text-left">Nombre</th>
+                    <th class="px-4 py-2 text-left">Dispositivo (Numero IP) (Universo) (Orden)</th>
+                    <th class="px-4 py-2 text-left">Acciones</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-gray-700">
                 {% for show in listadoShowroom %}
-                    <tr>
-                        <td>{{ show.nombre_showroom }}</td>
-                        <td>
-                            <ul>
+                    <tr class="hover:bg-[#19202a] transition">
+                        <td class="px-4 py-3 font-semibold">{{ show.nombre_showroom }}</td>
+                        <td class="px-4 py-3">
+                            <ul class="space-y-2">
                                 {% for disp in show.dispositivos.all %}
                                     <li>
-                                        <div class="d-flex align-items-center gap-2">
-                                            {{ disp }}
-                                            ({{ disp.numero_ip }})
-                                            ({{ disp.universo }})
+                                        <div class="flex flex-col md:flex-row md:items-center md:space-x-3 space-y-1 md:space-y-0">
+                                            <span>{{ disp }} ({{ disp.numero_ip }}) ({{ disp.universo }})</span>
+
                                             {% for orden in ordenesDispositivosEnShowroom.all %}
-                                                {% if disp.id == orden.dispositivo.id %}
-                                                    {% if show.id == orden.showroom.id %}
-                                                        {{ orden }}
-                                                        <a class="btn btn-primary btn-sm"
-                                                           href="{% url 'ledsup:editar_orden_dispositivos_en_showroom' orden.id %}">Modificar
-                                                            orden</a>
-                                                        <form action="{% url 'ledsup:probar_dispositivo' %}"
-                                                              method="post">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" value="{{ disp.numero_ip }}" name="ip"
-                                                                   id="ip">
-                                                            <input type="hidden" value="{{ disp.universo }}"
-                                                                   name="universo" id="universo">
-                                                            <input type="hidden" value="{{ disp.tipo_led }}"
-                                                                   name="tipo_led" id="tipo_led">
-                                                            <input type="hidden" value="{{ disp.nombre_dispositivo }}"
-                                                                   name="nombre_dispositivo" id="nombre_dispositivo">
-                                                            <input type="hidden" value="{{ show.is_connected }}"
-                                                                   name="is_showroom_conectado" id="is_showroom_conectado">
-                                                            <button type="submit" class="btn btn-info btn-sm">Probar
-                                                            </button>
-                                                        </form>
-                                                    {% endif %}
+                                                {% if disp.id == orden.dispositivo.id and show.id == orden.showroom.id %}
+                                                    <span class="text-cyan-300 text-sm">{{ orden }}</span>
+
+                                                    <a href="{% url 'ledsup:editar_orden_dispositivos_en_showroom' orden.id %}"
+                                                       class="bg-[#8A2BE2] hover:bg-[#A24BE2] text-white px-2 py-1 rounded text-xs font-semibold uppercase transition">
+                                                        Modificar orden
+                                                    </a>
+
+                                                    <form action="{% url 'ledsup:probar_dispositivo' %}" method="post"
+                                                          class="inline-block">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="ip" value="{{ disp.numero_ip }}">
+                                                        <input type="hidden" name="universo"
+                                                               value="{{ disp.universo }}">
+                                                        <input type="hidden" name="tipo_led"
+                                                               value="{{ disp.tipo_led }}">
+                                                        <input type="hidden" name="nombre_dispositivo"
+                                                               value="{{ disp.nombre_dispositivo }}">
+                                                        <input type="hidden" name="is_showroom_conectado"
+                                                               value="{{ show.is_connected }}">
+                                                        <button type="submit"
+                                                                class="bg-gradient-to-r from-blue-500 to-green-400 hover:brightness-110 text-white px-2 py-1 rounded text-xs font-semibold uppercase transition">
+                                                            Probar
+                                                        </button>
+                                                    </form>
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
                                     </li>
                                 {% empty %}
-                                    <li>No hay Showrooms, ¡añade uno nuevo!</li>
+                                    <li class="text-gray-400">No hay dispositivos.</li>
                                 {% endfor %}
                             </ul>
                         </td>
-                        <td>
-                            <div class="btn-group">
-                                <a class="btn btn-success btn-sm" href="{% url 'ledsup:editar_showroom' show.id %}">Editar</a>
-                                <a class="btn btn-danger btn-sm" href="{% url 'ledsup:eliminar_showroom' show.id %}">Borrar</a>
+                        <td class="px-4 py-3">
+                            <div class="flex space-x-2">
+                                <a href="{% url 'ledsup:editar_showroom' show.id %}"
+                                   class="p-2 bg-[#2c2c2c]/70 hover:bg-cyan-500/40 rounded transition" title="Editar">
+                                    <img src="{% static 'ledsup/imagenes/iconos/editar.png' %}" alt="edit icon"
+                                         class="h-5 w-5">
+                                </a>
+                                <a href="{% url 'ledsup:eliminar_showroom' show.id %}"
+                                   class="p-2 bg-[#2c2c2c]/70 hover:bg-pink-500/40 rounded transition" title="Eliminar">
+                                    <img src="{% static 'ledsup/imagenes/iconos/eliminar.png' %}" alt="trash icon"
+                                         class="h-5 w-5">
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -89,5 +103,4 @@
             </table>
         </div>
     </div>
-
 {% endblock %}
