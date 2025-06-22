@@ -4,43 +4,43 @@
     <section class="px-6 py-12 space-y-16 bg-[#0F172A] text-white">
         {% load static %}
 
-        {% if lista_ultimos_productos %}
-            <div class="max-w-7xl mx-auto px-6 text-center">
-                <section class="mb-16">
-                    <h2 class="hero text-4xl md:text-5xl font-extrabold text-cyan-400 mb-4">Iluminá el Futuro</h2>
-                    <p class="text-lg text-gray-300">Explorá nuestros productos LED con tecnología de última
-                        generación</p>
-                </section>
-                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
-                        <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Tira LED RGB</h3>
-                        <p class="text-gray-300">16 millones de colores, control vía Wi-Fi.</p>
-                    </div>
-                    <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
-                        <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Controlador DMX</h3>
-                        <p class="text-gray-300">Ideal para instalaciones profesionales y shows en vivo.</p>
-                    </div>
-                    <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
-                        <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Fuente 12V 10A</h3>
-                        <p class="text-gray-300">Alta eficiencia, protección contra sobrecarga.</p>
-                    </div>
-                </section>
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <section class="mb-16">
+                <h2 class="hero text-4xl md:text-5xl font-extrabold text-cyan-400 mb-4">Iluminá el Futuro</h2>
+                <p class="text-lg text-gray-300">Explorá nuestros productos LED con tecnología de última
+                    generación</p>
+            </section>
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Tira LED RGB</h3>
+                    <p class="text-gray-300">16 millones de colores, control vía Wi-Fi.</p>
+                </div>
+                <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Controlador DMX</h3>
+                    <p class="text-gray-300">Ideal para instalaciones profesionales y shows en vivo.</p>
+                </div>
+                <div class="card bg-[#1E293B] rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-semibold text-[#00FFA3] mb-2">Fuente 12V 10A</h3>
+                    <p class="text-gray-300">Alta eficiencia, protección contra sobrecarga.</p>
+                </div>
+            </section>
 
-            </div>
+        </div>
 
-            <!-- QUIÉNES SOMOS -->
-            <div class="max-w-7xl mx-auto bg-[#1E293B] rounded-xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-6">Quiénes Somos</h2>
-                <p class="text-gray-300 leading-relaxed">
-                    Somos una empresa dedicada a brindar soluciones LED de vanguardia. Nuestro compromiso es iluminar
-                    espacios con tecnología eficiente, moderna y con diseño. Cada proyecto es una oportunidad de
-                    transformar ambientes con luz.
-                </p>
-            </div>
+        <!-- QUIÉNES SOMOS -->
+        <div class="max-w-7xl mx-auto bg-[#1E293B] rounded-xl p-8 shadow-lg">
+            <h2 class="text-3xl font-bold text-cyan-400 mb-6">Quiénes Somos</h2>
+            <p class="text-gray-300 leading-relaxed">
+                Somos una empresa dedicada a brindar soluciones LED de vanguardia. Nuestro compromiso es iluminar
+                espacios con tecnología eficiente, moderna y con diseño. Cada proyecto es una oportunidad de
+                transformar ambientes con luz.
+            </p>
+        </div>
 
-            <!-- ÚLTIMOS PRODUCTOS -->
-            <div class=" max-w-7xl mx-auto bg-[#1E293B] rounded-xl p-8 shadow-lg">
-                <h2 class="text-3xl font-bold text-cyan-400 mb-10 text-center">Últimos Productos</h2>
+        <!-- ÚLTIMOS PRODUCTOS -->
+        <div class=" max-w-7xl mx-auto bg-[#1E293B] rounded-xl p-8 shadow-lg">
+            <h2 class="text-3xl font-bold text-cyan-400 mb-10 text-center">Últimos Productos</h2>
+            {% if lista_ultimos_productos %}
                 <div class="products flex mt-6 space-x-6 overflow-x-auto scrollbar-thin scrollbar-thumb-cyan-400/50 scrollbar-track-transparent px-2 pb-4">
                     {% for producto in lista_ultimos_productos %}
                         <div class="product min-w-[280px] max-w-[280px] bg-[#0F172A] rounded-lg shadow-md p-4 flex-shrink-0">
@@ -52,10 +52,9 @@
                         </div>
                     {% endfor %}
                 </div>
-            </div>
-
-        {% else %}
-            <p class="text-center text-gray-400 text-lg">No hay productos para mostrar.</p>
-        {% endif %}
+            {% else %}
+                <p class="text-center text-gray-400 text-lg">No hay productos para mostrar.</p>
+            {% endif %}
+        </div>
     </section>
 {% endblock %}

@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='imagenesproducto',
             name='imagen',
-            field=models.ImageField(blank=True, null=True, upload_to=web.models.ruta_imagen_evento, verbose_name='img'),
+            field=models.ImageField(blank=True, null=True, verbose_name='img'),
         ),
         migrations.AlterField(
             model_name='producto',
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nombre_imagen', models.CharField(max_length=100)),
-                ('imagen', models.ImageField(blank=True, null=True, upload_to=web.models.ruta_imagen_evento, verbose_name='img')),
+                ('imagen', models.ImageField(blank=True, null=True, verbose_name='img')),
                 ('galeria', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='web.galeria')),
             ],
         ),

@@ -32,6 +32,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='imagenesproducto',
             name='imagen',
-            field=models.ImageField(blank=True, null=True, upload_to=web.models.ruta_imagen_producto, verbose_name='img'),
+            field=models.ImageField(blank=True, null=True, verbose_name='img'),
         ),
     ]

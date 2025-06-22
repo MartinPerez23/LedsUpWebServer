@@ -1,6 +1,7 @@
 import datetime
 
 from cloudinary.models import CloudinaryField
+from cloudinary.uploader import upload
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
@@ -45,22 +46,27 @@ class CaracteristicasProducto(models.Model):
 class ImagenesProducto(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     nombre_imagen = models.CharField(max_length=100)
-
     imagen = CloudinaryField('image', blank=True, null=True)
 
-    def __str__(self):
-        return self.nombre_imagen
-
     def save(self, *args, **kwargs):
-        if self.imagen and not self.imagen.public_id.startswith('productos/'):
-            from cloudinary.uploader import upload
-
+        if self.imagen and hasattr(self.imagen, 'file'):
             upload_result = upload(
                 self.imagen.file,
                 folder='productos'
             )
             self.imagen = upload_result["public_id"]
         super().save(*args, **kwargs)
+
+    @property
+    def url(self):
+        from cloudinary.utils import cloudinary_url
+        if self.imagen and isinstance(self.imagen, str):
+            url, _ = cloudinary_url(self.imagen)
+            return url
+        return ''
+
+    def __str__(self):
+        return self.nombre_imagen
 
 
 class VideosProducto(models.Model):
@@ -83,14 +89,13 @@ class Evento(models.Model):
         return self.nombre_evento
 
     def save(self, *args, **kwargs):
-        if self.imagen and not self.imagen.public_id.startswith('eventos/'):
-            from cloudinary.uploader import upload
-
+        if self.imagen and hasattr(self.imagen, 'file'):
             upload_result = upload(
                 self.imagen.file,
                 folder='eventos'
             )
             self.imagen = upload_result["public_id"]
+
         super().save(*args, **kwargs)
 
 

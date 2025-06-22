@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='evento',
             name='imagen',
-            field=models.ImageField(default=0, upload_to=web.models.ruta_imagen_evento),
+            field=models.ImageField(default=0),
             preserve_default=False,
         ),
         migrations.DeleteModel(

@@ -9,9 +9,10 @@
                     <div class="carousel-inner transition-all duration-500 ease-in-out">
                         {% for imagen in object.imagenesproducto_set.all %}
                             <div class="carousel-item {% if forloop.first %}block{% else %}hidden{% endif %}">
-                                <a href="{{ imagen.url }}" data-fancybox="gallery">
-                                    <img src="{{ imagen.url }}" alt="{{ imagen.nombre_imagen }}"
+                                <a href="{{ imagen.imagen.url }}" data-fancybox="gallery">
+                                    <img src="{{ imagen.imagen.url }}" alt="{{ imagen.nombre_imagen }}"
                                          class="rounded-2xl w-full h-[400px] object-cover hover:opacity-90 transition">
+
                                 </a>
                             </div>
                         {% endfor %}
