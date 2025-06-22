@@ -6,11 +6,11 @@ from django.views import generic, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser
-
 from ledsup.artnet import probar_dispositivo, color, scroll, estrellas, scan
 from ledsup.models import Dispositivo, Showroom, OrdenDispositivosEnShowroom
 from ledsup.serializers import ShowroomSerializer, DispositivoSerializer
 from .forms import DispositivoForm, OrdenDispositivoForm, ShowroomForm
+from django.views.generic import TemplateView
 
 
 class OrdenDispositivosEnShowroomUpdate(LoginRequiredMixin, UpdateView):
@@ -311,6 +311,8 @@ class ShowroomDelete(LoginRequiredMixin, DeleteView):
         messages.success(self.request, 'Showroom eliminado exitosamente')
         return super().form_valid(form)
 
+class AutenticadoPage(LoginRequiredMixin, TemplateView):
+    template_name = 'ledsup/autenticado.html'
 
 # ---------------------------------- API PAGE ----------------------------------
 

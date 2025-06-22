@@ -85,6 +85,10 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 }
             )
 
+    async def kick_user(self, event):
+        print(f"Usuario {self.scope_user} fue kickeado desde la web.")
+        await self.close(code=4002)
+
     async def enviarAlServer(self, event):
         await self.send(text_data=json.dumps({
             "data": event["data"]
@@ -93,6 +97,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
 class EstadoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        from .models import UserConnectionStatus
         user = self.scope["user"]
         if user.is_anonymous:
             await self.close()
@@ -101,6 +106,15 @@ class EstadoConsumer(AsyncWebsocketConsumer):
         self.user_group_name = f"user_estado{user.id}"
         await self.channel_layer.group_add(self.user_group_name, self.channel_name)
         await self.accept()
+
+        # 🔁 Enviar estado actual al conectarse
+        connected = await sync_to_async(UserConnectionStatus.objects.filter(user=user, connected=True).exists)()
+        estado = "conectado" if connected else "desconectado"
+
+        await self.send(text_data=json.dumps({
+            "estado": estado,
+            "usuario": user.id,
+        }))
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.user_group_name, self.channel_name)

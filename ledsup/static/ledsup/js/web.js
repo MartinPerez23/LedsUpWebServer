@@ -28,9 +28,28 @@ function setEstadoDesconectado() {
     });
 }
 
+function setEstadoCargando() {
+    [estadoBadge, estadoBadgeMobile].forEach(el => {
+        if (el) {
+            el.textContent = 'PC: Cargando...';
+            el.style.backgroundColor = '#FFA500'; // naranja
+            el.style.color = '#0D1117';
+        }
+    });
+}
+
 (function () {
+    setEstadoCargando();
+
+    let recibido = false;
     const socketProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const socket = new WebSocket(socketProtocol + '//' + window.location.host + '/ws/estado/');
+
+    const timeout = setTimeout(() => {
+        if (!recibido) {
+            setEstadoDesconectado();
+        }
+    }, 3000);
 
     socket.onopen = function () {
         console.log('WebSocket conectado');
@@ -39,6 +58,9 @@ function setEstadoDesconectado() {
     socket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         console.log('Mensaje recibido:', data);
+
+        recibido = true;
+        clearTimeout(timeout);
 
         if (data.estado === 'conectado') {
             setEstadoConectado();

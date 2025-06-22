@@ -16,7 +16,9 @@ from django.views.decorators.http import require_GET
 from .forms import ContactForm, ErrorUpdateForm
 from .models import Producto, TipoProducto, Evento, Errores
 from .serializers import ErroresSerializer
-
+from django.contrib.auth import logout
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 class IndexVista(generic.ListView):
     template_name = 'web/index.html'
@@ -149,6 +151,19 @@ class DetalleErrorView(LoginRequiredMixin, generic.DetailView):
             messages.error(request, "Hay errores en el formulario.")
         return redirect('web:lista_errores')
 
+def logout_closeWS(request):
+    user_id = request.user.id
+    logout(request)
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        f"user_{user_id}",
+        {
+            "type": "kick_user"
+        }
+    )
+
+    return redirect('login')
 
 ############################################   API   ############################################
 
