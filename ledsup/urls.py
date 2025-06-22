@@ -22,6 +22,7 @@ urlpatterns = [
     path('showroom/scan', views.ScanAction.as_view(), name='scan'),
 
     path('api/', include(router.urls), name='api'),
+    path('autenticado/', views.AutenticadoPage.as_view(), name='autenticado'),
 
     path('dispositivo/create/', views.DispositivoCreate.as_view(), name='crear_dispositivo'),
     path('dispositivo/<int:pk>/', views.DispositivoUpdate.as_view(), name='editar_dispositivo'),

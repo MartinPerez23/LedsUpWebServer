@@ -8,11 +8,13 @@
     {% block title %}<title>Easy-Led</title>{% endblock %}
     {% include "web/partials/css.html" %}
   </head>
-  <body>
+  <body class="min-h-screen flex flex-col">
 
   {% include "web/partials/header.html" %}
 
-  {% block content %}{% endblock %}
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
 
   {% include "web/partials/footer.html" %}
 

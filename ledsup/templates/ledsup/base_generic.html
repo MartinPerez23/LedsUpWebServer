@@ -9,11 +9,13 @@
     {% load static %}
     {% include "ledsup/partials/css.html" %}
   </head>
-  <body>
+  <body class="min-h-screen flex flex-col">
 
   {% include "ledsup/partials/header.html" %}
 
-  {% block content %}{% endblock %}
+  <main class="flex-grow">
+    {% block content %}{% endblock %}
+  </main>
 
   {% include "ledsup/partials/footer.html" %}
 
