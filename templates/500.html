@@ -1,0 +1,11 @@
+{% extends "web/base_generic.html" %}
+
+{% block content %}
+    <div class="max-w-lg mx-auto mt-24 bg-[#1E1E2F] text-white p-8 rounded-lg shadow-lg border border-[#0FF6FF] text-center">
+        <h1 class="text-4xl font-bold text-[#9E00FF] mb-4">500 - Error del servidor</h1>
+        <p class="text-lg mb-6">Algo salió mal en nuestro lado. Estamos trabajando para solucionarlo.</p>
+        <a href="{% url 'web:index' %}"
+           class="bg-[#0FF6FF] hover:bg-[#00c2c2] text-[#0D1117] px-4 py-2 rounded-md font-semibold transition">Volver
+            al inicio</a>
+    </div>
+{% endblock %}
