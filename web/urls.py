@@ -2,8 +2,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import include, path
 from rest_framework import routers
-from .views import csrf_token_view
+
 from . import views
+from .views import csrf_token_view
 
 router = routers.DefaultRouter()
 router.register(r'errores', views.ErroresViewSet, basename='errores')
@@ -21,4 +22,4 @@ urlpatterns = [
                   path('oauth2/userinfo/', views.UserInfoGet.as_view(), name='user_info'),
                   path("csrf/", csrf_token_view, name="csrf"),
 
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

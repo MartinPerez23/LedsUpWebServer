@@ -1,25 +1,10 @@
 import datetime
 
+from cloudinary.models import CloudinaryField
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-
-
-def ruta_imagen_producto(instance, filename):
-    extension = filename.split('.')[-1]
-    nombre_imagen_con_extension = instance.nombre_imagen + '.' + extension
-    ruta = 'imagenes/productos/producto_{0}/{1}'.format(instance.producto.id, nombre_imagen_con_extension)
-
-    return ruta
-
-
-def ruta_imagen_evento(instance, filename):
-    extension = filename.split('.')[-1]
-    nombre_imagen_con_extension = instance.nombre_evento + '.' + extension
-    ruta = 'imagenes/eventos/{0}'.format(nombre_imagen_con_extension)
-
-    return ruta
 
 
 class TipoProducto(models.Model):
@@ -61,15 +46,21 @@ class ImagenesProducto(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     nombre_imagen = models.CharField(max_length=100)
 
-    imagen = models.ImageField('img', upload_to=ruta_imagen_producto, null=True, blank=True)
-
-    @property
-    def url(self):
-        url_modificada = self.imagen.url.replace('web/static', '')
-        return url_modificada
+    imagen = CloudinaryField('image', blank=True, null=True)
 
     def __str__(self):
         return self.nombre_imagen
+
+    def save(self, *args, **kwargs):
+        if self.imagen and not self.imagen.public_id.startswith('productos/'):
+            from cloudinary.uploader import upload
+
+            upload_result = upload(
+                self.imagen.file,
+                folder='productos'
+            )
+            self.imagen = upload_result["public_id"]
+        super().save(*args, **kwargs)
 
 
 class VideosProducto(models.Model):
@@ -86,10 +77,21 @@ class Evento(models.Model):
     fecha_de_evento = models.DateTimeField('Fecha de Evento', default=timezone.now)
     pie_de_imagen = models.TextField()
 
-    imagen = models.ImageField(upload_to=ruta_imagen_evento, null=False, blank=False)
+    imagen = CloudinaryField('image', blank=True, null=True)
 
     def __str__(self):
         return self.nombre_evento
+
+    def save(self, *args, **kwargs):
+        if self.imagen and not self.imagen.public_id.startswith('eventos/'):
+            from cloudinary.uploader import upload
+
+            upload_result = upload(
+                self.imagen.file,
+                folder='eventos'
+            )
+            self.imagen = upload_result["public_id"]
+        super().save(*args, **kwargs)
 
 
 class Errores(models.Model):

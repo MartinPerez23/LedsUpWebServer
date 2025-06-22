@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 from urllib.parse import urlparse
 
+import cloudinary
+import cloudinary.api
+import cloudinary.uploader
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,7 +32,6 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
 
 LOGIN_URL = '/login/'
-
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -175,9 +177,7 @@ OAUTH2_PROVIDER = {
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
-MEDIA_URL = '/web/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'web/media')
-
+# Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -185,11 +185,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
 
+# Database configuration
 load_dotenv()
-
-# Replace the DATABASES section of your settings.py with this
 tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -200,3 +198,10 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+
+# Media configuration
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUD_NAME'),
+    api_key=os.environ.get('CLOUD_API'),
+    api_secret=os.environ.get('CLOUD_PASS')
+)
