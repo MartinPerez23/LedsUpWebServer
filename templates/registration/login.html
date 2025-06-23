@@ -1,9 +1,15 @@
 {% extends "web/base_generic.html" %}
 
 {% block content %}
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
     <div class="max-w-md mx-auto mt-20 bg-[#1E1E2F] text-white p-8 rounded-lg shadow-lg border border-[#0FF6FF]">
-
-        {% if form.errors %}
+        {% if form.non_field_errors %}
+            <div class="mb-4 p-3 bg-red-600 text-white rounded">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% elif form.errors %}
             <div class="mb-4 p-3 bg-red-600 text-white rounded">
                 <p>Tu usuario o contraseña no es válido. Intente nuevamente.</p>
             </div>
@@ -40,14 +46,23 @@
             <input type="hidden" name="next" value="{{ next }}"/>
 
             <div class="flex justify-between items-center mt-6">
-                <button type="submit"
-                        class="px-4 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc] transition">
+                <button
+                        class="px-4 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc] transition h-captcha"
+                        data-sitekey="{{ HCAPTCHA_SITE_KEY }}"
+                        data-callback="onSubmit"
+                        data-size="invisible"
+                        type="submit">
                     Ingresar
                 </button>
                 <a href="{% url 'password_reset' %}" class="text-sm text-[#0FF6FF] hover:underline">
                     Me olvidé la contraseña
                 </a>
             </div>
+            <script>
+                function onSubmit(token) {
+                    document.querySelector("form").submit();
+                }
+            </script>
         </form>
     </div>
 {% endblock %}

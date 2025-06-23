@@ -14,6 +14,7 @@ urlpatterns = [
 
                   path('', views.IndexVista.as_view(), name='index'),
                   path("logout/", views.logout_closeWS, name="logout"),
+                  path('login/', views.LoginConHCaptchaView.as_view(), name='login'),
                   path("productos/<int:pk>/", views.ProductDetailsPage.as_view(), name="productDetails"),
                   path("eventos", views.EventsPage.as_view(), name="events"),
                   path("contacto", views.ContactFormView.as_view(), name="contact"),

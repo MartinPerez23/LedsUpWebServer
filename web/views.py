@@ -19,6 +19,9 @@ from .serializers import ErroresSerializer
 from django.contrib.auth import logout
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.contrib.auth.views import LoginView
+import requests
+from django.conf import settings
 
 class IndexVista(generic.ListView):
     template_name = 'web/index.html'
@@ -45,10 +48,22 @@ class ContactFormView(generic.FormView):
     success_url = reverse_lazy('web:contact')
 
     def form_valid(self, form):
-        messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
-        form.send_email()
+        hcaptcha_response = self.request.POST.get('h-captcha-response')
+        data = {
+            'secret': settings.HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response
+        }
 
-        return super().form_valid(form)
+        r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        resultado = r.json()
+
+        if resultado.get('success'):
+            messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
+            form.send_email()
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "Validación hCaptcha fallida")
+            return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -56,7 +71,7 @@ class ContactFormView(generic.FormView):
         # Get the blog from id and add it to the context
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
-
+        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
         return context
 
 
@@ -194,3 +209,27 @@ class UserInfoGet(APIView):
 @ensure_csrf_cookie
 def csrf_token_view(request):
     return JsonResponse({'detail': 'CSRF cookie set'})
+
+class LoginConHCaptchaView(LoginView):
+    template_name = 'registration/login.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
+        return context
+
+    def form_valid(self, form):
+        hcaptcha_response = self.request.POST.get('h-captcha-response')
+        data = {
+            'secret': settings.HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response
+        }
+
+        r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        resultado = r.json()
+
+        if resultado.get('success'):
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "Validación hCaptcha fallida")
+            return self.form_invalid(form)
