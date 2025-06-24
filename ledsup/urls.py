@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('api/', include(router.urls), name='api'),
     path('autenticado/', views.AutenticadoPage.as_view(), name='autenticado'),
-
+    path('descarga/', views.DescargaPage.as_view(), name='descarga'),
     path('dispositivo/create/', views.DispositivoCreate.as_view(), name='crear_dispositivo'),
     path('dispositivo/<int:pk>/', views.DispositivoUpdate.as_view(), name='editar_dispositivo'),
     path('dispositivo/<int:pk>/delete/', views.DispositivoDelete.as_view(), name='eliminar_dispositivo'),

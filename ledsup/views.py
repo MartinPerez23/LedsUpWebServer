@@ -314,6 +314,10 @@ class ShowroomDelete(LoginRequiredMixin, DeleteView):
 class AutenticadoPage(LoginRequiredMixin, TemplateView):
     template_name = 'ledsup/autenticado.html'
 
+class DescargaPage(LoginRequiredMixin, TemplateView):
+    template_name = 'ledsup/download_help.html'
+
+
 # ---------------------------------- API PAGE ----------------------------------
 
 
