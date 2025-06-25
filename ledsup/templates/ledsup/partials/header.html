@@ -70,10 +70,11 @@
             <li><a href="{% url 'ledsup:lista_showroom' %}" class="hover:text-cyan-400 transition">Listado de
                 Showrooms</a></li>
             <li><a href="{% url 'ledsup:showroom' %}" class="hover:text-cyan-400 transition">Showroom</a></li>
+            <li><a href="{% url 'ledsup:descarga' %}" class="hover:text-cyan-400 transition">Descarga/Ayuda</a></li>
             <li>
                 <a href="{% url 'web:index' %}"
                    class="bg-cyan-500 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-600 transition">
-                    Leds-Up
+                    Easy-Led
                 </a>
             </li>
             {% if user.is_authenticated and user.is_staff %}
