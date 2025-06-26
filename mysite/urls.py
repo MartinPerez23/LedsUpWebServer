@@ -21,7 +21,6 @@ urlpatterns = [
 
     path('', include('web.urls')),
     path('', include('users.urls')),
-    path('', include('django.contrib.auth.urls')),
     path('ledsup/', include('ledsup.urls')),
     path('admin/', admin.site.urls, name='admin'),
     path('o/', include(oauth2_urls)),
