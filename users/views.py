@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-import settings
+from django.conf import settings
 from web.models import TipoProducto, Producto
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
