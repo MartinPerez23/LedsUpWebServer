@@ -77,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'middleware.global_context.GlobalVariablesMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'

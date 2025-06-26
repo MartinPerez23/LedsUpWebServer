@@ -1,6 +1,7 @@
 import requests
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -13,8 +14,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django.conf import settings
-from web.models import TipoProducto, Producto
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
 
@@ -23,14 +22,6 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/user_form.html'
     success_url = reverse_lazy('login')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
     def form_valid(self, form):
         hcaptcha_response = self.request.POST.get('h-captcha-response')
@@ -49,7 +40,6 @@ class SignUpView(CreateView):
             return self.form_invalid(form)
 
 
-
 class UserProfileUpdateView(UpdateView):
     model = User
     form_class = CustomUserChangeForm
@@ -58,13 +48,6 @@ class UserProfileUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
@@ -79,13 +62,6 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         user = self.get_object()
         user.dispositivo_set.all().delete()
         return super().delete(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
 
 class UserInfoGet(APIView):
@@ -117,14 +93,6 @@ def logout_closeWS(request):
 
 class LoginConHCaptchaView(LoginView):
     template_name = 'registration/login.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
     def form_valid(self, form):
         hcaptcha_response = self.request.POST.get('h-captcha-response')

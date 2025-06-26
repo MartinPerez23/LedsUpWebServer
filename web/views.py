@@ -2,6 +2,7 @@ import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -15,7 +16,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from .forms import ContactForm, ErrorUpdateForm
-from .models import Producto, TipoProducto, Evento, Errores
+from .models import Producto, Evento, Errores
 from .serializers import ErroresSerializer
 
 
@@ -27,15 +28,6 @@ class IndexVista(generic.ListView):
         return Producto.objects.filter(
             fecha_creacion__lte=timezone.now()
         ).order_by('-fecha_creacion')[:5]
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
 
 class ContactFormView(generic.FormView):
@@ -61,15 +53,6 @@ class ContactFormView(generic.FormView):
             form.add_error(None, "Validación hCaptcha fallida")
             return self.form_invalid(form)
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
-        return context
-
 
 class EventsPage(generic.ListView):
     template_name = 'web/eventos.html'
@@ -78,27 +61,10 @@ class EventsPage(generic.ListView):
     def get_queryset(self):
         return Evento.objects.get_queryset()
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Get the blog from id and add it to the context
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
-
 
 class ProductDetailsPage(generic.DetailView):
     template_name = 'web/producto.html'
     model = Producto
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['now'] = timezone.now()
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
 
 class ErroresListView(LoginRequiredMixin, generic.ListView):
@@ -121,17 +87,10 @@ class ErroresListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['now'] = timezone.now()
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
+        opciones_asignado_a = [(user.id, user.username) for user in User.objects.filter(is_staff=True)]
 
-        # Estados
         context['estado_actual'] = self.request.GET.get('estado', '')
         context['opciones_estado'] = Errores._meta.get_field('estado').choices
-
-        # Solo usuarios staff
-        from django.contrib.auth.models import User
-        opciones_asignado_a = [(user.id, user.username) for user in User.objects.filter(is_staff=True)]
         context['asignado_actual'] = self.request.GET.get('asignado', '')
         context['opciones_asignado_a'] = opciones_asignado_a
 
@@ -142,15 +101,6 @@ class DetalleErrorView(LoginRequiredMixin, generic.DetailView):
     model = Errores
     template_name = 'web/detalle_error.html'
     context_object_name = 'error'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = ErrorUpdateForm(instance=self.object)
-        context['now'] = timezone.now()
-        context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
-        context['listado_productos'] = Producto.objects.get_queryset()
-
-        return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
