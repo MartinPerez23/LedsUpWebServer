@@ -1,0 +1,23 @@
+{% extends "web/base_generic.html" %}
+
+{% block content %}
+    <div class="max-w-md mx-auto mt-20 p-8 bg-[#1E1E2F] text-white rounded-lg shadow-lg border border-[#0FF6FF]">
+        <h1 class="text-xl font-bold text-[#0FF6FF] text-center mb-6">Editar Usuario</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="flex flex-col space-y-4 mt-4">
+                <!-- Botón de Guardar -->
+                <button class="px-6 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc]">
+                    Guardar
+                </button>
+
+                <!-- Botón de Borrar Cuenta -->
+                <a href="{% url 'user_delete' %}"
+                   class="px-6 py-2 bg-red-600 text-white text-center rounded-md hover:bg-red-800">
+                    Borrar Cuenta
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

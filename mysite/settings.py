@@ -32,7 +32,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
 
 LOGIN_URL = '/login/'
-
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -63,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'web.apps.WebConfig',
     'ledsup.apps.LedsupConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -140,11 +143,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = '/login'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

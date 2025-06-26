@@ -9,7 +9,8 @@
 
         <!-- Menú desktop -->
         <ul id="menu" class="hidden md:flex items-center space-x-8">
-            <li><a href="{% url 'ledsup:lista_dispositivos' %}" class="hover:text-cyan-400 transition">Dispositivos</a></li>
+            <li><a href="{% url 'ledsup:lista_dispositivos' %}" class="hover:text-cyan-400 transition">Dispositivos</a>
+            </li>
             <li><a href="{% url 'ledsup:lista_showroom' %}" class="hover:text-cyan-400 transition">Showrooms</a></li>
             <li><a href="{% url 'ledsup:showroom' %}" class="hover:text-cyan-400 transition">Showroom</a></li>
             <li><a href="{% url 'ledsup:descarga' %}" class="hover:text-cyan-400 transition">Descarga/Ayuda</a></li>
@@ -48,16 +49,34 @@
         <!-- Login / Logout -->
         <div class="hidden md:block">
             {% if user.is_authenticated %}
-                <span class="mr-4 text-gray-400">Usuario: {{ user.get_username }}</span>
-                <a href="{% url 'logout' %}?next={{ request.path }}"
-                   class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold">
-                    Logout
+                <ul class="hidden md:flex items-center space-x-8">
+                    <li>
+            <span class="block mb-2 text-gray-400">
+                <a href="{% url 'user_profile' %}">
+                    Usuario: {{ user.get_username }}
                 </a>
+            </span>
+                        <a href="{% url 'logout' %}?next={{ request.path }}"
+                           class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold">
+                            Logout
+                        </a>
+                    </li>
+                </ul>
             {% else %}
-                <a href="{% url 'login' %}?next={{ request.path }}"
-                   class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition">
-                    Iniciar sesión
-                </a>
+                <ul class="hidden md:flex items-center space-x-8">
+                    <li>
+                        <a href="{% url 'login' %}?next={{ request.path }}"
+                           class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition">
+                            Iniciar sesión
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_signup' %}"
+                           class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition">
+                            Registrarse
+                        </a>
+                    </li>
+                </ul>
             {% endif %}
         </div>
     </nav>
@@ -92,20 +111,28 @@
                     PC: Desconectada
                 </span>
             </li>
-            <li>
-                {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
+                <li>
                     <span class="block mb-2 text-gray-400">Usuario: {{ user.get_username }}</span>
                     <a href="{% url 'logout' %}?next={{ request.path }}"
                        class="bg-transparent border border-cyan-400 text-cyan-400 px-3 py-1 rounded-md hover:bg-cyan-400 hover:text-[#0D1117] transition font-semibold block w-max text-center">
                         Logout
                     </a>
-                {% else %}
+                </li>
+            {% else %}
+                <li>
                     <a href="{% url 'login' %}?next={{ request.path }}"
                        class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition block w-max text-center">
                         Iniciar sesión
                     </a>
-                {% endif %}
-            </li>
+                </li>
+                <li>
+                    <a href="{% url 'user_signup' %}"
+                       class="bg-cyan-600 text-[#0D1117] px-3 py-1 rounded-md font-semibold hover:bg-cyan-700 transition block w-max text-center">
+                        Registrarse
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </header>

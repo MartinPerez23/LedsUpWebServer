@@ -4,7 +4,6 @@ from django.urls import include, path
 from rest_framework import routers
 
 from . import views
-from .views import csrf_token_view
 
 router = routers.DefaultRouter()
 router.register(r'errores', views.ErroresViewSet, basename='errores')
@@ -13,15 +12,12 @@ app_name = 'web'
 urlpatterns = [
 
                   path('', views.IndexVista.as_view(), name='index'),
-                  path("logout/", views.logout_closeWS, name="logout"),
-                  path('login/', views.LoginConHCaptchaView.as_view(), name='login'),
                   path("productos/<int:pk>/", views.ProductDetailsPage.as_view(), name="productDetails"),
                   path("eventos", views.EventsPage.as_view(), name="events"),
                   path("contacto", views.ContactFormView.as_view(), name="contact"),
                   path('errores/', views.ErroresListView.as_view(), name='lista_errores'),
                   path('errores/<int:pk>/', views.DetalleErrorView.as_view(), name='detalle_error'),
                   path('api/', include(router.urls), name='api'),
-                  path('oauth2/userinfo/', views.UserInfoGet.as_view(), name='user_info'),
-                  path("csrf/", csrf_token_view, name="csrf"),
+                  path("csrf/", views.csrf_token_view, name="csrf"),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

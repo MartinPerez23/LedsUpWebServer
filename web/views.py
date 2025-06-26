@@ -1,27 +1,23 @@
+import requests
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_GET
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication
 from oauth2_provider.contrib.rest_framework import TokenHasScope
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.http import JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.decorators.http import require_GET
+
 from .forms import ContactForm, ErrorUpdateForm
 from .models import Producto, TipoProducto, Evento, Errores
 from .serializers import ErroresSerializer
-from django.contrib.auth import logout
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-from django.contrib.auth.views import LoginView
-import requests
-from django.conf import settings
+
 
 class IndexVista(generic.ListView):
     template_name = 'web/index.html'
@@ -166,19 +162,6 @@ class DetalleErrorView(LoginRequiredMixin, generic.DetailView):
             messages.error(request, "Hay errores en el formulario.")
         return redirect('web:lista_errores')
 
-def logout_closeWS(request):
-    user_id = request.user.id
-    logout(request)
-
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        f"user_{user_id}",
-        {
-            "type": "kick_user"
-        }
-    )
-
-    return redirect('login')
 
 ############################################   API   ############################################
 
@@ -194,42 +177,7 @@ class ErroresViewSet(viewsets.ModelViewSet):
         serializer.save(usuario=self.request.user)
 
 
-class UserInfoGet(APIView):
-    authentication_classes = [OAuth2Authentication]
-    permission_classes = [IsAuthenticated, TokenHasScope]
-    required_scopes = ['user_info']
-
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        return Response({
-            'user_name': user.username,
-        })
-
 @require_GET
 @ensure_csrf_cookie
 def csrf_token_view(request):
     return JsonResponse({'detail': 'CSRF cookie set'})
-
-class LoginConHCaptchaView(LoginView):
-    template_name = 'registration/login.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
-        return context
-
-    def form_valid(self, form):
-        hcaptcha_response = self.request.POST.get('h-captcha-response')
-        data = {
-            'secret': settings.HCAPTCHA_SECRET_KEY,
-            'response': hcaptcha_response
-        }
-
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        resultado = r.json()
-
-        if resultado.get('success'):
-            return super().form_valid(form)
-        else:
-            form.add_error(None, "Validación hCaptcha fallida")
-            return self.form_invalid(form)
