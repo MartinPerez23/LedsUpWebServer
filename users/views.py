@@ -26,10 +26,28 @@ class SignUpView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["HCAPTCHA_SITE_KEY"] = settings.HCAPTCHA_SITE_KEY
         context['listado_tipos_productos'] = TipoProducto.objects.get_queryset()
         context['listado_productos'] = Producto.objects.get_queryset()
 
         return context
+
+    def form_valid(self, form):
+        hcaptcha_response = self.request.POST.get('h-captcha-response')
+        data = {
+            'secret': settings.HCAPTCHA_SECRET_KEY,
+            'response': hcaptcha_response
+        }
+
+        r = requests.post('https://hcaptcha.com/siteverify', data=data)
+        resultado = r.json()
+
+        if resultado.get('success'):
+            return super().form_valid(form)
+        else:
+            form.add_error(None, "Validación hCaptcha fallida")
+            return self.form_invalid(form)
+
 
 
 class UserProfileUpdateView(UpdateView):
