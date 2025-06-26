@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
@@ -16,8 +16,32 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
 from .forms import ContactForm, ErrorUpdateForm
-from .models import Producto, Evento, Errores
+from .models import Producto, Evento, Errores, TipoProducto
 from .serializers import ErroresSerializer
+
+
+def get_context():
+    return {
+        "HCAPTCHA_SITE_KEY": settings.HCAPTCHA_SITE_KEY,
+        "listado_tipos_productos": TipoProducto.objects.all(),
+        "listado_productos": Producto.objects.all(),
+    }
+
+
+def custom_400(request):
+    return render(request, "400.html", context=get_context(), status=400)
+
+
+def custom_403(request):
+    return render(request, "403.html", context=get_context(), status=403)
+
+
+def custom_404(request):
+    return render(request, "404.html", context=get_context(), status=404)
+
+
+def custom_500(request):
+    return render(request, "500.html", context=get_context(), status=500)
 
 
 class IndexVista(generic.ListView):

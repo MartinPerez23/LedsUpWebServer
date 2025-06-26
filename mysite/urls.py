@@ -17,6 +17,11 @@ from django.contrib import admin
 from django.urls import include, path
 from oauth2_provider import urls as oauth2_urls
 
+handler400 = 'web.views.custom_400'
+handler403 = 'web.views.custom_403'
+handler404 = 'web.views.custom_404'
+handler500 = 'web.views.custom_500'
+
 urlpatterns = [
 
     path('', include('web.urls')),
