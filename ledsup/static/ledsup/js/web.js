@@ -49,7 +49,7 @@ function setEstadoCargando() {
         if (!recibido) {
             setEstadoDesconectado();
         }
-    }, 3000);
+    }, 500);
 
     socket.onopen = function () {
         console.log('WebSocket conectado');
