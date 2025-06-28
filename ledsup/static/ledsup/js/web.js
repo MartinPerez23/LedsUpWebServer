@@ -45,12 +45,6 @@ function setEstadoCargando() {
     const socketProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const socket = new WebSocket(socketProtocol + '//' + window.location.host + '/ws/estado/');
 
-    const timeout = setTimeout(() => {
-        if (!recibido) {
-            setEstadoDesconectado();
-        }
-    }, 500);
-
     socket.onopen = function () {
         console.log('WebSocket conectado');
     };
@@ -60,7 +54,6 @@ function setEstadoCargando() {
         console.log('Mensaje recibido:', data);
 
         recibido = true;
-        clearTimeout(timeout);
 
         if (data.estado === 'conectado') {
             setEstadoConectado();
@@ -73,11 +66,16 @@ function setEstadoCargando() {
 
     socket.onclose = function () {
         console.log('WebSocket cerrado');
-        setEstadoDesconectado();
+        if (!recibido) {
+            setEstadoDesconectado();
+        }
     };
 
     socket.onerror = function (error) {
         console.error('Error WebSocket:', error);
-        setEstadoDesconectado();
+        if (!recibido) {
+            setEstadoDesconectado();
+        }
     };
 })();
+
