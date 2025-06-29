@@ -32,7 +32,7 @@ class DispositivoForm(forms.ModelForm):
         ip = cleaned_data.get("numero_ip")
         universo = cleaned_data.get("universo")
 
-        if ip and universo:
+        if ip and universo is not None:
             if Dispositivo.objects.filter(numero_ip=ip, universo=universo).exists():
                 raise ValidationError("Ya existe un dispositivo con esa IP y ese universo.")
 

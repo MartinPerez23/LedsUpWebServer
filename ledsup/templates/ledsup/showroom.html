@@ -130,8 +130,10 @@
                             </div>
 
                             <!-- Botón enviar -->
+                            <div id="mensaje-error-color" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
+                                    id="btn-enviar-color">
                                 Enviar a dispositivos
                             </button>
                         </form>
@@ -176,9 +178,10 @@
                                    class="w-full accent-cyan-400">
 
                             <input type="hidden" name="matriz" id="matriz" value="nada">
-
+                            <div id="mensaje-error-scroll" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
+                                    id="btn-enviar-scroll">
                                 Enviar a dispositivos
                             </button>
                         </form>
@@ -218,9 +221,10 @@
                             <input type="range" min="2" max="6" id="velocidadEstrellas" name="velocidadEstrellas"
                                    value="{{ request.session.velocidadEstrellas }}"
                                    class="w-full accent-cyan-400">
-
+                            <div id="mensaje-error-estrellas" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
+                                    id="btn-enviar-estrellas">
                                 Enviar a dispositivos
                             </button>
                         </form>
@@ -275,8 +279,10 @@
                                    value="{{ request.session.velocidadScan }}"
                                    class="w-full accent-cyan-400">
 
+                            <div id="mensaje-error-scan" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
+                                    id="btn-enviar-scan">
                                 Enviar a dispositivos
                             </button>
                         </form>

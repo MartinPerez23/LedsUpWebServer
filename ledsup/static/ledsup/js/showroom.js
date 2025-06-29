@@ -179,7 +179,14 @@ botonColor.addEventListener('click', function (event) {
 checkBoxConstanteColor.addEventListener('change', function (event) {
 
     botonColor.click();
-
+    if (checkBoxConstanteColor.checked) {
+        canvas.style.pointerEvents = 'none';
+        canvas.style.opacity = '0.5';  // opcional: visualmente muestra que está deshabilitado
+        inputColorPersonalizado.disabled = checkBoxConstanteColor.checked;
+    } else {
+        canvas.style.pointerEvents = 'auto';
+        canvas.style.opacity = '1';
+    }
 });
 
 // BOTON SCROLL (SOLO EFECTO VISUAL)
@@ -363,4 +370,48 @@ document.addEventListener('DOMContentLoaded', function () {
             target.classList.remove('hidden');
         });
     });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+        const botones = [
+            { btnId: 'btn-enviar-color', errId: 'mensaje-error-color' },
+            { btnId: 'btn-enviar-scroll', errId: 'mensaje-error-scroll' },
+            { btnId: 'btn-enviar-estrellas', errId: 'mensaje-error-estrellas' },
+            { btnId: 'btn-enviar-scan', errId: 'mensaje-error-scan' },
+        ];
+
+    const estadoBadge = document.getElementById('estado-badge');
+    const estadoBadgeMobile = document.getElementById('estado-badge-mobile');
+
+    botones.forEach(({ btnId, errId }) => {
+        const btnEnviar = document.getElementById(btnId);
+        const mensajeError = document.getElementById(errId);
+
+        btnEnviar?.addEventListener('click', function (e) {
+            const textoEstado = [
+                estadoBadge?.textContent || '',
+                estadoBadgeMobile?.textContent || ''
+            ].join(' ');
+
+            if (textoEstado.includes("Desconectada")) {
+                e.preventDefault();
+                mostrarError("No hay conexión con la PC. Conéctela para enviar comandos.",mensajeError);
+                return;
+            }
+
+            if (textoEstado.includes("Cargando")) {
+                e.preventDefault();
+                mostrarError("Esperando conexión con la PC...",mensajeError);
+            }
+        })});
+
+        function mostrarError(mensaje,mensajeError) {
+        mensajeError.textContent = mensaje;
+        mensajeError.classList.remove('hidden');
+        setTimeout(() => {
+            mensajeError.classList.add('hidden');
+        }, 5000);
+    }
 });
