@@ -75,9 +75,10 @@ let colores = [
 
 // Inicializar matriz y display
 
-const cellSize = 50;
-const spacing = 70;
-const offset = (400 - (5 * spacing - (spacing - cellSize))) / 2;  // 400 es el tamaño del canvas
+const canvasWidth = $display.clientWidth;
+const cellSize = canvasWidth / 10;
+const spacing = canvasWidth / 6;
+const offset = (canvasWidth - (5 * spacing - (spacing - cellSize))) / 2;
 
 for (let i = 0; i < 5; i++) matriz[i] = new Array(5);
 for (let x = 0; x < 5; x++) {
