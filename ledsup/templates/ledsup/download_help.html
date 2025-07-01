@@ -10,10 +10,20 @@
 
         <!-- Botón de descarga -->
         <div class="text-center mb-12">
-            <a href="{% static 'ledsup/descarga/test.exe' %}"
-               download="test.exe"
+            <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-windows.exe"
+               download="LedsUp-windows"
                class="inline-block bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition">
-                Descargar Instalador (.EXE)
+                Descargar Aplicacion para Windows
+            </a>
+            <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-linux"
+               download="LedsUp-linux"
+               class="inline-block bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition">
+                Descargar Aplicacion para Linux
+            </a>
+            <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-macos"
+               download="LedsUp-macos"
+               class="inline-block bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition">
+                Descargar Aplicacion para MAC
             </a>
             <p class="text-sm text-gray-400 mt-2">Haz clic para descargar la app de escritorio para controlar tus LEDs
                 localmente.</p>
@@ -170,7 +180,8 @@
 
                     <p>
                         Además de mostrarlo en el servidor, la web también va a reflejar el estado actualizado
-                        en la barra de navegacion de arriba PC: Conectada/Desconectada, indicando que todo está listo para enviar efectos a los dispositivos LED.
+                        en la barra de navegacion de arriba PC: Conectada/Desconectada, indicando que todo está listo
+                        para enviar efectos a los dispositivos LED.
                     </p>
 
                     <!-- Imagen 3 -->
@@ -178,10 +189,10 @@
                          alt="Web mostrando estado de conexión"
                          class="rounded-lg shadow mb-6 max-w-xs w-full mx-auto">
 
-                    </div>
                 </div>
-            </details>
-
         </div>
+        </details>
+
+    </div>
     </div>
 {% endblock %}
