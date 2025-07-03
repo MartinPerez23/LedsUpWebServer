@@ -228,3 +228,4 @@ CSP_CONNECT_SRC = ("'self'", "wss:",)
 CSP_FRAME_SRC = ("'self'",)
 CSP_MEDIA_SRC = ("'self'", "https://res.cloudinary.com",)
 CSP_OBJECT_SRC = ("'none'",)  # Bloquea plugins como Flash, PDF, etc
+CSP_INCLUDE_NONCE_IN = ['style-src']
