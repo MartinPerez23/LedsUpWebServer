@@ -1,25 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    {% load static %}
     <meta charset="UTF-8">
+    <link rel="icon" href="{% static 'ledsup/imagenes/iconos/logo.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% block title %}<title>Leds Up</title>{% endblock %}
-    {% load static %}
     {% include "ledsup/partials/css.html" %}
-  </head>
-  <body class="min-h-screen flex flex-col">
+</head>
+<body class="min-h-screen flex flex-col">
 
-  {% include "ledsup/partials/header.html" %}
+{% include "ledsup/partials/header.html" %}
 
-  <main class="flex-grow">
+<main class="flex-grow">
     {% block content %}{% endblock %}
-  </main>
+</main>
 
-  {% include "ledsup/partials/footer.html" %}
+{% include "ledsup/partials/footer.html" %}
 
-  {% include "ledsup/partials/js.html" %}
+{% include "ledsup/partials/js.html" %}
 
-  </body>
+</body>
 </html>

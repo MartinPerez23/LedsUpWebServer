@@ -206,20 +206,22 @@ DATABASES = {
 
 # Media configuration
 cloudinary.config(
+    secure=True,
     cloud_name=os.environ.get('CLOUD_NAME'),
     api_key=os.environ.get('CLOUD_API'),
     api_secret=os.environ.get('CLOUD_PASS')
 )
 
-
-#CSP SECURITY
+# CSP SECURITY
 
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://apis.google.com","https://cdnjs.cloudflare.com",)
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'","https://fonts.googleapis.com",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://apis.google.com", "https://cdnjs.cloudflare.com",
+                  "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net",)
+
 CSP_IMG_SRC = ("'self'", "data:", "https://res.cloudinary.com",)
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
 CSP_CONNECT_SRC = ("'self'", "wss:",)
