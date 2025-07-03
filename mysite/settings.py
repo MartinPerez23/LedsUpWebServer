@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'oauth2_provider',
     'rest_framework',
+    'csp',
     'web.apps.WebConfig',
     'ledsup.apps.LedsupConfig',
     'users.apps.UsersConfig',
@@ -78,6 +79,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'middleware.global_context.GlobalVariablesMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -208,3 +210,18 @@ cloudinary.config(
     api_key=os.environ.get('CLOUD_API'),
     api_secret=os.environ.get('CLOUD_PASS')
 )
+
+
+#CSP SECURITY
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://apis.google.com","https://cdnjs.cloudflare.com",)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'","https://fonts.googleapis.com",)
+CSP_IMG_SRC = ("'self'", "data:", "https://res.cloudinary.com",)
+CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
+CSP_CONNECT_SRC = ("'self'", "wss:",)
+CSP_FRAME_SRC = ("'self'",)
+CSP_MEDIA_SRC = ("'self'", "https://res.cloudinary.com",)
