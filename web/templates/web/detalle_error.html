@@ -20,31 +20,31 @@
             {% endfor %}
         {% endif %}
 
-        <h2 class="text-center text-3xl font-bold text-[var(--primary)] mb-6">
+        <h2 class="text-center text-3xl font-bold text-[#0FF6FF] mb-6">
             Detalle del Error #{{ error.id }}
         </h2>
 
         <div class="max-w-xl mx-auto bg-[#1E293B] p-6 rounded-xl shadow-lg">
-            <div class="mb-6 text-[var(--text)] text-sm space-y-2">
-                <p><strong class="text-[var(--highlight)]">Fecha:</strong> {{ error.fecha_creacion|date:"d/m/Y H:i" }}
+            <div class="mb-6 text-[#EDEDED] text-sm space-y-2">
+                <p><strong class="text-[#00FFA3]">Fecha:</strong> {{ error.fecha_creacion|date:"d/m/Y H:i" }}
                 </p>
-                <p><strong class="text-[var(--highlight)]">Usuario:</strong> {{ error.usuario.username|default:"-" }}
+                <p><strong class="text-[#00FFA3]">Usuario:</strong> {{ error.usuario.username|default:"-" }}
                 </p>
-                <p><strong class="text-[var(--highlight)]">Origen:</strong> {{ error.get_origen_display }}</p>
-                <p><strong class="text-[var(--highlight)]">Estado actual:</strong> {{ error.get_estado_display }}</p>
-                <p><strong class="text-[var(--highlight)]">Asignado
+                <p><strong class="text-[#00FFA3]">Origen:</strong> {{ error.get_origen_display }}</p>
+                <p><strong class="text-[#00FFA3]">Estado actual:</strong> {{ error.get_estado_display }}</p>
+                <p><strong class="text-[#00FFA3]">Asignado
                     a:</strong> {{ error.asignado_a.username|default:"-" }}</p>
             </div>
 
             <div class="mb-6">
-                <strong class="block text-[var(--highlight)] mb-1">Detalle:</strong>
-                <pre class="bg-[#0F172A] text-[var(--text)] text-sm p-4 rounded-md overflow-x-auto whitespace-pre-wrap">{{ error.detalle }}</pre>
+                <strong class="block text-[#00FFA3] mb-1">Detalle:</strong>
+                <pre class="bg-[#0F172A] text-[#EDEDED] text-sm p-4 rounded-md overflow-x-auto whitespace-pre-wrap">{{ error.detalle }}</pre>
             </div>
 
             {% if error.contexto %}
                 <div class="mb-6">
-                    <strong class="block text-[var(--highlight)] mb-1">Contexto:</strong>
-                    <pre class="bg-[#0F172A] text-[var(--text)] text-sm p-4 rounded-md overflow-x-auto whitespace-pre-wrap">{{ error.contexto }}</pre>
+                    <strong class="block text-[#00FFA3] mb-1">Contexto:</strong>
+                    <pre class="bg-[#0F172A] text-[#EDEDED] text-sm p-4 rounded-md overflow-x-auto whitespace-pre-wrap">{{ error.contexto }}</pre>
                 </div>
             {% endif %}
 
@@ -52,21 +52,21 @@
                 {% csrf_token %}
 
                 <div>
-                    <label for="id_asignado_a" class="block text-sm font-medium text-[var(--text-muted)] mb-1">
+                    <label for="id_asignado_a" class="block text-sm font-medium text-[#A1A1AA] mb-1">
                         Asignado a
                     </label>
                     {{ form.asignado_a }}
                 </div>
 
                 <div>
-                    <label for="id_estado" class="block text-sm font-medium text-[var(--text-muted)] mb-1">
+                    <label for="id_estado" class="block text-sm font-medium text-[#A1A1AA] mb-1">
                         Estado
                     </label>
                     {{ form.estado }}
                 </div>
 
                 <div>
-                    <label for="id_comentarios" class="block text-sm font-medium text-[var(--text-muted)] mb-1">
+                    <label for="id_comentarios" class="block text-sm font-medium text-[#A1A1AA] mb-1">
                         Comentarios
                     </label>
                     {{ form.comentarios }}
@@ -74,7 +74,7 @@
 
                 <div class="text-center">
                     <button type="submit"
-                            class="bg-[var(--secondary)] hover:bg-purple-700 transition text-white font-semibold py-2 px-6 rounded-md shadow">
+                            class="bg-[#9E00FF] hover:bg-purple-700 transition text-white font-semibold py-2 px-6 rounded-md shadow">
                         Guardar cambios
                     </button>
                 </div>

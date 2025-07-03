@@ -29,11 +29,11 @@
 
                     <!-- Botones de navegación -->
                     <button onclick="prevSlide()"
-                            class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-[var(--primary)] text-black px-3 py-1 rounded-full shadow-lg">
+                            class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-[#0FF6FF] text-black px-3 py-1 rounded-full shadow-lg">
                         ‹
                     </button>
                     <button onclick="nextSlide()"
-                            class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-[var(--primary)] text-black px-3 py-1 rounded-full shadow-lg">
+                            class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-[#0FF6FF] text-black px-3 py-1 rounded-full shadow-lg">
                         ›
                     </button>
                 </div>
@@ -44,13 +44,13 @@
                 <h1 class="font-space-grotesk text-4xl mb-2 text-[#0FF6FF]">{{ object.nombre_producto }}</h1>
                 <h2 class="text-2xl mb-6 text-[#00FFA3]">${{ object.precio }}</h2>
 
-                <p class="text-lg text-[var(--text-muted)] mb-6 leading-relaxed">
+                <p class="text-lg text-[#A1A1AA] mb-6 leading-relaxed">
                     {{ object.detalles }}
                 </p>
 
                 <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
                     {% for item in object.caracteristicasproducto_set.all %}
-                        <li class="bg-[#1E293B] p-3 rounded-md text-sm text-[var(--text)] shadow">
+                        <li class="bg-[#1E293B] p-3 rounded-md text-sm text-[#EDEDED] shadow">
                             ✔ {{ item }}
                         </li>
                     {% endfor %}

@@ -1,12 +1,12 @@
 {% extends "ledsup/base_generic.html" %}
 
 {% block content %}
-    <div class="min-h-screen px-4 py-10 bg-[color:var(--bg-dark)] text-[color:var(--text)]">
-        <div class="max-w-xl mx-auto bg-[color:var(--panel)] p-6 rounded-xl shadow-md border border-[color:var(--primary)]">
-            <h3 class="text-xl font-semibold text-[color:var(--primary)] mb-4">Borrar Dispositivo</h3>
+    <div class="min-h-screen px-4 py-10 bg-[#0D1117] text-[#EDEDED]">
+        <div class="max-w-xl mx-auto bg-[#1E1E2F] p-6 rounded-xl shadow-md border border-[#0FF6FF]">
+            <h3 class="text-xl font-semibold text-[#0FF6FF] mb-4">Borrar Dispositivo</h3>
 
             <p class="mb-6">¿Estás seguro que deseas eliminar: <span
-                    class="font-semibold text-[color:var(--highlight)]">{{ dispositivo }}</span>?</p>
+                    class="font-semibold text-[#00FFA3]">{{ dispositivo }}</span>?</p>
 
             <form method="POST" class="flex gap-4">
                 {% csrf_token %}

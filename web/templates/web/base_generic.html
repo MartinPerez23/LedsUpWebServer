@@ -1,7 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <link rel="icon" href="{% static 'web/imagenes/iconos/logo.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,18 +9,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% block title %}<title>Easy-Led</title>{% endblock %}
     {% include "web/partials/css.html" %}
-  </head>
-  <body class="min-h-screen flex flex-col">
+</head>
+<body class="min-h-screen flex flex-col bg-[#0D1117] font-[Poppins]  text-[#EDEDED] leading-relaxed">
+{% include "web/partials/header.html" %}
 
-  {% include "web/partials/header.html" %}
-
-  <main class="flex-grow">
+<main class="flex-grow">
     {% block content %}{% endblock %}
-  </main>
+</main>
 
-  {% include "web/partials/footer.html" %}
+{% include "web/partials/footer.html" %}
 
-  {% include "web/partials/js.html" %}
+{% include "web/partials/js.html" %}
 
-  </body>
+</body>
 </html>

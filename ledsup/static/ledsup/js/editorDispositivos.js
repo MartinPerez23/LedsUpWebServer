@@ -34,7 +34,7 @@ botonEditar.addEventListener('click', () => {
             if (valoresGuardados && valoresGuardados.length === matrizX.value * matrizY.value) {
                 valor = valoresGuardados[contador];
             }
-            matrizDeInputs += `<input type='number' class='form-control col' id='led${contador}' value='${valor}'>`;
+            matrizDeInputs += `<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led${contador}' value='${valor}'>`;
             contador++;
         }
         matrizDeInputs += "</div>";

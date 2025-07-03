@@ -6,3 +6,9 @@ db.sqlite3
 *.xml
 *.iml
 .idea
+/node_modules
+*.BAT
+*.exe
+tailwind.config.js
+package.json
+package-lock.json

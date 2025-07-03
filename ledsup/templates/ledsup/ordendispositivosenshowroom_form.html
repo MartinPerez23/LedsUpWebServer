@@ -1,8 +1,8 @@
 {% extends "ledsup/base_generic.html" %}
 
 {% block content %}
-    <div class="min-h-screen px-4 py-10 bg-[color:var(--bg-dark)] text-[color:var(--text)]">
-        <div class="max-w-2xl mx-auto bg-[color:var(--panel)] p-6 rounded-xl shadow-md border border-[color:var(--primary)]">
+    <div class="min-h-screen px-4 py-10 bg-[#0D1117] text-[#EDEDED]">
+        <div class="max-w-2xl mx-auto bg-[#1E1E2F] p-6 rounded-xl shadow-md border border-[#0FF6FF]">
             <form action="" method="post" class="space-y-6">
                 {% csrf_token %}
 
@@ -12,7 +12,7 @@
 
                 <div class="pt-4">
                     <input type="submit" value="Guardar"
-                           class="bg-[color:var(--primary)] hover:bg-[color:var(--highlight)] text-black font-semibold py-2 px-4 rounded transition duration-200 cursor-pointer"/>
+                           class="bg-[#0FF6FF] hover:bg-[#00FFA3] text-black font-semibold py-2 px-4 rounded transition duration-200 cursor-pointer"/>
                 </div>
             </form>
         </div>

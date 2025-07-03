@@ -9,15 +9,15 @@
         <h2 class="text-center text-4xl font-extrabold text-cyan-400 mb-6">Eventos</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
             {% for event in events_list %}
-                <div class="card p-5 bg-[#1E293B] rounded-xl shadow-lg transform transition hover:scale-105">
+                <div class="p-5 bg-[#1E293B] rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_15px_#9E00FF]">
                     <a data-fancybox="gallery" href="{{ event.imagen.url }}">
                         <img src="{{ event.imagen.url }}" class="rounded-lg w-full object-cover"
                              alt="Imagen de {{ event.nombre_evento }}">
                     </a>
 
                     <div class="pt-4">
-                        <h3 class="text-lg font-semibold text-white">{{ event.nombre_evento }}</h3>
-                        <p class="text-sm text-green-400 mt-2">{{ event.pie_de_imagen }}</p>
+                        <h3 class="text-lg font-semibold text-[#00FFA3] mb-2">{{ event.nombre_evento }}</h3>
+                        <p class="text-sm text-gray-300 mt-2">{{ event.pie_de_imagen }}</p>
                     </div>
                     <div class="pt-4">
                         <small class="block text-gray-400">{{ event.fecha_de_evento }}</small>
