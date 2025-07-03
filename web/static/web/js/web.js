@@ -26,5 +26,7 @@ function prevSlide() {
     showSlide(currIndex);
 }
 
-document.addEventListener('DOMContentLoaded', () => showSlide(currIndex));
-
+document.addEventListener('DOMContentLoaded', () => {
+    showSlide(currIndex);
+    Fancybox.bind("[data-fancybox='gallery']");
+});
