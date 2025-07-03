@@ -12,4 +12,4 @@ python-dotenv~=1.1.0
 psycopg2-binary==2.9.10
 
 cloudinary==1.44.1
-django-csp==4.0
+django-csp==3.7
