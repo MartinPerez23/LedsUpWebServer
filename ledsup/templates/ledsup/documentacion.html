@@ -2,148 +2,169 @@
 {% load static %}
 
 {% block title %}
-    <title>Guía de uso</title>
+    <title>Documentación</title>
 {% endblock %}
 
 {% block content %}
-    <div class="max-w-5xl mx-auto px-6 py-12 text-white font-sans">
+    <div class="flex flex-col lg:flex-row bg-[#0A192F] text-white font-sans">
 
-        <!-- Botón de descarga -->
-        <div class="text-center mb-12">
-            <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-windows.exe"
-               download="LedsUp-windows"
-               class="inline-block bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition">
-                Descargar Aplicacion para Windows
-            </a>
-            <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-linux"
-               download="LedsUp-linux"
-               class="inline-block bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition">
-                Descargar Aplicacion para Linux
-            </a>
-            <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-macos"
-               download="LedsUp-macos"
-               class="inline-block bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition">
-                Descargar Aplicacion para MAC
-            </a>
-            <p class="text-sm text-gray-400 mt-2">Haz clic para descargar la app de escritorio para controlar tus LEDs
-                localmente.</p>
-        </div>
+        <!-- Barra lateral (solo visible en desktop) -->
+        <aside class="hidden lg:block w-64 sticky top-24 h-max bg-[#1E293B] p-6 border-r border-cyan-500 shadow-xl">
+            <h2 class="text-xl font-bold text-cyan-400 mb-6">Contenido</h2>
+            <nav class="space-y-4 text-[#A1A1AA] text-sm">
+                <a href="#paso1" class="block hover:text-cyan-400 transition">1. Descargar App</a>
+                <a href="#paso2" class="block hover:text-cyan-400 transition">2. Configurar Dispositivo</a>
+                <a href="#paso3" class="block hover:text-cyan-400 transition">3. Configurar Showroom</a>
+                <a href="#paso4" class="block hover:text-cyan-400 transition">4. Usar el Servidor</a>
+            </nav>
+        </aside>
 
-        <!-- Secciones de explicación -->
-        <div class="space-y-10">
+        <!-- Contenido principal -->
+        <main class="w-full px-6 sm:px-10 lg:px-16 py-12 space-y-20">
 
-            <!-- Configurar un dispositivo -->
-            <details class="bg-[#1E293B] p-6 rounded-xl shadow-lg border border-cyan-500">
-                <summary class="text-2xl font-bold text-cyan-400 mb-4 cursor-pointer">CONFIGURAR UN DISPOSITIVO
-                </summary>
-                <div class="mt-4">
-
-                    <p class="mb-4 text-[#A1A1AA] leading-relaxed">
-                        Un <strong>dispositivo</strong> representa un conjunto físico de LEDs conectados a través de una
-                        interfaz DMX. Para que pueda ser controlado desde el sistema, debe estar correctamente
-                        configurado.
-                    </p>
-
-                    <img src="{% static 'ledsup/imagenes/guia_dispositivo.JPG' %}"
-                         alt="Formulario de configuración de dispositivo"
-                         class="rounded-lg shadow mb-6 max-w-3xl w-full">
-
-                    <ol class="list-decimal ml-6 space-y-3 text-[#EDEDED]">
-                        <li><strong>Nombre dispositivo:</strong> El nombre que lo identifica en el sistema (por ejemplo:
-                            “Tira Led A”).
-                        </li>
-                        <li><strong>Número IP:</strong> La IP asignada a la interfaz DMX que controla este dispositivo.
-                            Por lo general, se encuentra en una etiqueta pegada a la interfaz.
-                        </li>
-                        <li><strong>Universo:</strong> Número de universo DMX donde está conectado. Por lo general se
-                            empieza desde el 0.
-                        </li>
-                        <li><strong>Tamaño paquetes:</strong> Cantidad de canales que se envían por paquete. Por defecto
-                            es 512 (tamaño estándar de un universo DMX).
-                        </li>
-                        <li><strong>Matriz X / Y:</strong> Tamaño en LEDs de la matriz (por ejemplo, 5x5 si es una
-                            cuadrícula).
-                        </li>
-                        <li><strong>Tipo de LED:</strong> Seleccioná si es RGB o RGBW dependiendo del tipo de tira o
-                            luminaria que estés usando.
-                        </li>
-                    </ol>
-
-                    <p class="mt-6 text-[#A1A1AA]">
-                        Una vez completados los datos, hacé clic en el botón violeta <strong>"Editar Posición de
-                        LEDs"</strong> si necesitás mapearlos visualmente. Esto es útil si la distribución física no es
-                        rectangular o si se conectaron en orden diferente.
-                    </p>
-
-                    <p class="mt-4 text-[#A1A1AA]">
-                        Finalmente, hacé clic en el botón <span class="text-cyan-400 font-semibold">"Guardar"</span>
-                        para registrar el dispositivo en el sistema.
-                    </p>
-
-                    <div class="mt-8">
-                        <a href="{% url 'ledsup:crear_dispositivo' %}" target="_blank"
-                           class="inline-block px-6 py-3 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-600 transition">
-                            → Ir a Configurar un Dispositivo
-                        </a>
-                    </div>
+            <!-- Paso 1 -->
+            <section id="paso1" class="relative pl-20 border-l-4 border-cyan-500 scroll-mt-24">
+                <div class="absolute left-4 top-0 w-8 h-8 bg-cyan-500 text-[#0D1117] rounded-full flex items-center justify-center font-bold shadow-lg">
+                    1
                 </div>
-            </details>
-
-            <!-- Configurar un showroom -->
-            <details class="bg-[#1E293B] p-6 rounded-xl shadow-lg border border-cyan-500">
-                <summary class="text-2xl font-bold text-cyan-400 mb-4 cursor-pointer">CONFIGURAR UN SHOWROOM</summary>
-                <div class="mt-4">
-
-                    <p class="mb-4 text-[#A1A1AA] leading-relaxed">
-                        Un <strong>showroom</strong> es un grupo de dispositivos que comparten la misma interfaz DMX.
-                        Esto permite controlarlos todos al mismo tiempo como si fueran una sola unidad.
-                    </p>
-
-                    <p class="mb-4 text-[#A1A1AA] leading-relaxed">
-                        Por ejemplo, si tenés varios tubos LED conectados al mismo universo y querés que todos se
-                        iluminen en rojo al mismo tiempo, podés agruparlos en un showroom. Así, en vez de configurarlos
-                        uno por uno, podés controlar el conjunto de una sola vez.
-                    </p>
-
-                    <img src="{% static 'ledsup/imagenes/guia_showroom.JPG' %}"
-                         alt="Formulario de configuración de showroom"
-                         class="rounded-lg shadow mb-6 max-w-md w-full mx-auto"
-                    >
-
-                    <ol class="list-decimal ml-6 space-y-3 text-[#EDEDED]">
-                        <li><strong>Nombre showroom:</strong> Es el nombre que te va a permitir identificar el grupo.
-                            Por ejemplo: “Escenario Principal”.
-                        </li>
-
-                        <li>
-                            <strong>Dispositivos:</strong> Seleccioná cuáles dispositivos querés que formen parte del
-                            showroom.<br>
-                            <span class="text-sm text-gray-400">
-                    Para seleccionar más de uno, mantené presionada la tecla <kbd
-                                    class="bg-gray-700 text-white px-1 rounded">CTRL</kbd> (o <kbd
-                                    class="bg-gray-700 text-white px-1 rounded">CMD</kbd> en Mac) mientras hacés clic.
-                </span>
-                        </li>
-                    </ol>
-
-                    <p class="mt-6 text-[#A1A1AA]">
-                        Una vez hecho esto, podés usar el showroom para aplicar efectos a todos esos dispositivos al
-                        mismo tiempo.
-                    </p>
-
-                    <div class="mt-8">
-                        <a href="{% url 'ledsup:crear_showroom' %}" target="_blank"
-                           class="inline-block px-6 py-3 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-600 transition">
-                            → Ir a Configurar un Showroom
-                        </a>
-                    </div>
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">Descargar la Aplicación</h2>
+                <p class="text-[#A1A1AA] leading-relaxed mb-6">Elegí tu sistema operativo y descargá la app para
+                    controlar tus LEDs.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-windows.exe"
+                       download="LedsUp-windows"
+                       class="bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition text-center">
+                        Descargar para Windows
+                    </a>
+                    <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-linux"
+                       download="LedsUp-linux"
+                       class="bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition text-center">
+                        Descargar para Linux
+                    </a>
+                    <a href="https://github.com/MartinPerez23/LedsUpLocalServer/releases/download/lastest/LedsUp-macos"
+                       download="LedsUp-macos"
+                       class="bg-[#00FFA3] text-black font-semibold py-3 px-6 rounded-lg text-lg shadow-md hover:bg-cyan-400 transition text-center">
+                        Descargar para macOS
+                    </a>
                 </div>
-            </details>
+            </section>
 
-            <!-- Usar el servidor local -->
-            <details class="bg-[#1E293B] p-6 rounded-xl shadow-lg border border-cyan-500">
-                <summary class="text-2xl font-bold text-cyan-400 mb-4 cursor-pointer">CÓMO USAR EL SERVIDOR LOCAL
-                </summary>
+            <!-- Paso 2 -->
+            <section id="paso2" class="relative pl-20 border-l-4 border-cyan-500 scroll-mt-24">
+                <div class="absolute left-4 top-0 w-8 h-8 bg-cyan-500 text-[#0D1117] rounded-full flex items-center justify-center font-bold shadow-lg">
+                    2
+                </div>
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">Configurar un Dispositivo</h2>
+
+
+                <p class="mb-4 text-[#A1A1AA] leading-relaxed">
+                    Un <strong>dispositivo</strong> representa un conjunto físico de LEDs conectados a través de una
+                    interfaz DMX. Para que pueda ser controlado desde el sistema, debe estar correctamente
+                    configurado.
+                </p>
+                <img src="{% static 'ledsup/imagenes/guia_showroom.JPG' %}"
+                     alt="Formulario de configuración de showroom"
+                     class="rounded-lg shadow mb-6 max-w-md w-full mx-auto"
+                >
+
+                <ul class="ml-6 space-y-3 text-[#A1A1AA]">
+                    <li><strong>Nombre dispositivo:</strong> El nombre que lo identifica en el sistema (por ejemplo:
+                        “Tira Led A”).
+                    </li>
+                    <li><strong>Número IP:</strong> La IP asignada a la interfaz DMX que controla este dispositivo.
+                        Por lo general, se encuentra en una etiqueta pegada a la interfaz.
+                    </li>
+                    <li><strong>Universo:</strong> Número de universo DMX donde está conectado. Por lo general se
+                        empieza desde el 0.
+                    </li>
+                    <li><strong>Tamaño paquetes:</strong> Cantidad de canales que se envían por paquete. Por defecto
+                        es 512 (tamaño estándar de un universo DMX).
+                    </li>
+                    <li><strong>Matriz X / Y:</strong> Tamaño en LEDs de la matriz (por ejemplo, 5x5 si es una
+                        cuadrícula).
+                    </li>
+                    <li><strong>Tipo de LED:</strong> Seleccioná si es RGB o RGBW dependiendo del tipo de tira o
+                        luminaria que estés usando.
+                    </li>
+                </ul>
+
+                <p class="mt-6 text-[#A1A1AA]">
+                    Una vez completados los datos, hacé clic en el botón violeta <strong>"Editar Posición de
+                    LEDs"</strong> si necesitás mapearlos visualmente. Esto es útil si la distribución física no es
+                    rectangular o si se conectaron en orden diferente.
+                </p>
+
+                <p class="mt-4 text-[#A1A1AA]">
+                    Finalmente, hacé clic en el botón <span class="text-cyan-400 font-semibold">"Guardar"</span>
+                    para registrar el dispositivo en el sistema.
+                </p>
+
+                <div class="mt-8">
+                    <a href="{% url 'ledsup:crear_dispositivo' %}" target="_blank"
+                       class="inline-block px-6 py-3 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-600 transition">
+                        → Ir a Configurar un Dispositivo
+                    </a>
+                </div>
+
+            </section>
+
+            <!-- Paso 3 -->
+            <section id="paso3" class="relative pl-20 border-l-4 border-cyan-500 scroll-mt-24">
+                <div class="absolute left-4 top-0 w-8 h-8 bg-cyan-500 text-[#0D1117] rounded-full flex items-center justify-center font-bold shadow-lg">
+                    3
+                </div>
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">Configurar un Showroom</h2>
+
+
+                <p class="mb-4 text-[#A1A1AA] leading-relaxed">
+                    Un <strong>showroom</strong> es un grupo de dispositivos que comparten la misma interfaz DMX.
+                    Esto permite controlarlos todos al mismo tiempo como si fueran una sola unidad.
+                </p>
+
+                <p class="mb-4 text-[#A1A1AA] leading-relaxed">
+                    Por ejemplo, si tenés varios tubos LED conectados al mismo universo y querés que todos se
+                    iluminen en rojo al mismo tiempo, podés agruparlos en un showroom. Así, en vez de configurarlos
+                    uno por uno, podés controlar el conjunto de una sola vez.
+                </p>
+
+                <img src="{% static 'ledsup/imagenes/guia_showroom.JPG' %}"
+                     alt="Formulario de configuración de showroom"
+                     class="rounded-lg shadow mb-6 max-w-md w-full mx-auto"
+                >
+
+                <ul class="ml-6 space-y-3 text-[#A1A1AA]">
+                    <li><strong>Nombre showroom:</strong> Es el nombre que te va a permitir identificar el grupo.
+                        Por ejemplo: “Escenario Principal”.
+                    </li>
+
+                    <li>
+                        <strong>Dispositivos:</strong> Seleccioná cuáles dispositivos querés que formen parte del
+                        showroom.<br>
+                        <span class="text-sm text-gray-400">Para seleccionar más de uno, mantené presionada la tecla <kbd
+                                class="bg-gray-700 text-white px-1 rounded">CTRL</kbd> (o <kbd
+                                class="bg-gray-700 text-white px-1 rounded">CMD</kbd> en Mac) mientras hacés clic.</span>
+                    </li>
+                </ul>
+
+                <p class="mt-6 text-[#A1A1AA]">
+                    Una vez hecho esto, podés usar el showroom para aplicar efectos a todos esos dispositivos al
+                    mismo tiempo.
+                </p>
+
+                <div class="mt-8">
+                    <a href="{% url 'ledsup:crear_showroom' %}" target="_blank"
+                       class="inline-block px-6 py-3 bg-cyan-500 text-black font-semibold rounded hover:bg-cyan-600 transition">
+                        → Ir a Configurar un Showroom
+                    </a>
+                </div>
+            </section>
+
+            <!-- Paso 4 -->
+            <section id="paso4" class="relative pl-20 border-l-4 border-cyan-500 scroll-mt-24">
+                <div class="absolute left-4 top-0 w-8 h-8 bg-cyan-500 text-[#0D1117] rounded-full flex items-center justify-center font-bold shadow-lg">
+                    4
+                </div>
+                <h2 class="text-3xl font-bold text-cyan-400 mb-4">Usar el Servidor Local</h2>
                 <div class="mt-4 space-y-4 text-[#A1A1AA] leading-relaxed">
                     <p>
                         Para poder controlar los LEDs desde cualquier parte del mundo, es necesario que el servidor
@@ -188,9 +209,8 @@
                     <img src="{% static 'ledsup/imagenes/guia_server_3.JPG' %}"
                          alt="Web mostrando estado de conexión"
                          class="rounded-lg shadow mb-6 max-w-xs w-full mx-auto">
-
                 </div>
-            </details>
-        </div>
+            </section>
+        </main>
     </div>
 {% endblock %}
