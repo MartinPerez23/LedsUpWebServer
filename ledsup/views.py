@@ -272,6 +272,7 @@ class ShowroomCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('ledsup:lista_showroom')
 
     def form_valid(self, form):
+        form.instance.usuario = self.request.user
         messages.success(self.request, 'Showroom creado exitosamente')
         return super().form_valid(form)
 
