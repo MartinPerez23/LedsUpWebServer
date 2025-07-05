@@ -126,6 +126,11 @@ class DetalleErrorView(LoginRequiredMixin, generic.DetailView):
     template_name = 'web/detalle_error.html'
     context_object_name = 'error'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ErrorUpdateForm(instance=self.object)
+        return context
+
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = ErrorUpdateForm(request.POST, instance=self.object)
