@@ -103,7 +103,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = x + matrizX.value * y
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -112,7 +112,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizX.value * (y + 1) - (x + 1)
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -121,7 +121,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizX.value * matrizY.value - matrizX.value + x - matrizX.value * y
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -130,7 +130,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizX.value * matrizY.value - (x + 1) - matrizX.value * y
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -144,7 +144,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = matrizX.value * (y + 1) - (x + 1)
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -158,7 +158,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = x + matrizX.value * y
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -172,7 +172,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = matrizX.value * matrizY.value - matrizX.value + x - matrizX.value * y
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -186,7 +186,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = matrizX.value * matrizY.value - (x + 1) - matrizX.value * y
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -195,7 +195,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizY.value * x + y
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -204,7 +204,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizX.value * matrizY.value - matrizY.value + y - matrizY.value * x
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -213,7 +213,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizY.value * (x + 1) - (y + 1)
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -222,7 +222,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
             matrizDeInputs += "<div class='row'>";
             for (let x = 0; x < matrizX.value; x++) {
                 num = matrizY.value * matrizX.value - (y + 1) - matrizY.value * x
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -236,7 +236,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = matrizY.value * (x + 1) - (y + 1)
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -250,7 +250,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = y + matrizY.value * x
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -264,7 +264,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = matrizX.value * matrizY.value - matrizY.value + y - matrizY.value * x
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
@@ -278,7 +278,7 @@ selectPacheoRapido.addEventListener('change', function (MouseEvent) {
                     num = matrizY.value * matrizX.value - (y + 1) - matrizY.value * x
                 }
 
-                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
+                matrizDeInputs = matrizDeInputs + "<input type='number' class='form-control col w-12 h-12 text-center font-bold rounded-md bg-gray-800 text-white border border-gray-700' id='led" + (x + matrizX.value * y) + "' value='" + num + "'>";
             }
             matrizDeInputs += "</div>";
         }
