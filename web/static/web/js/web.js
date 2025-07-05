@@ -30,3 +30,16 @@ document.addEventListener('DOMContentLoaded', () => {
     showSlide(currIndex);
     Fancybox.bind("[data-fancybox='gallery']");
 });
+
+window.onContactSubmit = function(token) {
+    document.getElementById('ContactForm').submit();
+};
+
+window.onUserSubmit = function(token) {
+    document.getElementById('UserForm').submit();
+};
+
+window.onLoginSubmit = function(token) {
+    document.getElementById('LoginForm').submit();
+};
+

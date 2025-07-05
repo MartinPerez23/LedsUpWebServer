@@ -1,4 +1,6 @@
 from django import forms
+from django.conf import settings
+from django.core.mail import send_mail
 
 from .models import Errores
 
@@ -12,8 +14,16 @@ class ContactForm(forms.Form):
     mensaje = forms.CharField(widget=forms.Textarea(attrs={'class': class_text}))
 
     def send_email(self):
-        # send email using the self.cleaned_data dictionary
-        pass
+        subject = 'Nuevo mensaje de contacto'
+        message = (
+            f"Nombre: {self.cleaned_data['nombre']}\n"
+            f"Apellido: {self.cleaned_data['apellido']}\n"
+            f"Correo: {self.cleaned_data['email']}\n\n"
+            f"Mensaje:\n{self.cleaned_data['mensaje']}"
+        )
+        from_email = settings.EMAIL_HOST_USER
+        recipient_list = [settings.EMAIL_HOST_USER]
+        send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
 
 class ErrorUpdateForm(forms.ModelForm):

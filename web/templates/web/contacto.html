@@ -1,9 +1,6 @@
 {% extends "web/base_generic.html" %}
 
-
-
 {% block content %}
-    <script src="https://hcaptcha.com/1/api.js" async defer></script>
     <section class="px-6 py-12 bg-[#0F172A] text-white">
         <h2 class="text-center text-4xl font-extrabold text-cyan-400 mb-6">Contacto</h2>
 
@@ -22,8 +19,7 @@
                 </div>
             {% endfor %}
         {% endif %}
-
-        <form method="post" class="max-w-xl mx-auto bg-[#1E293B] p-6 rounded-xl shadow-md space-y-6">
+        <form id="ContactForm" method="post" class="max-w-xl mx-auto bg-[#1E293B] p-6 rounded-xl shadow-md space-y-6">
             {% csrf_token %}
 
             <!-- Input Nombre -->
@@ -58,16 +54,11 @@
                 <button type="submit"
                         class="bg-[#9E00FF] text-white px-4 py-2 rounded-md font-semibold hover:bg-purple-700 transition h-captcha"
                         data-sitekey="{{ HCAPTCHA_SITE_KEY }}"
-                        data-callback="onSubmit"
+                        data-callback="onContactSubmit"
                         data-size="invisible">
                     Enviar mensaje
                 </button>
             </div>
-            <script>
-                function onSubmit(token) {
-                    document.querySelector("form").submit();
-                }
-            </script>
         </form>
     </section>
 {% endblock %}

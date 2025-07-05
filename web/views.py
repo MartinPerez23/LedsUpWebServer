@@ -70,9 +70,16 @@ class ContactFormView(generic.FormView):
         resultado = r.json()
 
         if resultado.get('success'):
-            messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
-            form.send_email()
-            return super().form_valid(form)
+            try:
+                form.send_email()
+                messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
+
+                return super().form_valid(form)
+
+            except Exception:
+                messages.error(self.request, f'Error al enviar el mensaje. Intentelo nuevamente mas tarde.')
+                return self.form_invalid(form)
+
         else:
             form.add_error(None, "Validación hCaptcha fallida")
             return self.form_invalid(form)

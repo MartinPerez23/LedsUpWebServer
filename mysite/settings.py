@@ -219,13 +219,16 @@ X_FRAME_OPTIONS = 'DENY'
 
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'", "https://apis.google.com", "https://cdnjs.cloudflare.com",
-                  "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net",)
-CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net",)
-
-CSP_IMG_SRC = ("'self'", "https://res.cloudinary.com",)
+                  "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net", "https://hcaptcha.com",
+                  "https://*.hcaptcha.com;")
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://hcaptcha.com",
+                 "https://*.hcaptcha.com", "https://newassets.hcaptcha.com",)
+CSP_IMG_SRC = ("'self'", "https://res.cloudinary.com", "https://hcaptcha.com", "https://*.hcaptcha.com",
+               "https://newassets.hcaptcha.com",)
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
-CSP_CONNECT_SRC = ("'self'", "wss:",)
-CSP_FRAME_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'", "wss:", "https://hcaptcha.com", "https://*.hcaptcha.com",
+                   "https://newassets.hcaptcha.com",)
+CSP_FRAME_SRC = ("'self'", "https://hcaptcha.com", "https://*.hcaptcha.com", "https://newassets.hcaptcha.com",)
 CSP_MEDIA_SRC = ("'self'", "https://res.cloudinary.com",)
 CSP_OBJECT_SRC = ("'none'",)  # Bloquea plugins como Flash, PDF, etc
 CSP_INCLUDE_NONCE_IN = ['style-src']

@@ -40,7 +40,7 @@ class SignUpView(CreateView):
             return self.form_invalid(form)
 
 
-class UserProfileUpdateView(UpdateView):
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = CustomUserChangeForm
     template_name = 'registration/user_edit.html'
