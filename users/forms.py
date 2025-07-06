@@ -47,3 +47,9 @@ class CustomUserCreationForm(UserCreationForm):
             else:
                 field.widget.attrs[
                     'class'] = 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("Ya existe un usuario registrado con este correo electrónico.")
+        return email

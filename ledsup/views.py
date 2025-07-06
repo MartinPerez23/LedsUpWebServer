@@ -38,8 +38,7 @@ class ListDispositivosPage(LoginRequiredMixin, generic.ListView):
     context_object_name = 'listadoDispositivos'
 
     def get_queryset(self):
-        return Dispositivo.objects.get_queryset().filter(
-            usuario__email__exact=self.request.user.email)
+        return Dispositivo.objects.get_queryset().filter(usuario_id=self.request.user.id)
 
 
 class DispositivoCreate(LoginRequiredMixin, CreateView):
@@ -125,15 +124,13 @@ class ListShowroomPage(LoginRequiredMixin, generic.ListView):
     context_object_name = 'listadoShowroom'
 
     def get_queryset(self):
-        return Showroom.objects.get_queryset().filter(
-            usuario__email__exact=self.request.user.email)
+        return Showroom.objects.get_queryset().filter(usuario_id=self.request.user.id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['ordenes'] = OrdenDispositivosEnShowroom.ORDEN_DISPOSITIVOS
-        context[
-            'ordenesDispositivosEnShowroom'] = OrdenDispositivosEnShowroom.objects.get_queryset(
-        ).filter(showroom__usuario__email__exact=self.request.user.email)
+        context['ordenesDispositivosEnShowroom'] = OrdenDispositivosEnShowroom.objects.get_queryset(
+        ).filter(showroom__usuario_id=self.request.user.id)
 
         return context
 
@@ -159,8 +156,7 @@ class ShowroomPage(LoginRequiredMixin, generic.ListView):
     context_object_name = 'listadoShowroom'
 
     def get_queryset(self):
-        return Showroom.objects.get_queryset().filter(
-            usuario__email__exact=self.request.user.email)
+        return Showroom.objects.get_queryset().filter(usuario_id=self.request.user.id)
 
 
 class ShowroomActionBase(LoginRequiredMixin, View):
@@ -280,7 +276,7 @@ class ShowroomCreate(LoginRequiredMixin, CreateView):
         form = super(ShowroomCreate, self).get_form(*args, **kwargs)
         form.fields[
             'dispositivos'].queryset = Dispositivo.objects.get_queryset(
-        ).filter(usuario__email__exact=self.request.user.email)
+        ).filter(usuario_id=self.request.user.id)
 
         return form
 
@@ -299,7 +295,7 @@ class ShowroomUpdate(LoginRequiredMixin, UpdateView):
         form = super(ShowroomUpdate, self).get_form(*args, **kwargs)
         form.fields[
             'dispositivos'].queryset = Dispositivo.objects.get_queryset(
-        ).filter(usuario__email__exact=self.request.user.email)
+        ).filter(usuario_id=self.request.user.id)
 
         return form
 
@@ -327,8 +323,7 @@ class ShowroomViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def get_queryset(self):
-        return Showroom.objects.get_queryset().filter(
-            usuario__email__exact=self.request.user.email)
+        return Showroom.objects.get_queryset().filter(usuario_id=self.request.user.id)
 
 
 class DispositivoViewSet(viewsets.ModelViewSet):
@@ -336,5 +331,4 @@ class DispositivoViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUser]
 
     def get_queryset(self):
-        return Dispositivo.objects.get_queryset().filter(
-            usuario__email__exact=self.request.user.email)
+        return Dispositivo.objects.get_queryset().filter(usuario_id=self.request.user.id)

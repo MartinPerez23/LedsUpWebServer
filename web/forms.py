@@ -1,5 +1,6 @@
 from django import forms
 from django.conf import settings
+from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 
 from .models import Errores
@@ -37,3 +38,11 @@ class ErrorUpdateForm(forms.ModelForm):
             'asignado_a': forms.Select(attrs={'class': class_text}),
             'estado': forms.Select(attrs={'class': class_text}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        admin_group = Group.objects.filter(name="Administrador Web").first()
+        if admin_group:
+            self.fields['asignado_a'].queryset = admin_group.user_set.all()
+        else:
+            self.fields['asignado_a'].queryset = self.fields['asignado_a'].queryset.none()
