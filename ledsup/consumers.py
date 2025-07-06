@@ -3,9 +3,6 @@ import json
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.layers import get_channel_layer
-import asyncio
-from datetime import timedelta
-from django.utils import timezone
 
 @sync_to_async
 def marcar_conectado(user_id):
@@ -91,7 +88,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         try:
             data = json.loads(text_data)
             if data.get("type") == "ping":
-                print("WebSocket ping")
+                await actualizar_ping(self.scope_user)
         except Exception as e:
             print(f"Error al procesar mensaje: {e}")
 
@@ -112,20 +109,17 @@ def actualizar_ping(user_id):
     try:
         user = User.objects.get(id=user_id)
         status, _ = UserConnectionStatus.objects.get_or_create(user=user)
-        status.last_ping = timezone.now()
+        status.lastPing = timezone.now()
         status.save()
     except User.DoesNotExist:
         pass
 
 class EstadoConsumer(AsyncWebsocketConsumer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.user_group_name = None
-        self.verificacion_task = None
-        self.estado_actual = None
-
     async def connect(self):
         from .models import UserConnectionStatus
+        from django.utils import timezone
+        from datetime import timedelta
+
         user = self.scope["user"]
         if user.is_anonymous:
             await self.close()
@@ -135,49 +129,22 @@ class EstadoConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.user_group_name, self.channel_name)
         await self.accept()
 
-        # Consultar estado inicial
-        self.estado_actual = "desconectado"
-        try:
-            status = await sync_to_async(UserConnectionStatus.objects.get)(user=user)
-            if status.connected:
-                if status.last_ping and timezone.now() - status.last_ping < timedelta(seconds=30):
-                    self.estado_actual = "conectado"
-        except UserConnectionStatus.DoesNotExist:
-            pass
+        # Verifica el ping real del dispositivo
+        status = await sync_to_async(UserConnectionStatus.objects.filter(user=user).first)()
+
+        estado = "desconectado"
+        if status:
+            ahora = timezone.now()
+            if status.connected and status.last_ping and ahora - status.last_ping < timedelta(seconds=30):
+                estado = "conectado"
 
         await self.send(text_data=json.dumps({
-            "estado": self.estado_actual,
+            "estado": estado,
             "usuario": user.id,
         }))
 
-        # 🔁 Iniciar verificación periódica
-        self.verificacion_task = asyncio.create_task(self.verificar_estado(user.id))
-
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.user_group_name, self.channel_name)
-        if self.verificacion_task:
-            self.verificacion_task.cancel()
 
     async def estado_actualizado(self, event):
         await self.send(text_data=json.dumps(event["data"]))
-
-    async def verificar_estado(self, user_id):
-        from .models import UserConnectionStatus
-        while True:
-            await asyncio.sleep(5)
-            try:
-                status = await sync_to_async(UserConnectionStatus.objects.get)(user_id=user_id)
-                ahora = timezone.now()
-                delta = ahora - (status.last_ping or ahora)
-
-                nuevo_estado = "conectado" if status.connected and delta < timedelta(seconds=30) else "desconectado"
-
-                if nuevo_estado != self.estado_actual:
-                    self.estado_actual = nuevo_estado
-                    await self.send(text_data=json.dumps({
-                        "estado": nuevo_estado,
-                        "usuario": user_id,
-                    }))
-            except UserConnectionStatus.DoesNotExist:
-                pass
-
