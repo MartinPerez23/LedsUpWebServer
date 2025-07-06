@@ -415,4 +415,17 @@ document.addEventListener('DOMContentLoaded', function () {
             mensajeError.classList.add('hidden');
         }, 5000);
     }
+
+    if (checkBoxConstanteColor.checked) {
+        canvas.style.pointerEvents = 'none';
+        canvas.style.opacity = '0.5';
+        inputColorPersonalizado.disabled = true;
+        labelVelocidadColorCambioConstante.classList.remove('hidden');
+    } else {
+        canvas.style.pointerEvents = 'auto';
+        canvas.style.opacity = '1';
+        inputColorPersonalizado.disabled = false;
+        labelVelocidadColorCambioConstante.classList.add('hidden');
+    }
+
 });

@@ -50,7 +50,10 @@ class RoomConsumer(AsyncWebsocketConsumer):
             self.group_name = f"user_{self.scope_user}"
 
             await self.channel_layer.group_add(self.group_name, self.channel_name)
+            # noinspection PyUnresolvedReferences
             await marcar_conectado(self.scope_user)
+            # noinspection PyUnresolvedReferences
+            await actualizar_ping(self.scope_user)
             await self.accept()
             print(f"WebSocket conectado: usuario {self.scope_user} agregado al grupo {self.group_name}")
             print(f"user_{self.scope_user}")
@@ -135,7 +138,7 @@ class EstadoConsumer(AsyncWebsocketConsumer):
         estado = "desconectado"
         if status:
             ahora = timezone.now()
-            if status.connected and status.last_ping and ahora - status.last_ping < timedelta(seconds=30):
+            if status.connected and status.lastPing and ahora - status.lastPing < timedelta(seconds=30):
                 estado = "conectado"
 
         await self.send(text_data=json.dumps({
