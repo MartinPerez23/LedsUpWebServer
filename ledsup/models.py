@@ -85,6 +85,7 @@ class OrdenDispositivosEnShowroom(models.Model):
 class UserConnectionStatus(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     connected = models.BooleanField(default=False)
+    last_ping = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username}: {'Conectado' if self.connected else 'Desconectado'}"

@@ -28,15 +28,15 @@ def get_context():
     }
 
 
-def custom_400(request):
+def custom_400(request, exception):
     return render(request, "400.html", context=get_context(), status=400)
 
 
-def custom_403(request):
+def custom_403(request, exception):
     return render(request, "403.html", context=get_context(), status=403)
 
 
-def custom_404(request):
+def custom_404(request, exception):
     return render(request, "404.html", context=get_context(), status=404)
 
 
