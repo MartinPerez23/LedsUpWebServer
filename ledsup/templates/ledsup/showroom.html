@@ -86,7 +86,7 @@
 
                             <!-- Select de showroom -->
                             <select name="show" id="show"
-                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700 select-showroom">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
                                     <option value="{{ show.id }}"
@@ -130,10 +130,9 @@
                             </div>
 
                             <!-- Botón enviar -->
-                            <div id="mensaje-error-color" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
+                            <div class="div-error hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
-                                    id="btn-enviar-color">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition btn-enviar">
                                 Enviar a dispositivos
                             </button>
                         </form>
@@ -147,7 +146,7 @@
                               class="space-y-4">
                             {% csrf_token %}
                             <select name="show" id="show"
-                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700 select-showroom">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
                                     <option value="{{ show.id }}"
@@ -178,10 +177,9 @@
                                    class="w-full accent-cyan-400">
 
                             <input type="hidden" name="matriz" id="matriz" value="nada">
-                            <div id="mensaje-error-scroll" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
+                            <div class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm div-error"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
-                                    id="btn-enviar-scroll">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition btn-enviar">
                                 Enviar a dispositivos
                             </button>
                         </form>
@@ -195,7 +193,7 @@
                               class="space-y-4">
                             {% csrf_token %}
                             <select name="show" id="show"
-                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700 select-showroom">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
                                     <option value="{{ show.id }}"
@@ -221,10 +219,9 @@
                             <input type="range" min="2" max="6" id="velocidadEstrellas" name="velocidadEstrellas"
                                    value="{{ request.session.velocidadEstrellas }}"
                                    class="w-full accent-cyan-400">
-                            <div id="mensaje-error-estrellas" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
+                            <div class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm div-error"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
-                                    id="btn-enviar-estrellas">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition btn-enviar">
                                 Enviar a dispositivos
                             </button>
                         </form>
@@ -238,7 +235,7 @@
                               class="space-y-4">
                             {% csrf_token %}
                             <select name="show" id="show"
-                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700">
+                                    class="w-full rounded bg-[#0D1117] text-white p-2 border border-gray-700 select-showroom">
                                 <option value="0">Selecciona un Showroom a controlar</option>
                                 {% for show in listadoShowroom %}
                                     <option value="{{ show.id }}"
@@ -279,10 +276,9 @@
                                    value="{{ request.session.velocidadScan }}"
                                    class="w-full accent-cyan-400">
 
-                            <div id="mensaje-error-scan" class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm"></div>
+                            <div class="hidden text-red-400 bg-red-900 p-3 rounded mb-4 text-sm div-error"></div>
                             <button type="submit"
-                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition"
-                                    id="btn-enviar-scan">
+                                    class="w-full py-2 rounded bg-cyan-500 hover:bg-cyan-600 font-semibold transition btn-enviar">
                                 Enviar a dispositivos
                             </button>
                         </form>

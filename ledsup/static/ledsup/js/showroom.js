@@ -376,21 +376,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-        const botones = [
-            { btnId: 'btn-enviar-color', errId: 'mensaje-error-color' },
-            { btnId: 'btn-enviar-scroll', errId: 'mensaje-error-scroll' },
-            { btnId: 'btn-enviar-estrellas', errId: 'mensaje-error-estrellas' },
-            { btnId: 'btn-enviar-scan', errId: 'mensaje-error-scan' },
-        ];
+    const botones = document.querySelectorAll('.btn-enviar');
+    const mensajes = document.querySelectorAll('.div-error');
+    const inputsShowroom = document.querySelectorAll(".select-showroom");
 
     const estadoBadge = document.getElementById('estado-badge');
     const estadoBadgeMobile = document.getElementById('estado-badge-mobile');
 
-    botones.forEach(({ btnId, errId }) => {
-        const btnEnviar = document.getElementById(btnId);
-        const mensajeError = document.getElementById(errId);
+    for (let i = 0; i < botones.length; i++) {
+        const btn = botones[i];
+        const mensajeError = mensajes[i];
 
-        btnEnviar?.addEventListener('click', function (e) {
+        btn?.addEventListener('click', function (e) {
             const textoEstado = [
                 estadoBadge?.textContent || '',
                 estadoBadgeMobile?.textContent || ''
@@ -398,17 +395,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (textoEstado.includes("Desconectada")) {
                 e.preventDefault();
-                mostrarError("No hay conexión con la PC. Conéctela para enviar comandos.",mensajeError);
+                mostrarError("No hay conexión con la PC. Conéctela para enviar comandos.", mensajeError);
                 return;
             }
 
             if (textoEstado.includes("Cargando")) {
                 e.preventDefault();
-                mostrarError("Esperando conexión con la PC...",mensajeError);
+                mostrarError("Esperando conexión con la PC...", mensajeError);
             }
-        })});
+        });
+    }
 
-        function mostrarError(mensaje,mensajeError) {
+    function mostrarError(mensaje, mensajeError) {
         mensajeError.textContent = mensaje;
         mensajeError.classList.remove('hidden');
         setTimeout(() => {
@@ -427,5 +425,35 @@ document.addEventListener('DOMContentLoaded', function () {
         inputColorPersonalizado.disabled = false;
         labelVelocidadColorCambioConstante.classList.add('hidden');
     }
+
+
+    inputsShowroom.forEach((inputShowroom, i) => {
+        const btnRelacionado = botones[i];
+
+        function actualizarBoton() {
+            const valorSeleccionado = parseInt(inputShowroom.value);
+            if (valorSeleccionado === 0) {
+                btnRelacionado.disabled = true;
+                btnRelacionado.style.opacity = "0.5";
+                btnRelacionado.style.pointerEvents = "none";
+                btnRelacionado.style.backgroundColor = "#6b7280"; // Tailwind bg-gray-500
+                btnRelacionado.style.cursor = "not-allowed";
+            } else {
+                btnRelacionado.disabled = false;
+                btnRelacionado.style.opacity = "1";
+                btnRelacionado.style.pointerEvents = "auto";
+                btnRelacionado.style.backgroundColor = "#06b6d4"; // Tailwind bg-cyan-500
+                btnRelacionado.style.cursor = "pointer";
+            }
+        }
+
+        actualizarBoton();
+        inputShowroom.addEventListener('change', actualizarBoton);
+        btnRelacionado.closest('form').addEventListener('submit', (e) => {
+            if (btnRelacionado.disabled) {
+                e.preventDefault();
+            }
+        });
+    });
 
 });
