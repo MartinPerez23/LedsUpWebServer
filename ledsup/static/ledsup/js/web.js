@@ -44,33 +44,11 @@ function setEstadoCargando() {
     let recibido = false;
     const socketProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const socket = new WebSocket(socketProtocol + '//' + window.location.host + '/ws/estado/');
-    let heartbeat_msg = '--heartbeat--', heartbeat_interval = null, missed_heartbeats = 0;
 
     socket.onopen = function () {
         console.log('WebSocket conectado');
-        if (heartbeat_interval === null) {
-            missed_heartbeats = 0;
-            heartbeat_interval = setInterval(function () {
-                try {
-                    missed_heartbeats++;
-                    if (missed_heartbeats >= 3)
-                        throw new Error("Too many missed heartbeats.");
-                    socket.checkServerStatus(heartbeat_msg);
-                } catch (e) {
-                    clearInterval(heartbeat_interval);
-                    heartbeat_interval = null;
-                    console.warn("Closing connection. Reason: " + e.message);
-                    socket.close();
-                }
-            }, 5000);
-        }
     }
     socket.onmessage = function (event) {
-        if (event.data === heartbeat_msg) {
-            // reset the counter for missed heartbeats
-            missed_heartbeats = 0;
-            return;
-        }
         const data = JSON.parse(event.data);
         console.log('Mensaje recibido:', data);
 
