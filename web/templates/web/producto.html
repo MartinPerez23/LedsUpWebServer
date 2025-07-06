@@ -18,21 +18,29 @@
                         {% endfor %}
                         {% for video in object.videosproducto_set.all %}
                             <div class="carousel-item hidden">
-                                <a data-fancybox="gallery" href="{{ video.url }}" data-type="iframe">
-                                    <div class="relative w-full h-[400px] bg-black rounded-2xl flex items-center justify-center text-white text-xl">
-                                        ▶ Ver video
-                                    </div>
-                                </a>
+                                {% if video.is_embed %}
+                                    <a href="{{ video.url_video }}" data-fancybox="gallery" data-type="iframe">
+                                        <div class="relative w-full h-[400px] bg-black rounded-2xl flex items-center justify-center text-white text-xl">
+                                            ▶ Ver video
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <a href="{{ video.url_video }}" target="_blank" rel="noopener noreferrer">
+                                        <div class="relative w-full h-[400px] bg-black rounded-2xl flex items-center justify-center text-white text-xl">
+                                            ▶ Ver en el sitio original
+                                        </div>
+                                    </a>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
 
                     <!-- Botones de navegación -->
-                    <button onclick="prevSlide()"
+                    <button id="prev-slide"
                             class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-[#0FF6FF] text-black px-3 py-1 rounded-full shadow-lg">
                         ‹
                     </button>
-                    <button onclick="nextSlide()"
+                    <button id="next-slide"
                             class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-[#0FF6FF] text-black px-3 py-1 rounded-full shadow-lg">
                         ›
                     </button>

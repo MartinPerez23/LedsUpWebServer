@@ -228,7 +228,8 @@ CSP_IMG_SRC = ("'self'", "https://res.cloudinary.com", "https://hcaptcha.com", "
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
 CSP_CONNECT_SRC = ("'self'", "wss:", "https://hcaptcha.com", "https://*.hcaptcha.com",
                    "https://newassets.hcaptcha.com",)
-CSP_FRAME_SRC = ("'self'", "https://hcaptcha.com", "https://*.hcaptcha.com", "https://newassets.hcaptcha.com",)
+CSP_FRAME_SRC = ("'self'", "https://hcaptcha.com", "https://*.hcaptcha.com", "https://newassets.hcaptcha.com",
+                 "https://youtube.com/", "https://www.youtube.com/",)
 CSP_MEDIA_SRC = ("'self'", "https://res.cloudinary.com",)
 CSP_OBJECT_SRC = ("'none'",)  # Bloquea plugins como Flash, PDF, etc
 CSP_INCLUDE_NONCE_IN = ['style-src']

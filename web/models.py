@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from cloudinary.models import CloudinaryField
 from cloudinary.uploader import upload
@@ -76,6 +77,10 @@ class VideosProducto(models.Model):
 
     def __str__(self):
         return self.nombre_video
+
+    @property
+    def is_embed(self):
+        return bool(re.search(r'(youtube\.com/embed|vimeo\.com/video)', self.url_video or '', re.IGNORECASE))
 
 
 class Evento(models.Model):
