@@ -32,12 +32,21 @@ class DispositivoForm(forms.ModelForm):
         ip = cleaned_data.get("numero_ip")
         universo = cleaned_data.get("universo")
 
-        if ip and universo is not None:
+        error_text = "Ya existe un dispositivo con esa IP y ese universo."
+
+        if self.instance.pk:
+            mismo_ip = ip == self.instance.numero_ip
+            mismo_universo = universo == self.instance.universo
+
+
+            if not (mismo_ip and mismo_universo):
+                if Dispositivo.objects.filter(numero_ip=ip, universo=universo).exclude(pk=self.instance.pk).exists():
+                    raise ValidationError(error_text)
+        else:
             if Dispositivo.objects.filter(numero_ip=ip, universo=universo).exists():
-                raise ValidationError("Ya existe un dispositivo con esa IP y ese universo.")
+                raise ValidationError(error_text)
 
         return cleaned_data
-
 
 class OrdenDispositivoForm(forms.ModelForm):
     class Meta:
