@@ -159,6 +159,7 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [ALLOWED_HOSTS]
+
 CORS_ALLOWED_ORIGINS = [ALLOWED_HOSTS]
 
 ASGI_APPLICATION = 'mysite.asgi.application'
@@ -173,6 +174,7 @@ OAUTH2_PROVIDER = {
     'ACCESS_TOKEN_EXPIRE_SECONDS': 1800,
     'REFRESH_TOKEN_EXPIRE_SECONDS': 1209600,
     'ROTATE_REFRESH_TOKEN': True,
+    "PKCE_REQUIRED": False,
     'SCOPES': {
         'read': 'Read scope',
         'write': 'Write scope',
