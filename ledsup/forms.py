@@ -87,4 +87,8 @@ class ShowroomForm(forms.ModelForm):
             for disp in dispositivos:
                 if disp.numero_ip != primera_ip:
                     raise ValidationError("Todos los dispositivos seleccionados deben tener la misma IP (interfaz DMX).")
-        return dispositivos
+                return dispositivos
+        else:
+            raise ValidationError("El showroom debe tener al menos 1 dispositivo")
+
+
