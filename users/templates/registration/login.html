@@ -59,4 +59,22 @@
             </div>
         </form>
     </div>
+
+    <script>
+        // Llama al handler de Flutter para mostrar el spinner cuando se intenta loguear
+        document.getElementById('LoginForm').addEventListener('submit', function() {
+            if (window.flutter_inappwebview) {
+                window.flutter_inappwebview.callHandler('showSpinner');
+            }
+        });
+
+        // Si usás hCaptcha invisible, también llama antes de ejecutar el challenge
+        function onLoginSubmit(token) {
+            if (window.flutter_inappwebview) {
+                window.flutter_inappwebview.callHandler('showSpinner');
+            }
+            // Enviá el form normalmente
+            document.getElementById('LoginForm').submit();
+        }
+    </script>
 {% endblock %}
