@@ -57,6 +57,17 @@
                     Me olvidé la contraseña
                 </a>
             </div>
+
+            <button type="button" onclick="
+              if(window.flutter_inappwebview){
+                window.flutter_inappwebview.callHandler('showSpinner');
+                setTimeout(() => window.flutter_inappwebview.callHandler('hideSpinner'), 3000);
+              } else {
+                alert('NO es Flutter WebView');
+              }
+            ">Test Spinner Flutter
+            </button>
+
         </form>
     </div>
 
