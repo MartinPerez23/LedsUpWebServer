@@ -14,6 +14,14 @@
             </div>
         {% endif %}
 
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-3 rounded {{ message.tags }} bg-green-600 text-white">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% if next %}
             {% if user.is_authenticated %}
                 <div class="mb-4 p-3 bg-red-600 text-white rounded">
@@ -59,22 +67,4 @@
             </div>
         </form>
     </div>
-
-    <script>
-        // Llama al handler de Flutter para mostrar el spinner cuando se intenta loguear
-        document.getElementById('LoginForm').addEventListener('submit', function() {
-            if (window.flutter_inappwebview) {
-                window.flutter_inappwebview.callHandler('showSpinner');
-            }
-        });
-
-        // Si usás hCaptcha invisible, también llama antes de ejecutar el challenge
-        function onLoginSubmit(token) {
-            if (window.flutter_inappwebview) {
-                window.flutter_inappwebview.callHandler('showSpinner');
-            }
-            // Enviá el form normalmente
-            document.getElementById('LoginForm').submit();
-        }
-    </script>
 {% endblock %}

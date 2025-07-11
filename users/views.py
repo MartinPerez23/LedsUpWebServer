@@ -13,6 +13,8 @@ from oauth2_provider.contrib.rest_framework import OAuth2Authentication, TokenHa
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib import messages
+
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
 
@@ -34,6 +36,7 @@ class SignUpView(CreateView):
         resultado = r.json()
 
         if resultado.get('success'):
+            messages.success(self.request, "Registro exitoso. Revisa tu correo para activar la cuenta.")
             return super().form_valid(form)
         else:
             form.add_error(None, "Validación hCaptcha fallida")

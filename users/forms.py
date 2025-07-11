@@ -24,10 +24,14 @@ class CustomUserChangeForm(forms.ModelForm):
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
-        widget=forms.EmailInput(attrs={
-            'class': 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
-        }),
+        widget=forms.EmailInput(),
         label='Correo electrónico'
+    )
+
+    username = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={'maxlength': '20'}),
+        label='Nombre de usuario'
     )
 
     class Meta(UserCreationForm.Meta):
@@ -40,13 +44,10 @@ class CustomUserCreationForm(UserCreationForm):
         for field_name in self.fields:
             self.fields[field_name].help_text = None
 
+        class_text = 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
+
         for field_name, field in self.fields.items():
-            if 'class' in field.widget.attrs:
-                field.widget.attrs[
-                    'class'] += ' w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
-            else:
-                field.widget.attrs[
-                    'class'] = 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
+            field.widget.attrs['class'] = class_text
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
