@@ -12,4 +12,5 @@ urlpatterns = [
                   path('logout/', views.logout_closeWS, name="logout"),
                   path('login/', views.LoginConHCaptchaView.as_view(), name='login'),
                   path('oauth2/userinfo/', views.UserInfoGet.as_view(), name='user_info'),
+                  path('activar/<uid>/<token>/', views.activar_cuenta, name='activar_cuenta'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

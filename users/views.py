@@ -2,21 +2,28 @@ import requests
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from oauth2_provider.contrib.rest_framework import OAuth2Authentication, TokenHasScope
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.contrib import messages
 
-
-from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm, CustomAuthenticationForm
 
 
 class SignUpView(CreateView):
@@ -35,12 +42,39 @@ class SignUpView(CreateView):
         r = requests.post('https://hcaptcha.com/siteverify', data=data)
         resultado = r.json()
 
-        if resultado.get('success'):
-            messages.success(self.request, "Registro exitoso. Revisa tu correo para activar la cuenta.")
-            return super().form_valid(form)
-        else:
+        if not resultado.get('success'):
             form.add_error(None, "Validación hCaptcha fallida")
             return self.form_invalid(form)
+
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
+
+        # Agregar a grupo predeterminado
+        grupo, _ = Group.objects.get_or_create(name="Cliente")
+        user.groups.add(grupo)
+
+        # Enviar email de activación
+        current_site = get_current_site(self.request)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        link = f"https://{current_site.domain}/activar/{uid}/{token}/"
+
+        mensaje = render_to_string("registration/email_verificacion.html", {
+            "user": user,
+            "link": link,
+        })
+
+        send_mail(
+            subject="Activa tu cuenta",
+            message=mensaje,
+            from_email="noreply@tusitio.com",
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+
+        messages.success(self.request, "Registro exitoso. Revisa tu correo para activar la cuenta.")
+        return redirect(self.success_url)
 
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
@@ -96,6 +130,7 @@ def logout_closeWS(request):
 
 class LoginConHCaptchaView(LoginView):
     template_name = 'registration/login.html'
+    form_class = CustomAuthenticationForm
 
     def form_valid(self, form):
         hcaptcha_response = self.request.POST.get('h-captcha-response')
@@ -112,3 +147,20 @@ class LoginConHCaptchaView(LoginView):
         else:
             form.add_error(None, "Validación hCaptcha fallida")
             return self.form_invalid(form)
+
+
+def activar_cuenta(request, uid, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uid))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, "Tu cuenta ha sido activada correctamente. Ya podés iniciar sesión.")
+        return redirect('login')
+    else:
+        messages.error(request, "El enlace es inválido o ha expirado.")
+        return redirect('register')

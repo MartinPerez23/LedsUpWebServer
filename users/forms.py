@@ -1,6 +1,7 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class CustomUserChangeForm(forms.ModelForm):
@@ -54,3 +55,12 @@ class CustomUserCreationForm(UserCreationForm):
         if User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("Ya existe un usuario registrado con este correo electrónico.")
         return email
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise ValidationError(
+                "Esta cuenta no está activada. Por favor, revisa tu correo electrónico para activar tu cuenta.",
+                code='inactive',
+            )
