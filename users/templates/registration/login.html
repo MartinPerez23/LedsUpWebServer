@@ -2,15 +2,14 @@
 
 {% block content %}
     <div class="max-w-md mx-auto mt-20 bg-[#1E1E2F] text-white p-8 rounded-lg shadow-lg border border-[#0FF6FF]">
-        {% if form.non_field_errors %}
-            <div class="mb-4 p-3 bg-red-600 text-white rounded">
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
+
+        {% if form.errors %}
+            <div class="mb-4 p-3 bg-red-600 text-white rounded space-y-1">
+                {% for error in form.errors.values %}
+                    {% for message in error %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
                 {% endfor %}
-            </div>
-        {% elif form.errors %}
-            <div class="mb-4 p-3 bg-red-600 text-white rounded">
-                <p>Tu usuario o contraseña no es válido. Intente nuevamente.</p>
             </div>
         {% endif %}
 
@@ -53,14 +52,18 @@
             <input type="hidden" name="next" value="{{ next }}"/>
 
             <div class="flex justify-between items-center mt-6">
-                <button
-                        class="px-4 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc] transition h-captcha"
-                        data-sitekey="{{ HCAPTCHA_SITE_KEY }}"
-                        data-callback="onLoginSubmit"
-                        data-size="invisible"
-                        type="submit">
-                    Ingresar
-                </button>
+                {% if HCAPTCHA_ENABLED %}
+                    <button
+                            class="px-4 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc] transition h-captcha"
+                            data-sitekey="{{ HCAPTCHA_SITE_KEY }}"
+                            data-callback="onLoginSubmit"
+                            data-size="invisible"
+                            type="submit">
+                        Ingresar
+                    </button>
+                {% else %}
+                    <button type="submit" class="px-4 py-2 bg-[#9E00FF] text-white rounded-md hover:bg-[#7a00cc] transition">Ingresar</button>
+                {% endif %}
                 <a href="{% url 'password_reset' %}" class="text-sm text-[#0FF6FF] hover:underline">
                     Me olvidé la contraseña
                 </a>

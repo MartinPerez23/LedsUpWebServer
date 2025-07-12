@@ -33,18 +33,19 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        hcaptcha_response = self.request.POST.get('h-captcha-response')
-        data = {
-            'secret': settings.HCAPTCHA_SECRET_KEY,
-            'response': hcaptcha_response
-        }
+        if getattr(settings, "HCAPTCHA_ENABLED", True):
+            hcaptcha_response = self.request.POST.get('h-captcha-response')
+            data = {
+                'secret': settings.HCAPTCHA_SECRET_KEY,
+                'response': hcaptcha_response
+            }
 
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        resultado = r.json()
+            r = requests.post('https://hcaptcha.com/siteverify', data=data)
+            resultado = r.json()
 
-        if not resultado.get('success'):
-            form.add_error(None, "Validación hCaptcha fallida")
-            return self.form_invalid(form)
+            if not resultado.get('success'):
+                form.add_error(None, "Validación hCaptcha fallida")
+                return self.form_invalid(form)
 
         user = form.save(commit=False)
         user.is_active = False
@@ -133,21 +134,21 @@ class LoginConHCaptchaView(LoginView):
     form_class = CustomAuthenticationForm
 
     def form_valid(self, form):
-        hcaptcha_response = self.request.POST.get('h-captcha-response')
-        data = {
-            'secret': settings.HCAPTCHA_SECRET_KEY,
-            'response': hcaptcha_response
-        }
+        if getattr(settings, "HCAPTCHA_ENABLED", True):
+            hcaptcha_response = self.request.POST.get('h-captcha-response')
+            data = {
+                'secret': settings.HCAPTCHA_SECRET_KEY,
+                'response': hcaptcha_response
+            }
 
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        resultado = r.json()
+            r = requests.post('https://hcaptcha.com/siteverify', data=data)
+            resultado = r.json()
 
-        if resultado.get('success'):
-            return super().form_valid(form)
-        else:
-            form.add_error(None, "Validación hCaptcha fallida")
-            return self.form_invalid(form)
+            if not resultado.get('success'):
+                form.add_error(None, "Validación hCaptcha fallida")
+                return self.form_invalid(form)
 
+        return super().form_valid(form)
 
 def activar_cuenta(request, uid, token):
     try:

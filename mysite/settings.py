@@ -31,6 +31,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+# SECURITY WARNING: don't push with HCAPTCHA_ENABLED turned off in production!
+HCAPTCHA_ENABLED = os.environ.get("HCAPTCHA_ENABLED", "True") == "True"
+
 LOGIN_URL = '/login/'
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
@@ -83,6 +86,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+
+AUTHENTICATION_BACKENDS = [
+    'users.backends.AllowInactiveAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 TEMPLATES = [
     {

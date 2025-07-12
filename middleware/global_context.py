@@ -14,6 +14,7 @@ class GlobalVariablesMiddleware:
     def process_template_response(self, request, response):
         response.context_data = response.context_data or {}
         response.context_data['HCAPTCHA_SITE_KEY'] = settings.HCAPTCHA_SITE_KEY
+        response.context_data['HCAPTCHA_ENABLED'] = settings.HCAPTCHA_ENABLED
         response.context_data['listado_tipos_productos'] = TipoProducto.objects.all()
         response.context_data['listado_productos'] = Producto.objects.all()
         return response
