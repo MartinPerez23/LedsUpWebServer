@@ -27,6 +27,7 @@
                 <label for="inputName"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.nombre.label_tag }}</label>
                 {{ form.nombre }}
+                <p class="text-sm text-gray-400 mt-1 text-right" id="nombreCount">30 caracteres restantes</p>
                 {% if form.nombre.errors %}
                     <p class="text-red-400 text-sm mt-1">{{ form.nombre.errors.0 }}</p>
                 {% endif %}
@@ -37,6 +38,7 @@
                 <label for="inputSubname"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.apellido.label_tag }}</label>
                 {{ form.apellido }}
+                <p class="text-sm text-gray-400 mt-1 text-right" id="apellidoCount">30 caracteres restantes</p>
                 {% if form.apellido.errors %}
                     <p class="text-red-400 text-sm mt-1">{{ form.apellido.errors.0 }}</p>
                 {% endif %}
@@ -52,11 +54,23 @@
                 {% endif %}
             </div>
 
+            <!-- Input Producto -->
+            <div>
+                <label for="id_producto" class="block text-[#00FFA3] font-semibold mb-2">
+                    {{ form.producto.label_tag }}
+                </label>
+                {{ form.producto }}
+                {% if form.producto.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.producto.errors.0 }}</p>
+                {% endif %}
+            </div>
+
             <!-- Input Mensaje -->
             <div>
                 <label for="inputMessage"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.mensaje.label_tag }}</label>
                 {{ form.mensaje }}
+                <p class="text-sm text-gray-400 mt-1 text-right" id="mensajeCount">500 caracteres restantes</p>
                 {% if form.mensaje.errors %}
                     <p class="text-red-400 text-sm mt-1">{{ form.mensaje.errors.0 }}</p>
                 {% endif %}
@@ -73,4 +87,5 @@
             </div>
         </form>
     </section>
+
 {% endblock %}

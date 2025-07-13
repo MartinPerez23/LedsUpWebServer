@@ -55,3 +55,32 @@ window.onUserSubmit = function (token) {
 window.onLoginSubmit = function (token) {
     document.getElementById('LoginForm').submit();
 };
+
+
+function updateCharCount(input, counterId, maxLength) {
+    const currentLength = input.value.length;
+    const remaining = maxLength - currentLength;
+    const counter = document.getElementById(counterId);
+    if (counter) {
+        counter.textContent = `${remaining} caracteres restantes`;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fields = [
+        {inputId: 'id_nombre', counterId: 'nombreCount', max: 30},
+        {inputId: 'id_apellido', counterId: 'apellidoCount', max: 30},
+        {inputId: 'id_mensaje', counterId: 'mensajeCount', max: 500}
+    ];
+
+    fields.forEach(({inputId, counterId, max}) => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            updateCharCount(input, counterId, max);
+            input.addEventListener('input', () => {
+                updateCharCount(input, counterId, max);
+            });
+        }
+    });
+});
+

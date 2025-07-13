@@ -4,23 +4,60 @@ from django.contrib.auth.models import Group
 from django.core.mail import send_mail
 
 from .models import Errores
-
+from .models import Producto
 
 class ContactForm(forms.Form):
     class_text = 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
 
-    nombre = forms.CharField(widget=forms.TextInput(attrs={'class': class_text}))
-    apellido = forms.CharField(widget=forms.TextInput(attrs={'class': class_text}))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': class_text}))
-    mensaje = forms.CharField(widget=forms.Textarea(attrs={'class': class_text}))
+    nombre = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(attrs={
+            'class': class_text,
+            'maxlength': '30',
+        })
+    )
+    apellido = forms.CharField(
+        max_length=30,
+        widget=forms.TextInput(attrs={
+            'class': class_text,
+            'maxlength': '30',
+        })
+    )
+    email = forms.EmailField(
+        max_length=254,
+        widget=forms.EmailInput(attrs={
+            'class': class_text,
+            'maxlength': '254'
+        })
+    )
+    mensaje = forms.CharField(
+        max_length=500,
+        widget=forms.Textarea(attrs={
+            'class': class_text,
+            'maxlength': '500',
+            'rows': 5
+        })
+    )
+
+    producto = forms.ModelChoiceField(
+        queryset=Producto.objects.all(), # type: ignore
+        label="Producto de interés",
+        required=False,
+        widget=forms.Select(attrs={'class': class_text}),
+    )
 
     def send_email(self):
         subject = 'Nuevo mensaje de contacto'
+        producto_nombre = self.cleaned_data.get('producto')
         message = (
-            f"Nombre: {self.cleaned_data['nombre']}\n"
-            f"Apellido: {self.cleaned_data['apellido']}\n"
-            f"Correo: {self.cleaned_data['email']}\n\n"
-            f"Mensaje:\n{self.cleaned_data['mensaje']}"
+            f"Hola Easy-Led, soy {self.cleaned_data['apellido']} {self.cleaned_data['nombre']}.\n"
+        )
+        if producto_nombre:
+            message += f"Me interesa el siguiente producto: {producto_nombre}\n"
+        message += (
+            "Les quería comentar lo siguiente:\n"
+            f"{self.cleaned_data['mensaje']}\n"
+            "Saludos."
         )
         from_email = settings.EMAIL_HOST_USER
         recipient_list = [settings.EMAIL_HOST_USER]
