@@ -96,13 +96,13 @@ class ShowroomForm(forms.ModelForm):
 
     def clean_dispositivos(self):
         dispositivos = self.cleaned_data.get('dispositivos')
-        if dispositivos:
-            primera_ip = dispositivos[0].numero_ip
-            for disp in dispositivos:
-                if disp.numero_ip != primera_ip:
-                    raise ValidationError("Todos los dispositivos seleccionados deben tener la misma IP (interfaz DMX).")
-                return dispositivos
-        else:
+        if not dispositivos:
             raise ValidationError("El showroom debe tener al menos 1 dispositivo")
 
+        primera_ip = ipaddress.IPv4Address(dispositivos[0].numero_ip)
+        for disp in dispositivos:
+            ip_actual = ipaddress.IPv4Address(disp.numero_ip)
+            if ip_actual != primera_ip:
+                raise ValidationError("Todos los dispositivos seleccionados deben tener la misma IP (interfaz DMX).")
+        return dispositivos
 
