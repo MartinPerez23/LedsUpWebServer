@@ -27,6 +27,9 @@
                 <label for="inputName"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.nombre.label_tag }}</label>
                 {{ form.nombre }}
+                {% if form.nombre.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.nombre.errors.0 }}</p>
+                {% endif %}
             </div>
 
             <!-- Input Apellido -->
@@ -34,6 +37,9 @@
                 <label for="inputSubname"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.apellido.label_tag }}</label>
                 {{ form.apellido }}
+                {% if form.apellido.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.apellido.errors.0 }}</p>
+                {% endif %}
             </div>
 
             <!-- Input Email -->
@@ -41,6 +47,9 @@
                 <label for="inputEmail"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.email.label_tag }}</label>
                 {{ form.email }}
+                {% if form.email.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.email.errors.0 }}</p>
+                {% endif %}
             </div>
 
             <!-- Input Mensaje -->
@@ -48,6 +57,9 @@
                 <label for="inputMessage"
                        class="block text-[#00FFA3] font-semibold mb-2">{{ form.mensaje.label_tag }}</label>
                 {{ form.mensaje }}
+                {% if form.mensaje.errors %}
+                    <p class="text-red-400 text-sm mt-1">{{ form.mensaje.errors.0 }}</p>
+                {% endif %}
             </div>
 
             <div class="text-center">
