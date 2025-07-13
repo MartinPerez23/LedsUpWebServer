@@ -1,8 +1,53 @@
-const btn = document.getElementById('menu-btn');
-const menu = document.getElementById('mobile-menu');
+document.addEventListener('DOMContentLoaded', () => {
+    // Menú móvil
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    if (btn && menu) {
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+    }
 
-btn.addEventListener('click', () => {
-    menu.classList.toggle('hidden');
+    // Carrusel
+    let currIndex = 0;
+
+    function showSlide(index) {
+        const items = document.querySelectorAll('.carousel-item');
+        items.forEach((item, i) => {
+            item.classList.toggle('hidden', i !== index);
+            item.classList.toggle('block', i === index);
+        });
+    }
+
+    function nextSlide() {
+        const items = document.querySelectorAll('.carousel-item');
+        currIndex = (currIndex + 1) % items.length;
+        showSlide(currIndex);
+    }
+
+    function prevSlide() {
+        const items = document.querySelectorAll('.carousel-item');
+        currIndex = (currIndex - 1 + items.length) % items.length;
+        showSlide(currIndex);
+    }
+
+    // Botones del carrusel
+    const prevBtn = document.getElementById('prev-slide');
+    const nextBtn = document.getElementById('next-slide');
+
+    if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+    if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+    // Inicializar Fancybox y mostrar el primer slide
+    showSlide(currIndex);
+    if (typeof Fancybox !== 'undefined') {
+        const elements = [...document.querySelectorAll("[data-fancybox='gallery']")]
+            .filter(el => el.getAttribute("href") && el.getAttribute("href") !== "undefined");
+
+        if (elements.length > 0) {
+            Fancybox.bind(elements);
+        }
+    }
 });
 
 const estadoBadge = document.getElementById('estado-badge');
