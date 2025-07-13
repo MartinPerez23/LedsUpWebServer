@@ -61,6 +61,6 @@ class CustomAuthenticationForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         if not user.is_active:
             raise ValidationError(
-                "Esta cuenta no está activada. Por favor, revisa tu correo electrónico para activar tu cuenta.",
+                "Esta cuenta no está activada. Revisá tu correo electrónico para activarla.",
                 code='inactive',
             )

@@ -88,6 +88,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mysite.urls'
 
 AUTHENTICATION_BACKENDS = [
+    'users.backends.AllowInactiveAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
