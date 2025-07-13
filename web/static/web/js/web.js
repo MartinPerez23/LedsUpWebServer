@@ -59,7 +59,7 @@ window.onLoginSubmit = function (token) {
 
 function updateCharCount(input, counterId, maxLength) {
     const currentLength = input.value.length;
-    const remaining = maxLength - currentLength;
+    const remaining = Math.max(0, maxLength - currentLength);
     const counter = document.getElementById(counterId);
     if (counter) {
         counter.textContent = `${remaining} caracteres restantes`;
@@ -78,6 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (input) {
             updateCharCount(input, counterId, max);
             input.addEventListener('input', () => {
+                if (input.value.length > max) {
+                    input.value = input.value.substring(0, max);
+                }
                 updateCharCount(input, counterId, max);
             });
         }

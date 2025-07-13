@@ -1,7 +1,9 @@
+import ipaddress
+
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Dispositivo, OrdenDispositivosEnShowroom, Showroom
 
+from .models import Dispositivo, OrdenDispositivosEnShowroom, Showroom
 
 
 class DispositivoForm(forms.ModelForm):
@@ -19,13 +21,25 @@ class DispositivoForm(forms.ModelForm):
         ]
         widgets = {
             'nombre_dispositivo': forms.TextInput(attrs={'class': class_text}),
-            'numero_ip': forms.TextInput(attrs={'class': class_text}),
+            'numero_ip': forms.TextInput(attrs={
+                'class': class_text,
+                'pattern': r'^([0-9]{1,3}\.){3}[0-9]{1,3}$',
+                'title': 'Ingrese una dirección IP válida. Ejemplo: 192.168.1.100'
+            }),
             'universo': forms.NumberInput(attrs={'class': class_text}),
             'tamano_paquetes': forms.NumberInput(attrs={'class': class_text}),
             'matriz_x': forms.NumberInput(attrs={'class': class_text}),
             'matriz_y': forms.NumberInput(attrs={'class': class_text}),
             'tipo_led': forms.Select(attrs={'class': class_text}),
         }
+
+    def clean_numero_ip(self):
+        ip = self.cleaned_data.get("numero_ip")
+        try:
+            ipaddress.IPv4Address(ip)
+        except Exception:
+            raise ValidationError("Ingrese una dirección IP válida (ejemplo: 192.168.1.100)")
+        return ip
 
     def clean(self):
         cleaned_data = super().clean()

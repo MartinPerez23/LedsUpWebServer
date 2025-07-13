@@ -60,29 +60,32 @@ class ContactFormView(generic.FormView):
     success_url = reverse_lazy('web:contact')
 
     def form_valid(self, form):
-        hcaptcha_response = self.request.POST.get('h-captcha-response')
-        data = {
-            'secret': settings.HCAPTCHA_SECRET_KEY,
-            'response': hcaptcha_response
-        }
+        if getattr(settings, "HCAPTCHA_ENABLED", True):
+            hcaptcha_response = self.request.POST.get('h-captcha-response')
+            data = {
+                'secret': settings.HCAPTCHA_SECRET_KEY,
+                'response': hcaptcha_response
+            }
 
-        r = requests.post('https://hcaptcha.com/siteverify', data=data)
-        resultado = r.json()
+            r = requests.post('https://hcaptcha.com/siteverify', data=data)
+            resultado = r.json()
 
-        if resultado.get('success'):
-            try:
-                form.send_email()
-                messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
+            if resultado.get('success'):
+                try:
+                    form.send_email()
+                    messages.success(self.request, 'Mensaje enviado, ¡gracias por contactar con nosotros!')
 
-                return super().form_valid(form)
+                    return super().form_valid(form)
 
-            except Exception:
-                messages.error(self.request, f'Error al enviar el mensaje. Intentelo nuevamente mas tarde.')
+                except Exception:
+                    messages.error(self.request, f'Error al enviar el mensaje. Intentelo nuevamente mas tarde.')
+                    return self.form_invalid(form)
+
+            else:
+                form.add_error(None, "Validación hCaptcha fallida")
                 return self.form_invalid(form)
 
-        else:
-            form.add_error(None, "Validación hCaptcha fallida")
-            return self.form_invalid(form)
+        return self.form_invalid(form)
 
 
 class EventsPage(generic.ListView):
