@@ -234,7 +234,7 @@ CSP_SCRIPT_SRC = ("'self'", "https://apis.google.com", "https://cdnjs.cloudflare
 CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com", "https://cdn.jsdelivr.net", "https://hcaptcha.com",
                  "https://*.hcaptcha.com", "https://newassets.hcaptcha.com",)
 CSP_IMG_SRC = ("'self'", "https://res.cloudinary.com", "https://hcaptcha.com", "https://*.hcaptcha.com",
-               "https://newassets.hcaptcha.com",)
+               "https://newassets.hcaptcha.com","https://api.qrserver.com/")
 CSP_FONT_SRC = ("'self'", "https://fonts.gstatic.com",)
 CSP_CONNECT_SRC = ("'self'", "wss:", "https://hcaptcha.com", "https://*.hcaptcha.com",
                    "https://newassets.hcaptcha.com",)
