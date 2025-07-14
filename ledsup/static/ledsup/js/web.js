@@ -128,10 +128,26 @@ document.addEventListener('DOMContentLoaded', function() {
     var spinner = document.getElementById('globalSpinner');
     if (spinner) spinner.style.display = 'none';
 
+    // Detectar si el link es Fancybox
+    function esFancyboxLink(link) {
+        return (
+            link.hasAttribute('data-fancybox') ||
+            link.hasAttribute('data-src') ||
+            link.hasAttribute('data-type') ||
+            link.hasAttribute('data-caption')
+        );
+    }
+
     document.querySelectorAll('a[href]').forEach(function(link) {
         link.addEventListener('click', function(e) {
+            if (esFancyboxLink(link)) return;
+
             setTimeout(function() {
-                if (!e.defaultPrevented && link.getAttribute('href') !== '#' && !link.hasAttribute('target')) {
+                if (
+                    !e.defaultPrevented &&
+                    link.getAttribute('href') !== '#' &&
+                    !link.hasAttribute('target')
+                ) {
                     spinner.style.display = 'flex';
                 }
             }, 0);
@@ -146,18 +162,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Oculta el spinner al cargar la página (incluye navegación adelante/atrás)
     window.addEventListener('pageshow', function() {
         if (spinner) spinner.style.display = 'none';
     });
 
-    // Muestra el spinner antes de recargar o navegar fuera de la página (F5, cerrar, cambiar de url, etc)
+    // ✅ PREVENIR spinner si Fancybox está abierto
+    function fancyboxActivo() {
+        return window.Fancybox?.getInstance?.() !== null;
+    }
+
     window.addEventListener('beforeunload', function () {
-        if (spinner) spinner.style.display = 'flex';
+        if (spinner && !fancyboxActivo()) {
+            spinner.style.display = 'flex';
+        }
     });
 
-    // Muestra el spinner al navegar con los botones del navegador (adelante/atrás)
     window.addEventListener('popstate', function () {
-        if (spinner) spinner.style.display = 'flex';
+        if (spinner && !fancyboxActivo()) {
+            spinner.style.display = 'flex';
+        }
     });
+
+    // Oculta el spinner al abrir/cerrar cualquier Fancybox (v6)
+    if (window.Fancybox && typeof window.Fancybox.bind === 'function') {
+        window.Fancybox.bind('[data-fancybox]', {
+            on: {
+                close: () => {
+                    if (spinner) spinner.style.display = 'none';
+                },
+                reveal: () => {
+                    if (spinner) spinner.style.display = 'none';
+                },
+                destroy: () => {
+                    if (spinner) spinner.style.display = 'none';
+                },
+                done: () => {
+                    if (spinner) spinner.style.display = 'none';
+                }
+            }
+        });
+    }
 });
+
