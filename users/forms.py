@@ -5,21 +5,38 @@ from django.core.exceptions import ValidationError
 
 
 class CustomUserChangeForm(forms.ModelForm):
+    username = forms.CharField(
+        max_length=20,
+        widget=forms.TextInput(attrs={'maxlength': '20'}),
+        label='Nombre de usuario'
+    )
+
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(),
+        label='Correo electrónico'
+    )
+
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
-
-        class_text = 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
-
-        widgets = {
-            'username': forms.TextInput(attrs={'class': class_text}),
-            'email': forms.EmailInput(attrs={'class': class_text}),
-            'first_name': forms.TextInput(attrs={'class': class_text}),
-            'last_name': forms.TextInput(attrs={'class': class_text}),
-        }
         help_texts = {
             'username': None,
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        class_text = 'w-full bg-[#1E293B] text-white border border-gray-700 rounded-lg p-2 focus:border-cyan-400 focus:outline-none'
+
+        for field in self.fields.values():
+            field.widget.attrs['class'] = class_text
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email__iexact=email).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Ya existe un usuario registrado con este correo electrónico.")
+        return email
 
 
 class CustomUserCreationForm(UserCreationForm):
