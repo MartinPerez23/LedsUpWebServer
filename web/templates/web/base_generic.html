@@ -13,6 +13,10 @@
 <body class="min-h-screen flex flex-col bg-[#0D1117] font-[Poppins]  text-[#EDEDED] leading-relaxed">
 {% include "web/partials/header.html" %}
 
+<div id="globalSpinner" class="spinner-overlay">
+    <div class="spinner"></div>
+</div>
+
 <main class="flex-grow">
     {% block content %}{% endblock %}
 </main>

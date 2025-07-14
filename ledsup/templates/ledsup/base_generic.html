@@ -13,6 +13,10 @@
 
 {% include "ledsup/partials/header.html" %}
 
+<div id="globalSpinner" class="spinner-overlay">
+    <div class="spinner"></div>
+</div>
+
 <main class="flex-grow">
     {% block content %}{% endblock %}
 </main>

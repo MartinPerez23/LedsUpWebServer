@@ -123,3 +123,41 @@ function setEstadoCargando() {
     };
 })();
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    var spinner = document.getElementById('globalSpinner');
+    if (spinner) spinner.style.display = 'none';
+
+    document.querySelectorAll('a[href]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            setTimeout(function() {
+                if (!e.defaultPrevented && link.getAttribute('href') !== '#' && !link.hasAttribute('target')) {
+                    spinner.style.display = 'flex';
+                }
+            }, 0);
+        });
+    });
+
+    document.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            setTimeout(function() {
+                if (!e.defaultPrevented) spinner.style.display = 'flex';
+            }, 0);
+        });
+    });
+
+    // Oculta el spinner al cargar la página (incluye navegación adelante/atrás)
+    window.addEventListener('pageshow', function() {
+        if (spinner) spinner.style.display = 'none';
+    });
+
+    // Muestra el spinner antes de recargar o navegar fuera de la página (F5, cerrar, cambiar de url, etc)
+    window.addEventListener('beforeunload', function () {
+        if (spinner) spinner.style.display = 'flex';
+    });
+
+    // Muestra el spinner al navegar con los botones del navegador (adelante/atrás)
+    window.addEventListener('popstate', function () {
+        if (spinner) spinner.style.display = 'flex';
+    });
+});
