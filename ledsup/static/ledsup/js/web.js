@@ -138,21 +138,27 @@ document.addEventListener('DOMContentLoaded', function() {
         );
     }
 
-    document.querySelectorAll('a[href]').forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            if (esFancyboxLink(link)) return;
+    document.querySelectorAll('a[href]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            const href = link.getAttribute('href');
 
-            setTimeout(function() {
-                if (
-                    !e.defaultPrevented &&
-                    link.getAttribute('href') !== '#' &&
-                    !link.hasAttribute('target')
-                ) {
+            if (
+                esFancyboxLink(link) ||
+                link.hasAttribute('download') ||
+                href?.startsWith('#') ||
+                link.getAttribute('target') === '_blank'   
+            ) {
+                return;
+            }
+
+            setTimeout(function () {
+                if (!e.defaultPrevented) {
                     spinner.style.display = 'flex';
                 }
             }, 0);
         });
     });
+
 
     document.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
